@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,13 +10,19 @@
 <title>Insert title here</title>
 </head>
 <body>
-THIS IS THE OVERVIEW
+	THIS IS THE OVERVIEW
 
-<form action="EditProfile" method="post">
-	Enter bullshit:
-	<input type="text" name="bullshit"><br> 
-	<input type="submit" value="Submit">
+	<form action="EditProfile" method="post">
+		Enter bullshit: <input type="text" name="bullshit"><br> <input
+			type="submit" value="Submit">
 	</form>
+
+	<c:forEach var="testString" items="${testArray}">
+		${testString}
+	</c:forEach>
 	
+	<br>
+	${user.getName()}
+
 </body>
 </html>
