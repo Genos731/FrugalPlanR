@@ -2,9 +2,7 @@ package container;
 
 import java.util.Date;
 
-public class Budget {
-	private static final int MAX_STRING = 45;
-	
+public class Budget {	
 	private double value;
 	private Date startDate;
 	private Date endDate;
