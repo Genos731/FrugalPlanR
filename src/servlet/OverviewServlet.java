@@ -31,13 +31,7 @@ public class OverviewServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		AccountCommunicator accComm = new AccountImpl();
-		Account account = accComm.get("antoine");
 		
-		
-		System.out.println(account.getName());
-		System.out.println(account.getPassword());
-		System.out.println(account.getEmail());
 		request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
 	}
 

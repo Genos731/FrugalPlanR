@@ -2,8 +2,7 @@ package container;
 
 import java.util.Date;
 
-public class Transaction {
-	private static final int MAX_STRING = 45;
+public class Transaction {	
 	
 	private double value;
 	private String item;
