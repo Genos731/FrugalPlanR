@@ -2,15 +2,15 @@ package servlet;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import container.Account;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import backend.AccountImpl;
+import container.Account;
+import intermediate.AccountCommunicator;
 
 /**
  * Servlet implementation class OverviewServlet
@@ -18,30 +18,26 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/")
 public class OverviewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public OverviewServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public OverviewServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<String> test = new ArrayList<String>(); 
-		test.add("Hello");
-		test.add("darkness");
-		test.add("my");
-		test.add("old");
-		test.add("friend");
+		AccountCommunicator accComm = new AccountImpl();
+		Account account = accComm.get("antoine");
 		
-		Account testAccount = new Account("Jordan", "Password");
-		request.setAttribute("user", testAccount);
-		request.setAttribute("testArray", test);
 		
+		System.out.println(account.getName());
+		System.out.println(account.getPassword());
+		System.out.println(account.getEmail());
 		request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
 	}
 

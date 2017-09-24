@@ -1,28 +1,39 @@
 package container;
 
 public class Account {
-	String name;
-	String password;
+	private static final int MAX_STRING = 45;
 	
-	// Todo
-	public Account(String n, String p){
-		name = n;
-		password = p;
+	private String name;
+	private String password;
+	private String email;
+	
+	public Account(String name, String password, String email) {
+		this.name = name;
+		this.password = password;
+		this.email = email;
 	}
 	
-	public String getName(){
+	public String getName() {
 		return name;
 	}
-
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public String getPassword() {
 		return password;
 	}
-
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
