@@ -1,10 +1,10 @@
-INSERT INTO account (name, password, email)
+INSERT INTO account (username, password, email)
 VALUES ("Antoine", "Antoine", "Antoine@email.com");
 
-INSERT INTO account (name, password, email)
+INSERT INTO account (username, password, email)
 VALUES ("Betsy", "Betsy", "Betsy@email.com");
 
-INSERT INTO account (name, password, email)
+INSERT INTO account (username, password, email)
 VALUES ("Cockless", "Cockless", "Cockless@email.com");
 
 INSERT INTO budget (goalValue, startDate, endDate, account_id)
