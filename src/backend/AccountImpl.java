@@ -193,13 +193,14 @@ public class AccountImpl implements AccountCommunicator {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void close() throws SQLException {
+		dbConnection.close();
+	}
 
-	/**
-	 * Checks if the given account matches all variables in the DB
-	 * @param a Account to check
-	 * @return True if all paramaters match, false otherwise
-	 */
-	private boolean isValidAccount(Account a) {
+	@Override
+	public boolean isValidAccount(Account a) {
 		Account otherAccount;
 		try {
 			otherAccount = getAccount(a.getUsername());

@@ -59,4 +59,18 @@ public interface AccountCommunicator {
 	// - What does login do? (talking about updating iterations of transactions...)
 	public boolean login(Account a);
 	public void logout(Account a);
+	
+	/**
+	 * Closes database connection
+	 * @throws SQLException If a database error occurs
+	 */
+	public void close() throws SQLException;
+	
+	/**
+	 * Checks if the given account matches all variables in the DB
+	 * @param a Account to check
+	 * @return True if all paramaters match, false otherwise
+	 */
+	public boolean isValidAccount(Account a);
+	
 }

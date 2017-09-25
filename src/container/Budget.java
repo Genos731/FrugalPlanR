@@ -1,16 +1,33 @@
 package container;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class Budget {	
-	private double value;
+public class Budget {
+	private int id;
+	private double goalValue;
 	private Date startDate;
 	private Date endDate;
-	public double getValue() {
-		return value;
+	private int accountID;
+	
+	public Budget(int id, double goalValue, Date startDate, Date endDate, int accountID){
+		this.id = id;
+		this.goalValue = goalValue;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.accountID = accountID;
 	}
-	public void setValue(double value) {
-		this.value = value;
+
+	public int getID() {
+		return id;
+	}
+	public void setID(int id) {
+		this.id = id;
+	}
+	public double getGoalValue() {
+		return goalValue;
+	}
+	public void setGoalValue(double goalValue) {
+		this.goalValue = goalValue;
 	}
 	public Date getStartDate() {
 		return startDate;
@@ -23,5 +40,11 @@ public class Budget {
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	public int getAccountID() {
+		return accountID;
+	}
+	public void setAccountID(int accountID) {
+		this.accountID = accountID;
 	}
 }
