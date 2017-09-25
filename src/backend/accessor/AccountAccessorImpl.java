@@ -1,4 +1,4 @@
-package backend;
+package backend.accessor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,19 +7,20 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import container.Account;
-import exception.DuplicateEmailException;
-import exception.DuplicateUsernameException;
-import exception.InvalidEmailException;
-import intermediate.AccountCommunicator;
+import backend.container.Account;
+import backend.database.FrugalDBConnection;
+import backend.exception.DuplicateEmailException;
+import backend.exception.DuplicateUsernameException;
+import backend.exception.InvalidAccountException;
+import backend.exception.InvalidEmailException;
 
-public class AccountImpl implements AccountCommunicator {
+public class AccountAccessorImpl implements AccountAccessor {
 
 	private static final int MAX_STRING = 45;
 
 	Connection dbConnection;
 
-	public AccountImpl() {
+	public AccountAccessorImpl() {
 		dbConnection = FrugalDBConnection.getConnection();
 	}
 
@@ -38,7 +39,7 @@ public class AccountImpl implements AccountCommunicator {
 
 		// If email is not valid, throw error
 		if (!isValidEmail(email))
-			throw new InvalidEmailException(email + " is invalid");
+			throw new InvalidEmailException(email + " is syntactically invalid");
 
 		// Find if username or email already exists
 		String sqlQuery = "SELECT username, email "
@@ -48,7 +49,6 @@ public class AccountImpl implements AccountCommunicator {
 		statement.setString(1, username);
 		statement.setString(2, email);
 		ResultSet result = statement.executeQuery();
-		statement.close();
 
 		// If result finds a match
 		// Throw duplicate error
@@ -60,10 +60,12 @@ public class AccountImpl implements AccountCommunicator {
 				throw new DuplicateUsernameException(username + " already exists");
 			}
 			else {
+				statement.close();
 				result.close();
 				throw new DuplicateEmailException(email + " already exists");
 			}
 		}
+		statement.close();
 		result.close();
 
 		// No errors, insert into DB
@@ -80,17 +82,17 @@ public class AccountImpl implements AccountCommunicator {
 	}
 
 	@Override
-	public void delete(Account a) throws SQLException {
+	public void delete(Account a) throws SQLException, InvalidAccountException {
 		// If account does not exists, do nothing
 		if (!isValidAccount(a))
-			return;
+			throw new InvalidAccountException();
 
 		// Receive account variable
 		int id = a.getID();
 
 		// Prepare SQL
 		String sqlQuery = "DELETE FROM account "
-				+ "WHERE id like ?";
+				+ "WHERE id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setInt(1, id);
 
@@ -101,6 +103,10 @@ public class AccountImpl implements AccountCommunicator {
 
 	@Override
 	public Account getAccount(String username) throws SQLException {
+		// If username is too long, invalid username return null
+		if (!isValidLength(username))
+			return null;
+		
 		// Prepare required account variables
 		String password;
 		String email;
@@ -115,7 +121,6 @@ public class AccountImpl implements AccountCommunicator {
 
 		// Execute SQL query
 		ResultSet result = statement.executeQuery();
-		statement.close();
 
 		// If result found, set variables
 		// Otherwise, return null
@@ -124,9 +129,11 @@ public class AccountImpl implements AccountCommunicator {
 			username = result.getString("username");
 			password = result.getString("password");
 			email = result.getString("email");
+			statement.close();
 			result.close();
 		}
 		else {
+			statement.close();
 			result.close();
 			return null;
 		}
@@ -149,7 +156,7 @@ public class AccountImpl implements AccountCommunicator {
 		// Prepare SQL line
 		String sqlQuery = "UPDATE account "
 				+ "SET password = ? "
-				+ "WHERE id LIKE ?";
+				+ "WHERE id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setString(1, newPassword);
 		statement.setInt(2, a.getID());
@@ -172,7 +179,7 @@ public class AccountImpl implements AccountCommunicator {
 		// Prepare SQL line
 		String sqlQuery = "UPDATE account "
 				+ "SET email = ? "
-				+ "WHERE id LIKE ?";
+				+ "WHERE id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setString(1, newEmail);
 		statement.setInt(2, a.getID());
@@ -181,25 +188,14 @@ public class AccountImpl implements AccountCommunicator {
 		statement.executeUpdate();
 		statement.close();
 	}
-
+	
 	@Override
-	public boolean login(Account a) {
-		// TODO Auto-generated method stub
-		return false;
+	public void close() throws SQLException {
+		dbConnection.close();
 	}
 
 	@Override
-	public void logout(Account a) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Checks if the given account matches all variables in the DB
-	 * @param a Account to check
-	 * @return True if all paramaters match, false otherwise
-	 */
-	private boolean isValidAccount(Account a) {
+	public boolean isValidAccount(Account a) {
 		Account otherAccount;
 		try {
 			otherAccount = getAccount(a.getUsername());
@@ -217,9 +213,12 @@ public class AccountImpl implements AccountCommunicator {
 	 * @return true if email is valid, false otherwise
 	 */
 	private boolean isValidEmail(String email) {
-		Pattern regex = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
-		Matcher match = regex.matcher(email);
-		return match.matches();
+		if (!isValidLength(email))
+			return false;
+		
+		Pattern p = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(email);
+		return m.matches();
 	}
 
 	/**

@@ -1,13 +1,14 @@
-package intermediate;
+package backend.accessor;
 
 import java.sql.SQLException;
 
-import container.Account;
-import exception.DuplicateEmailException;
-import exception.DuplicateUsernameException;
-import exception.InvalidEmailException;
+import backend.container.Account;
+import backend.exception.DuplicateEmailException;
+import backend.exception.DuplicateUsernameException;
+import backend.exception.InvalidAccountException;
+import backend.exception.InvalidEmailException;
 
-public interface AccountCommunicator {
+public interface AccountAccessor extends AutoCloseable {
 	
 	/**
 	 * Given valid account details, create a new account and place it into the DB
@@ -21,22 +22,24 @@ public interface AccountCommunicator {
 	public void create(String username, String password, String email) throws SQLException, IllegalArgumentException, InvalidEmailException, DuplicateUsernameException, DuplicateEmailException;
 	
 	/**
-	 * Delete an account from the DB, does nothing if account doesn't exist
+	 * Delete an account from the DB
 	 * @param a Account to be deleted
 	 * @throws SQLException If a database error occurs
+	 * @throws InvalidAccountException If the account does not exists
 	 */
-	public void delete(Account a) throws SQLException;
+	public void delete(Account a) throws SQLException, InvalidAccountException;
 	
 	/**
 	 * Receive an account from the DB, given a username
 	 * @param name
-	 * @return
-	 * @throws SQLException
+	 * @return The account requested
+	 * @throws SQLException f a database error occurs
 	 */
 	public Account getAccount(String username) throws SQLException;
 	
 	/**
 	 * Update the password for the account
+	 * Does not update account passed
 	 * @param a Account to update
 	 * @param newPassword New password for account
 	 * @throws SQLException If a database error occurs
@@ -46,6 +49,7 @@ public interface AccountCommunicator {
 	
 	/**
 	 * Update the email for the account
+	 * Does not update account passed
 	 * @param a Account to update
 	 * @param newEmail New email for account
 	 * @throws SQLException If a database error occurs
@@ -53,10 +57,10 @@ public interface AccountCommunicator {
 	 */
 	public void updateEmail(Account a, String newEmail) throws SQLException, InvalidEmailException;
 	
-	// To discuss with frontend
-	// - Should we be able to update username?
-	// - What does logout do?
-	// - What does login do? (talking about updating iterations of transactions...)
-	public boolean login(Account a);
-	public void logout(Account a);
+	/**
+	 * Checks if the given account matches all variables in the DB
+	 * @param a Account to check
+	 * @return True if all paramaters match, false otherwise
+	 */
+	public boolean isValidAccount(Account a);	
 }
