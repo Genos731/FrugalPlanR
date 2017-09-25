@@ -143,8 +143,9 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 
 	private boolean isValidBudget(Budget b) throws SQLException {
 		String sqlQuery = "SELECT * FROM budget "
-				+ "WHERE id like ?, goalValue like ?, "
-				+ "startDate like ?, endDate like ?, " + "account_id like ?";
+				+ "WHERE id like ? AND goalValue like ? AND "
+				+ "startDate like ? AND endDate like ? AND "
+				+ "account_id like ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setInt(1, b.getID());
 		statement.setDouble(2, b.getGoalValue());
@@ -163,4 +164,15 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 		return false;
 	}
 
+
+	/**
+	 * Return true if s is smaller than MAX_STRING
+	 * @param s String to check
+	 * @return true if s is smaller than MAX_STRING
+	 */
+	private boolean isValidLength(String s) {
+		if (s.length() > MAX_STRING)
+			return false;
+		return true;
+	}
 }

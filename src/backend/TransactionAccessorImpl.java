@@ -110,6 +110,11 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 			return null;
 		return transactionList;
 	}
+	
+	@Override
+	public void close() throws SQLException {
+		dbConnection.close();
+	}
 
 	/**
 	 * Return true if s is smaller than MAX_STRING

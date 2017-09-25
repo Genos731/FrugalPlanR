@@ -39,4 +39,10 @@ public interface TransactionAccessor {
 	 * @throws SQLException If a database error occurs
 	 */
 	public List<Transaction> getTransaction(Account a) throws SQLException;
+	
+	/**
+	 * Closes the database connection
+	 * @throws SQLException If a database error occurs
+	 */
+	public void close() throws SQLException;
 }
