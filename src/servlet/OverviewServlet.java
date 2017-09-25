@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import backend.AccountImpl;
+import backend.AccountAccessorImpl;
 import container.Account;
-import intermediate.AccountCommunicator;
+import intermediate.AccountAccessor;
 
 /**
  * Servlet implementation class OverviewServlet

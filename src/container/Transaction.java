@@ -1,28 +1,40 @@
 package container;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class Transaction {	
-	
+public class Transaction {
+	private int id;
 	private double value;
-	private String item;
+	private String name;
 	private Date date;
+	private int accountID;
+	
+	public Transaction(int id, double value, String name, Date date, int accountID) {
+		this.id = id;
+		this.value = value;
+		this.name = name;
+		this.date = date;
+		this.accountID = accountID;
+	}
+
+	public int getId() {
+		return id;
+	}
+
 	public double getValue() {
 		return value;
 	}
-	public void setValue(double value) {
-		this.value = value;
+
+	public String getName() {
+		return name;
 	}
-	public String getItem() {
-		return item;
-	}
-	public void setItem(String item) {
-		this.item = item;
-	}
+
 	public Date getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+
+	public int getAccountID() {
+		return accountID;
 	}
+	
 }
