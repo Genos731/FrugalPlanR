@@ -17,7 +17,7 @@ public interface TransactionAccessor extends AutoCloseable {
 	
 	/**
 	 * Given a valid account and transaction details, create a new transaction and place it into the DB
-	 * @param a Account associated with transaction
+	 * @param an Account associated with transaction
 	 * @param value Value of transaction
 	 * @param name Name of transaction
 	 * @param date  Date of transaction

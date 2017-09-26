@@ -65,7 +65,9 @@
             background: #9CCEFF;
         }
 
-        input[type=submit], .btn, .close {
+        input[type=submit],
+        .btn,
+        .close {
             cursor: pointer;
         }
 
@@ -109,7 +111,8 @@
             margin: 0 auto;
         }
 
-        #transaction-datepicker tfoot {
+        #transaction-datepicker tfoot,
+        #transaction-date {
             display: none;
         }
 
@@ -201,13 +204,13 @@
     <nav class="navbar fixed-top navbar-light">
         <a href="#"><img class="logo" src="https://i.imgur.com/XTgvOoN.png" alt="FrugalPlanr" /></a>
         <span align="right" class="row">
-            <form action="EditProfile">
-                <input type="submit" class="btn btn-light" value="Edit Profile">
-            </form>
-            <form action="Logout">
-                <input type="submit" class="btn btn-danger" value="Logout">
-            </form>
-        </span>
+	        <form action="EditProfile">
+	            <input type="submit" class="btn btn-light" value="Edit Profile">
+	        </form>
+	        <form action="Logout">
+	            <input type="submit" class="btn btn-danger" value="Logout">
+	        </form>
+    </span>
     </nav>
 
     <div class="container-fluid">
@@ -216,7 +219,7 @@
             <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">Overview</span></a>
+                        <a class="nav-link active" href="/">Overview</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Expenses">Expenses</a>
@@ -232,93 +235,90 @@
                 <!-- TRIGGERS ADD TRANSACTION MODAL -->
                 <ul class="nav nav-pills flex-column add-transaction">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTransaction" id="add-transaction">
-                        Add transaction
-                    </button>
+                    Add transaction
+                </button>
                 </ul>
             </nav>
 
             <!-- ADD TRANSACTION MODAL -->
             <div class="modal fade" id="addTransaction" tabindex="-1" role="dialog" aria-labelledby="addTransactionLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addTransactionLabel">Add transaction</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn transaction-type btn-secondary active">
-                                    <input type="radio" name="options" id="expense" autocomplete="off" checked> Expense
-                                </label>
-                                <label class="btn transaction-type btn-secondary">
-                                    <input type="radio" name="options" id="income" autocomplete="off"> Income
-                                </label>
+                    <form id="AddTransaction" action="AddTransaction" method="post">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addTransactionLabel">Add transaction</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                             </div>
-                        </div>
-                        <!--Amount (currency) + for positive/income, - for negative/expense
-                        Category
-                        Date
-                        More options
-                        Description
-                        Location
-                        Repeating
-                        Reminder-->
-                        <div class="container">
-                            <form>
+                            <div class="alert alert-danger" id="add-transaction-error" role="alert">
+                            </div>
+                            <div class="modal-body text-center">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn transaction-type btn-secondary active">
+                                    <input type="radio" name="type" id="expense" value="Expense" autocomplete="off" checked> Expense
+                                </label>
+                                    <label class="btn transaction-type btn-secondary">
+                                    <input type="radio" name="type" id="income" value="Income" autocomplete="off"> Income
+                                </label>
+                                </div>
+                            </div>
+                            <!--Amount (currency) + for positive/income, - for negative/expense
+                                Category
+                                Date
+                                More options
+                                Description
+                                Location
+                                Repeating
+                                Reminder-->
+                            <div class="container">
                                 <div class="form-group row">
                                     <label for="Amount" class="col-sm-3 col-form-label">Amount</label>
                                     <div class="col-sm-9">
                                         <div class="input-group">
                                             <span class="input-group-addon">$</span>
-                                            <input type="number" min="0.00" step="0.01" class="form-control" id="Amount" placeholder="0.00">
+                                            <input type="number" name="amount" min="0.00" step="0.01" class="form-control" id="Amount" placeholder="0.00">
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="container">
-                            <form>
+                            </div>
+                            <div class="container">
                                 <div class="form-group row">
                                     <label for="Date" class="col-sm-3 col-form-label">Date</label>
                                     <div class="col-sm-9">
                                         <div id="transaction-datepicker"></div>
+                                        <input id="transaction-date" type="date" name="date">
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="container text-center">
-                            <a class="btn btn-secondary more-options" data-toggle="collapse" href="#more-options" aria-expanded="false" aria-controls="more-options">
+                            </div>
+                            <div class="container text-center">
+                                <a class="btn btn-secondary more-options" data-toggle="collapse" href="#more-options" aria-expanded="false" aria-controls="more-options">
                                 Show more options
                             </a>
-                        </div>
-                        <div class="collapse" id="more-options">
-                            <div class="container">
-                                <form>
+                            </div>
+                            <div class="collapse" id="more-options">
+                                <div class="container">
                                     <div class="form-group row">
                                         <label for="Description" class="col-sm-3 col-form-label">Description</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="Description" placeholder="Optional">
+                                            <input type="text" name="description" class="form-control" id="Description" placeholder="Optional">
                                         </div>
                                     </div>
-                                </form>
-                                <form>
                                     <div class="form-group row">
                                         <label for="Location" class="col-sm-3 col-form-label">Location</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="Location" placeholder="Optional">
+                                            <input type="text" name="location" class="form-control" id="Location" placeholder="Optional">
                                         </div>
                                     </div>
-                                </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary" value="Add transaction">
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Add transaction</button>
-                        </div>
-                    </div>
                 </div>
+                </form>
             </div>
 
             <!-- MAIN -->
@@ -326,9 +326,8 @@
                 <!-- EXPLANATION -->
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button> Look at me, I'm an explanation of what this page does and what you can
-                    do on it.
+                    <span aria-hidden="true">&times;</span>
+                </button> Look at me, I'm an explanation of what this page does and what you can do on it.
                 </div>
 
                 <!-- DATE PICKER -->
@@ -440,6 +439,25 @@
             setTimeout(function () {
                 $("#transaction-datepicker .today").trigger('click');
             }, 10);
+        });
+
+        $('#add-transaction-error').hide();
+
+        $('#AddTransaction').submit(function (e) {
+            // set date
+            var date = $("#transaction-datepicker").find(".active").data("date");
+            $('#transaction-date').val(date);
+            console.log($('#transaction-date').val());
+
+            // form validation
+            var error = "";
+            $('#add-transaction-error').hide();
+            if (!$('#Amount').val()) error += "Please enter an amount.";
+            if (error.length > 0) {
+                $('#add-transaction-error').text(error);
+                $('#add-transaction-error').show();
+                return false;
+            }
         });
     </script>
 </body>

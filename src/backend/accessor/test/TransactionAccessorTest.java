@@ -33,7 +33,7 @@ public class TransactionAccessorTest {
 			e.printStackTrace();
 		}
 
-		// Create budget accessor
+		// Create transaction accessor
 		TransactionAccessor accessor = new TransactionAccessorImpl();
 
 		// Test create
