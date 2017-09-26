@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
         crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.min.css">
     <title>Overview</title>
     <style>
         .navbar {
@@ -64,17 +65,12 @@
             background: #9CCEFF;
         }
 
-        input[type=submit] {
-            cursor: pointer;
-        }
-
-        .btn {
+        input[type=submit], .btn, .close {
             cursor: pointer;
         }
 
         .alert-dismissible .close {
             top: -1rem;
-            cursor: pointer;
         }
 
         .summary {
@@ -88,6 +84,93 @@
 
         .add-transaction .btn {
             font-size: 16pt;
+        }
+
+        .transaction-type {
+            background-color: #9CCEFF;
+            border-color: #9CCEFF;
+        }
+
+        .transaction-type.active {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .transaction-type:hover:not(.active) {
+            background-color: #4ea3ff;
+            border-color: #4ea3ff;
+        }
+
+        .form-control#Amount {
+            line-height: 1.5
+        }
+
+        #transaction-datepicker .datepicker {
+            margin: 0 auto;
+        }
+
+        #transaction-datepicker tfoot {
+            display: none;
+        }
+
+        .datepicker table tr td.active.active,
+        .datepicker table tr td.active.highlighted.active,
+        .datepicker table tr td.active.highlighted:active,
+        .datepicker table tr td.active:active,
+        .datepicker table tr td span.active.active,
+        .datepicker table tr td span.active.disabled.active,
+        .datepicker table tr td span.active.disabled:active,
+        .datepicker table tr td span.active.disabled.active:hover,
+        .datepicker table tr td span.active.disabled:hover:active,
+        .datepicker table tr td span.active:active,
+        .datepicker table tr td span.active.active:hover,
+        .datepicker table tr td span.active:hover:active {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .datepicker table tr td.active.active.focus,
+        .datepicker table tr td.active.active:focus,
+        .datepicker table tr td.active.active:hover,
+        .datepicker table tr td.active.highlighted.active.focus,
+        .datepicker table tr td.active.highlighted.active:focus,
+        .datepicker table tr td.active.highlighted.active:hover,
+        .datepicker table tr td.active.highlighted.focus:active,
+        .datepicker table tr td.active.highlighted:active:focus,
+        .datepicker table tr td.active.highlighted:active:hover,
+        .datepicker table tr td.active.focus:active,
+        .datepicker table tr td.active:active:focus,
+        .datepicker table tr td.active:active:hover,
+        .datepicker table tr td span.active.active.focus,
+        .datepicker table tr td span.active.active:focus,
+        .datepicker table tr td span.active.active:hover,
+        .datepicker table tr td span.active.disabled.active.focus,
+        .datepicker table tr td span.active.disabled.active:focus,
+        .datepicker table tr td span.active.disabled.active:hover,
+        .datepicker table tr td span.active.disabled.focus:active,
+        .datepicker table tr td span.active.disabled:active:focus,
+        .datepicker table tr td span.active.disabled:active:hover,
+        .datepicker table tr td span.active.disabled.active.focus:hover,
+        .datepicker table tr td span.active.disabled.active:hover:focus,
+        .datepicker table tr td span.active.disabled.active:hover:hover,
+        .datepicker table tr td span.active.disabled.focus:hover:active,
+        .datepicker table tr td span.active.disabled:hover:active:focus,
+        .datepicker table tr td span.active.disabled:hover:active:hover,
+        .datepicker table tr td span.active.focus:active,
+        .datepicker table tr td span.active:active:focus,
+        .datepicker table tr td span.active:active:hover,
+        .datepicker table tr td span.active.active.focus:hover,
+        .datepicker table tr td span.active.active:hover:focus,
+        .datepicker table tr td span.active.active:hover:hover,
+        .datepicker table tr td span.active.focus:hover:active,
+        .datepicker table tr td span.active:hover:active:focus,
+        .datepicker table tr td span.active:hover:active:hover {
+            background-color: #4ea3ff;
+            border-color: #4ea3ff;
+        }
+
+        .more-options {
+            margin-bottom: 15px;
         }
 
         .date-picker {
@@ -148,7 +231,7 @@
 
                 <!-- TRIGGERS ADD TRANSACTION MODAL -->
                 <ul class="nav nav-pills flex-column add-transaction">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTransaction">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTransaction" id="add-transaction">
                         Add transaction
                     </button>
                 </ul>
@@ -159,17 +242,80 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="addTransactionLabel">Modal title</h5>
+                            <h5 class="modal-title" id="addTransactionLabel">Add transaction</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="modal-body">
-                            ...
+                        <div class="modal-body text-center">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn transaction-type btn-secondary active">
+                                    <input type="radio" name="options" id="expense" autocomplete="off" checked> Expense
+                                </label>
+                                <label class="btn transaction-type btn-secondary">
+                                    <input type="radio" name="options" id="income" autocomplete="off"> Income
+                                </label>
+                            </div>
+                        </div>
+                        <!--Amount (currency) + for positive/income, - for negative/expense
+                        Category
+                        Date
+                        More options
+                        Description
+                        Location
+                        Repeating
+                        Reminder-->
+                        <div class="container">
+                            <form>
+                                <div class="form-group row">
+                                    <label for="Amount" class="col-sm-3 col-form-label">Amount</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">$</span>
+                                            <input type="number" min="0.00" step="0.01" class="form-control" id="Amount" placeholder="0.00">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="container">
+                            <form>
+                                <div class="form-group row">
+                                    <label for="Date" class="col-sm-3 col-form-label">Date</label>
+                                    <div class="col-sm-9">
+                                        <div id="transaction-datepicker"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="container text-center">
+                            <a class="btn btn-secondary more-options" data-toggle="collapse" href="#more-options" aria-expanded="false" aria-controls="more-options">
+                                Show more options
+                            </a>
+                        </div>
+                        <div class="collapse" id="more-options">
+                            <div class="container">
+                                <form>
+                                    <div class="form-group row">
+                                        <label for="Description" class="col-sm-3 col-form-label">Description</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="Description" placeholder="Optional">
+                                        </div>
+                                    </div>
+                                </form>
+                                <form>
+                                    <div class="form-group row">
+                                        <label for="Location" class="col-sm-3 col-form-label">Location</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="Location" placeholder="Optional">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-primary">Add transaction</button>
                         </div>
                     </div>
                 </div>
@@ -188,9 +334,8 @@
                 <!-- DATE PICKER -->
                 <div class="card date-picker text-center">
                     <div>
-                        <a class="text-secondary" href="#">&lt;</a> <a class="text-secondary" href="#">This month</a>
-                        <a
-                            class="text-secondary" href="#">&gt;</a>
+                        <a class="text-secondary" href="#">&lt;</a> <a class="text-secondary" href="#">All time</a>
+                        <a class="text-secondary" href="#">&gt;</a>
                     </div>
                 </div>
 
@@ -281,6 +426,22 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
         crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        $('#transaction-datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            weekStart: 1,
+            maxViewMode: 2,
+            todayBtn: "linked",
+            todayHighlight: true
+        });
+
+        $("#add-transaction").click(function () {
+            setTimeout(function () {
+                $("#transaction-datepicker .today").trigger('click');
+            }, 10);
+        });
+    </script>
 </body>
 
 </html>
