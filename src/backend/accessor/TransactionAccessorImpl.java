@@ -51,6 +51,11 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 		statement.executeUpdate();
 		statement.close();
 	}
+	
+	@Override
+	public void create(Account a, boolean type, double value, Date date, String description, String location, String repeating) throws SQLException, InvalidAccountException {
+		// do stuff
+	}
 
 	@Override
 	public void delete(Transaction t) throws SQLException, InvalidTransactionException {

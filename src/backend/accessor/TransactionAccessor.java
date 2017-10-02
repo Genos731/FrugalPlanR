@@ -13,7 +13,6 @@ import backend.exception.InvalidAccountException;
 public interface TransactionAccessor extends AutoCloseable {
 	
 	// Should we be able to update transactions?
-	// Transaction name or description?
 	
 	/**
 	 * Given a valid account and transaction details, create a new transaction and place it into the DB
@@ -25,6 +24,20 @@ public interface TransactionAccessor extends AutoCloseable {
 	 * @throws InvalidAccountException If the account given does not exists
 	 */
 	public void create(Account a, double value, String name, Date date) throws SQLException, InvalidAccountException;
+	
+	/**
+	 * Given a valid account and transaction details, create a new transaction and place it into the DB
+	 * @param an Account associated with transaction
+	 * @param type Type of transaction where false is an expense and true is income
+	 * @param amount Amount of transaction
+	 * @param date  Date of transaction
+	 * @param description Description of transaction
+	 * @param location Location of transaction
+	 * @param repeating Whether a transaction repeats or not (possible values are never, daily, weekly, fortnightly, monthly)
+	 * @throws SQLException If a database error occurs
+	 * @throws InvalidAccountException If the account given does not exists
+	 */
+	public void create(Account a, boolean type, double value, Date date, String description, String location, String repeating) throws SQLException, InvalidAccountException;
 	
 	/**
 	 * Delete a transaction from the database
