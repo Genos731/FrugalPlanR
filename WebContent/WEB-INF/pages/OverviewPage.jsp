@@ -103,8 +103,12 @@
             border-color: #4ea3ff;
         }
 
-        .form-control#Amount {
+        .form-control {
             line-height: 1.5
+        }
+
+        .form-control#Repeating {
+            height: 45px;
         }
 
         #transaction-datepicker .datepicker {
@@ -256,19 +260,14 @@
                             <div class="modal-body text-center">
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn transaction-type btn-secondary active">
-                                    <input type="radio" name="type" id="expense" value="Expense" autocomplete="off" checked> Expense
+                                    <input type="radio" name="type" id="expense" value="false" autocomplete="off" checked> Expense
                                 </label>
                                     <label class="btn transaction-type btn-secondary">
-                                    <input type="radio" name="type" id="income" value="Income" autocomplete="off"> Income
+                                    <input type="radio" name="type" id="income" value="true" autocomplete="off"> Income
                                 </label>
                                 </div>
                             </div>
-                            <!--Amount (currency) + for positive/income, - for negative/expense
-                                Category
-                                Date
-                                More options
-                                Description
-                                Location
+                            <!--Category
                                 Repeating
                                 Reminder-->
                             <div class="container">
@@ -308,6 +307,18 @@
                                         <label for="Location" class="col-sm-3 col-form-label">Location</label>
                                         <div class="col-sm-9">
                                             <input type="text" name="location" class="form-control" id="Location" placeholder="Optional">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="Repeating" class="col-sm-3 col-form-label">Repeating</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="repeating" id="Repeating">
+                                                <option value="never" selected="selected">Never</option>
+                                                <option value="daily">Daily</option>
+                                                <option value="weekly">Weekly</option>
+                                                <option value="fortnightly">Fortnightly</option>
+                                                <option value="monthly">Monthly</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

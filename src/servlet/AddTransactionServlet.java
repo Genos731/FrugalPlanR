@@ -44,11 +44,12 @@ public class AddTransactionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		// Get parameters
-		String type = request.getParameter("type");
+		boolean type = Boolean.valueOf(request.getParameter("type"));
 		Double amount = new Double(request.getParameter("amount"));
 		Date date = new Date(Long.parseLong(request.getParameter("date")));
 		String description = request.getParameter("description");
 		String location = request.getParameter("location");
+		String repeating = request.getParameter("repeating");
 		
 		// Get an account
 		AccountAccessor accountAccessor = new AccountAccessorImpl();
@@ -71,7 +72,8 @@ public class AddTransactionServlet extends HttpServlet {
 
 		// Create transaction
 		try {
-			accessor.create(account, amount, description, date);
+			accessor.create(account, amount, description, date); // remove
+			// accessor.create(account, type, amount, date, description, location, repeating);
 		} catch (InvalidAccountException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
