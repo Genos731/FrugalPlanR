@@ -290,7 +290,7 @@
                                             <option value="default" selected="selected">Default</option>
                                             <option value="new">Create new category...</option>
                                         </select>
-                                        <input class="form-control new-category" id="new-category" name="new" type="text" placeholder="New category name">
+                                        <input class="form-control new-category" id="new-category" name="new" type="text" placeholder="New category name" maxlength="45">
                                     </div>
                                 </div>
                             </div>
@@ -313,13 +313,13 @@
                                     <div class="form-group row">
                                         <label for="Description" class="col-sm-3 col-form-label">Description</label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="description" class="form-control" id="Description" placeholder="Optional">
+                                            <input type="text" name="description" class="form-control" id="Description" placeholder="Optional" maxlength="255">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="Location" class="col-sm-3 col-form-label">Location</label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="location" class="form-control" id="Location" placeholder="Optional">
+                                            <input type="text" name="location" class="form-control" id="Location" placeholder="Optional" maxlength="45">
                                         </div>
                                     </div>
                                     <div class="form-group row">
