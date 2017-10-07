@@ -1,8 +1,9 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,7 @@ import backend.accessor.AccountAccessorImpl;
 import backend.accessor.TransactionAccessor;
 import backend.accessor.TransactionAccessorImpl;
 import backend.container.Account;
+import backend.container.Repeating;
 import backend.exception.InvalidAccountException;
 
 /**
@@ -46,10 +48,13 @@ public class AddTransactionServlet extends HttpServlet {
 		// Get parameters
 		boolean type = Boolean.valueOf(request.getParameter("type"));
 		Double amount = new Double(request.getParameter("amount"));
-		Date date = new Date(Long.parseLong(request.getParameter("date")));
+		String category = request.getParameter("category");
+		if (category.equals("new")) category = request.getParameter("new");
+		Calendar date = new GregorianCalendar();
+		date.setTimeInMillis(Long.parseLong(request.getParameter("date")));
 		String description = request.getParameter("description");
 		String location = request.getParameter("location");
-		String repeating = request.getParameter("repeating");
+		Repeating repeating = Repeating.toRepeating(request.getParameter("repeating"));
 		
 		// Get an account
 		AccountAccessor accountAccessor = new AccountAccessorImpl();
@@ -72,12 +77,22 @@ public class AddTransactionServlet extends HttpServlet {
 
 		// Create transaction
 		try {
-			accessor.create(account, amount, description, date); // remove
-			// accessor.create(account, type, amount, date, description, location, repeating);
+			accessor.create(account, type, amount, date, description, location, repeating, category);
 		} catch (InvalidAccountException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// Close transaction accessor
+		try {
+			accessor.close();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
