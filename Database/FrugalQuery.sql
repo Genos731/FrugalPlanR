@@ -1,3 +1,16 @@
+INSERT INTO repeating (type)
+VALUES ("DAILY");
+
+INSERT INTO repeating (type)
+VALUES ("WEEKLY");
+
+INSERT INTO repeating (type)
+VALUES ("FORTNIGHTLY");
+
+INSERT INTO repeating (type)
+VALUES ("MONTHLY");
+
+
 INSERT INTO account (username, password, email)
 VALUES ("Antoine", "Antoine", "Antoine@email.com");
 
@@ -16,11 +29,21 @@ VALUES (69, "2017-04-01", "2017-06-01", 2);
 INSERT INTO budget (goalValue, startDate, endDate, account_id)
 VALUES (2657, "2017-06-26", "2017-12-16", 2);
 
-INSERT into transaction (value, name, date, account_id)
-VALUES (102, "Penis", "2017-01-06", 3);
+INSERT INTO category (name, account_id)
+VALUES ("Porn", 1);
 
-INSERT into transaction (value, name, date, account_id)
-VALUES (12.56, "4chan membership", "2017-02-12", 1);
+INSERT INTO category (name, account_id)
+VALUES ("Hentai", 1);
 
-INSERT into transaction (value, name, date, account_id)
-VALUES (1087.44, "Stripper", "2017-03-09", 1);
+INSERT INTO category (name, account_id)
+VALUES ("JoJo", 2);
+
+
+INSERT INTO transaction (isIncome, value, date, description, location, category_id, account_id)
+VALUES (true, 69, "2017-01-06", "asd", "Sydney", 1, 1);
+
+INSERT INTO transaction (isIncome, value, date, description, location, repeating_id, category_id, account_id)
+VALUES (0, 329, "2015-03-22", "qwe", "Sydney", 1, 1, 1);
+
+INSERT INTO transaction (isIncome, value, date, description, location, repeating_id, category_id, account_id)
+VALUES (1, 69, "2016-02-02", "asdas", "Melbourne", 1, 2, 2);

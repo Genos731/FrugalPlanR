@@ -15,9 +15,6 @@ import backend.exception.InvalidAccountException;
 import backend.exception.InvalidEmailException;
 
 public class AccountAccessorImpl implements AccountAccessor {
-
-	private static final int MAX_STRING = 45;
-
 	Connection dbConnection;
 
 	public AccountAccessorImpl() {
@@ -26,20 +23,9 @@ public class AccountAccessorImpl implements AccountAccessor {
 
 	@Override
 	public void create(String username, String password, String email) throws SQLException, IllegalArgumentException, InvalidEmailException, DuplicateUsernameException, DuplicateEmailException {
-		// Checks if variables are correct length
-		if (!isValidLength(username)) {
-			throw new IllegalArgumentException(username + " length is too long (" + username.length() + "), should be less than " + MAX_STRING);
-		}
-		else if (!isValidLength(password)) {
-			throw new IllegalArgumentException(password + " length is too long (" + password.length() + "), should be less than " + MAX_STRING);
-		}
-		else if (!isValidLength(email)) {
-			throw new IllegalArgumentException(email + " length is too long (" + email.length() + "), should be less than " + MAX_STRING);
-		}
-
-		// If email is not valid, throw error
-		if (!isValidEmail(email))
-			throw new InvalidEmailException(email + " is syntactically invalid");
+		// Test if variables are syntactically correct
+		@SuppressWarnings("unused")
+		Account tempA = new Account(0, username, password, email);
 
 		// Find if username or email already exists
 		String sqlQuery = "SELECT username, email "
@@ -88,7 +74,7 @@ public class AccountAccessorImpl implements AccountAccessor {
 			throw new InvalidAccountException();
 
 		// Receive account variable
-		int id = a.getID();
+		int id = a.getId();
 
 		// Prepare SQL
 		String sqlQuery = "DELETE FROM account "
@@ -104,7 +90,7 @@ public class AccountAccessorImpl implements AccountAccessor {
 	@Override
 	public Account getAccount(String username) throws SQLException {
 		// If username is too long, invalid username return null
-		if (!isValidLength(username))
+		if (username.length() > Account.getMaxString())
 			return null;
 		
 		// Prepare required account variables
@@ -150,8 +136,8 @@ public class AccountAccessorImpl implements AccountAccessor {
 			return;
 		
 		// If password is too long, throw error
-		if (!isValidLength(newPassword))
-			throw new IllegalArgumentException(newPassword + " length is too long (" + newPassword.length() + "), should be less than " + MAX_STRING);
+		if (newPassword.length() > Account.getMaxString())
+			throw new IllegalArgumentException(newPassword + " length is too long (" + newPassword.length() + "), should be less than " + Account.getMaxString());
 
 		// Prepare SQL line
 		String sqlQuery = "UPDATE account "
@@ -159,7 +145,7 @@ public class AccountAccessorImpl implements AccountAccessor {
 				+ "WHERE id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setString(1, newPassword);
-		statement.setInt(2, a.getID());
+		statement.setInt(2, a.getId());
 
 		// Execute, throws error if failed
 		statement.executeUpdate();
@@ -173,7 +159,7 @@ public class AccountAccessorImpl implements AccountAccessor {
 			return;
 		
 		// Throw if email is syntactically invalid
-		if (!isValidEmail(newEmail))
+		if (!Account.isValidEmail(newEmail))
 			throw new InvalidEmailException(newEmail + " is invalid");
 
 		// Prepare SQL line
@@ -182,7 +168,7 @@ public class AccountAccessorImpl implements AccountAccessor {
 				+ "WHERE id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setString(1, newEmail);
-		statement.setInt(2, a.getID());
+		statement.setInt(2, a.getId());
 
 		// Execute, throws error if failed
 		statement.executeUpdate();
@@ -196,6 +182,9 @@ public class AccountAccessorImpl implements AccountAccessor {
 
 	@Override
 	public boolean isValidAccount(Account a) {
+		if (a == null)
+			return false;
+		
 		Account otherAccount;
 		try {
 			otherAccount = getAccount(a.getUsername());
@@ -205,31 +194,6 @@ public class AccountAccessorImpl implements AccountAccessor {
 		}
 
 		return a.equals(otherAccount);
-	}
-
-	/**
-	 * Check if email is a syntactically valid
-	 * @param email Email string
-	 * @return true if email is valid, false otherwise
-	 */
-	private boolean isValidEmail(String email) {
-		if (!isValidLength(email))
-			return false;
-		
-		Pattern p = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(email);
-		return m.matches();
-	}
-
-	/**
-	 * Return true if s is smaller than MAX_STRING
-	 * @param s String to check
-	 * @return true if s is smaller than MAX_STRING
-	 */
-	private boolean isValidLength(String s) {
-		if (s.length() > MAX_STRING)
-			return false;
-		return true;
 	}
 
 }

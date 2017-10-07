@@ -45,7 +45,7 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 		statement.setDouble(1, goalValue);
 		statement.setDate(2, startDate);
 		statement.setDate(3, endDate);
-		statement.setInt(4, a.getID());
+		statement.setInt(4, a.getId());
 
 		statement.executeUpdate();
 		statement.close();
@@ -120,7 +120,7 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 
 		String sqlQuery = "SELECT * FROM budget " + "WHERE account_id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
-		statement.setInt(1, a.getID());
+		statement.setInt(1, a.getId());
 		ResultSet result = statement.executeQuery();
 
 		while (result.next()) {
@@ -128,7 +128,7 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 			double goalValue = result.getDouble("goalValue");
 			Date startDate = result.getDate("startDate");
 			Date endDate = result.getDate("endDate");
-			Budget b = new Budget(id, goalValue, startDate, endDate, a.getID());
+			Budget b = new Budget(id, goalValue, startDate, endDate, a.getId());
 			budgetList.add(b);
 		}
 
