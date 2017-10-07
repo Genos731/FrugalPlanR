@@ -46,8 +46,6 @@ public class AddTransactionServlet extends HttpServlet {
 		// Get parameters
 		boolean type = Boolean.valueOf(request.getParameter("type"));
 		Double amount = new Double(request.getParameter("amount"));
-		String category = request.getParameter("category");
-		if (category.equals("new")) category = request.getParameter("new");
 		Date date = new Date(Long.parseLong(request.getParameter("date")));
 		String description = request.getParameter("description");
 		String location = request.getParameter("location");
