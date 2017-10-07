@@ -107,8 +107,12 @@
             line-height: 1.5
         }
 
-        .form-control#Repeating {
+        .form-control#Repeating, .form-control#Category {
             height: 45px;
+        }
+
+        .new-category {
+            margin-top: 15px;
         }
 
         #transaction-datepicker .datepicker {
@@ -267,9 +271,6 @@
                                 </label>
                                 </div>
                             </div>
-                            <!--Category
-                                Repeating
-                                Reminder-->
                             <div class="container">
                                 <div class="form-group row">
                                     <label for="Amount" class="col-sm-3 col-form-label">Amount</label>
@@ -278,6 +279,18 @@
                                             <span class="input-group-addon">$</span>
                                             <input type="number" name="amount" min="0.00" step="0.01" class="form-control" id="Amount" placeholder="0.00">
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="form-group row">
+                                    <label for="Category" class="col-sm-3 col-form-label">Category</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="category" id="Category" onchange="changeCategory()">
+                                            <option value="default" selected="selected">Default</option>
+                                            <option value="new">Create new category...</option>
+                                        </select>
+                                        <input class="form-control new-category" id="new-category" name="new" type="text" placeholder="New category name">
                                     </div>
                                 </div>
                             </div>
@@ -328,8 +341,8 @@
                                 <input type="submit" class="btn btn-primary" value="Add transaction">
                             </div>
                         </div>
+                    </form>
                 </div>
-                </form>
             </div>
 
             <!-- MAIN -->
@@ -451,6 +464,16 @@
                 $("#transaction-datepicker .today").trigger('click');
             }, 10);
         });
+
+        $('#new-category').hide();
+
+        function changeCategory() {
+            if(document.getElementById('Category').value == "new") {
+                $('#new-category').show();
+            } else {
+                $('#new-category').hide();
+            }
+        }
 
         $('#add-transaction-error').hide();
 
