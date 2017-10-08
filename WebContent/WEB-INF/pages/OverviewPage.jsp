@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    
 <!DOCTYPE html>
 <html lang="en">
 
@@ -351,7 +354,7 @@
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button> Look at me, I'm an explanation of what this page does and what you can do on it.
+                </button> This is the Overview page where you can see all your transactions
                 </div>
 
                 <!-- DATE PICKER -->
@@ -366,10 +369,10 @@
                 <div class="card summary">
                     <div class="card-body">
                         <div class="row text-center">
-                            <span class="col text-primary">$600 Balance</span>
-                            <span class="col text-success">+ $1000 Income</span>
-                            <span class="col text-danger">- $400 Expenses</span>
-                            <span class="col text-warning">Budget goal or something</span>
+                            <span class="col text-primary">$<c:out value="${balance }" /> Balance</span>
+                            <span class="col text-success">+ $<c:out value="${totalIncome }" /> Income</span>
+                            <span class="col text-danger">- $<c:out value="${totalExpenses }" /> Expenses</span>
+                            <span class="col text-warning"></span>
                         </div>
                     </div>
                 </div>
@@ -381,59 +384,25 @@
                     <h2>Transactions</h2>
                     <div class="table-responsive">
                         <table class="table table-striped">
-                            <thead>
+                           <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Header</th>
-                                    <th>Header</th>
-                                    <th>Header</th>
-                                    <th>Header</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Value</th>
+                                    <th>Category</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1,001</td>
-                                    <td>Lorem</td>
-                                    <td>ipsum</td>
-                                    <td>dolor</td>
-                                    <td>sit</td>
-                                </tr>
-                                <tr>
-                                    <td>1,002</td>
-                                    <td>amet</td>
-                                    <td>consectetur</td>
-                                    <td>adipiscing</td>
-                                    <td>elit</td>
-                                </tr>
-                                <tr>
-                                    <td>1,003</td>
-                                    <td>Integer</td>
-                                    <td>nec</td>
-                                    <td>odio</td>
-                                    <td>Praesent</td>
-                                </tr>
-                                <tr>
-                                    <td>1,003</td>
-                                    <td>libero</td>
-                                    <td>Sed</td>
-                                    <td>cursus</td>
-                                    <td>ante</td>
-                                </tr>
-                                <tr>
-                                    <td>1,004</td>
-                                    <td>dapibus</td>
-                                    <td>diam</td>
-                                    <td>Sed</td>
-                                    <td>nisi</td>
-                                </tr>
-                                <tr>
-                                    <td>1,005</td>
-                                    <td>Nulla</td>
-                                    <td>quis</td>
-                                    <td>sem</td>
-                                    <td>at</td>
-                                </tr>
-                            </tbody>
+	                            <c:forEach var= "transaction" items="${transactions}" >
+	                            	<tr>
+	                            		<td> <c:out value="${transaction.getDate()}" /> </td>
+		                            	<td> <c:out value="${transaction.description}" /> </td>
+		                            	<td> $<c:out value="${transaction.getActualValue()}" /> </td>
+		                            	<td> <c:out value="${transaction.category}" /> </td>
+	                            	</tr>
+							 	</c:forEach>
+						 	</tbody>
                         </table>
                     </div>
                 </section>

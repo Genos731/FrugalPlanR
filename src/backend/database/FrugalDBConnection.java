@@ -8,7 +8,7 @@ public class FrugalDBConnection {
 	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
 	private static final String DB_CONNECTION = "jdbc:mysql://localhost:3306/frugaldb?autoReconnect=true&useSSL=false";
 	private static final String DB_USER = "root";
-	private static final String DB_PASSWORD = "root";
+	private static final String DB_PASSWORD = "1111";
 	
 	public static Connection getConnection() {
 		Connection dbConnection = null;

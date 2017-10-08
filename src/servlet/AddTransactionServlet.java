@@ -44,8 +44,7 @@ public class AddTransactionServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		// Get parameters
 		boolean type = Boolean.valueOf(request.getParameter("type"));
 		Double amount = new Double(request.getParameter("amount"));
@@ -59,8 +58,8 @@ public class AddTransactionServlet extends HttpServlet {
 		
 		// Get an account
 		AccountAccessor accountAccessor = new AccountAccessorImpl();
-		Account account = null;
 		String username = (String) request.getSession().getAttribute("userName");
+		Account account = null;
 		try {
 			account = accountAccessor.getAccount(username);
 		} catch (SQLException e) {

@@ -30,20 +30,20 @@ INSERT INTO budget (goalValue, startDate, endDate, account_id)
 VALUES (2657, "2017-06-26", "2017-12-16", 2);
 
 INSERT INTO category (name, account_id)
-VALUES ("Porn", 1);
+VALUES ("Food", 1);
 
 INSERT INTO category (name, account_id)
-VALUES ("Hentai", 1);
+VALUES ("Rent", 1);
 
 INSERT INTO category (name, account_id)
-VALUES ("JoJo", 2);
+VALUES ("Transport", 2);
 
 
 INSERT INTO transaction (isIncome, value, date, description, location, category_id, account_id)
-VALUES (true, 69, "2017-01-06", "asd", "Sydney", 1, 1);
+VALUES (true, 70, "2017-01-06", "Groceries", "Sydney", 1, 1);
 
 INSERT INTO transaction (isIncome, value, date, description, location, repeating_id, category_id, account_id)
-VALUES (0, 329, "2015-03-22", "qwe", "Sydney", 1, 1, 1);
+VALUES (0, 329, "2015-03-22", "Rent Money", "Sydney", 1, 1, 1);
 
 INSERT INTO transaction (isIncome, value, date, description, location, repeating_id, category_id, account_id)
-VALUES (1, 69, "2016-02-02", "asdas", "Melbourne", 1, 2, 2);
+VALUES (1, 69, "2016-02-02", "train money", "Melbourne", 1, 2, 2);
