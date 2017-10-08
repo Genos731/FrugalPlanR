@@ -18,16 +18,16 @@ import backend.container.Account;
 import backend.container.Transaction;
 
 /**
- * Servlet implementation class IncomeServlet
+ * Servlet implementation class ExpensesServlet
  */
-@WebServlet("/Income")
-public class IncomeServlet extends HttpServlet {
+@WebServlet("/Expenses")
+public class ExpensesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public IncomeServlet() {
+    public ExpensesServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -47,7 +47,7 @@ public class IncomeServlet extends HttpServlet {
 				List<Transaction> transactions = accountAccessor.getTransaction(userAccount);
 				List<Transaction> incomes = new ArrayList<Transaction>();
 				for (int x = 0; x < transactions.size(); x++){
-					if (transactions.get(x).isIncome()){
+					if (!transactions.get(x).isIncome()){
 						incomes.add(transactions.get(x));
 					}
 				}
@@ -64,7 +64,7 @@ public class IncomeServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		request.getRequestDispatcher("WEB-INF/pages/IncomePage.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/pages/ExpensePage.jsp").forward(request, response);
 	}
 
 	/**

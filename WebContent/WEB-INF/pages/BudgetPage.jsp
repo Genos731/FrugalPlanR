@@ -236,9 +236,9 @@
                         <a class="nav-link" href="Expenses">Expenses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="Income">Income</a>
+                        <a class="nav-link" href="Income">Income</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="Budget">Budget</a>
                     </li>
                 </ul>
@@ -354,7 +354,6 @@
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button> This is the Income page where you can see all your Income statements
                 </div>
 
                 <!-- DATE PICKER -->
@@ -365,33 +364,17 @@
                     </div>
                 </div>
 
-                <!-- TABLE OF TRANSACTION -->
-                <section>
-                    <h2>Income</h2>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                           <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Value</th>
-                                    <th>Category</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-	                            <c:forEach var= "transaction" items="${transactions}" >
-	                            	<tr>
-	                            		<td> <c:out value="${transaction.getDate()}" /> </td>
-		                            	<td> <c:out value="${transaction.description}" /> </td>
-		                            	<td> $<c:out value="${transaction.getActualValue()}" /> </td>
-		                            	<td> <c:out value="${transaction.category}" /> </td>
-	                            	</tr>
-							 	</c:forEach>
-						 	</tbody>
-                        </table>
+                <!-- SUMMARY -->
+                <div class="card summary">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <span class="col text-primary">start Date <c:out value="${startDate }" /></span>
+                            <span class="col text-success">Goal $<c:out value="${budgetGoal }" /> current <c:out value="${currentTotal }" /></span>
+                            <span class="col text-danger">Days Remaining <c:out value="${days }" /></span>
+                            <span class="col text-warning"></span>
+                        </div>
                     </div>
-                </section>
+                </div>
             </main>
         </div>
     </div>
@@ -451,4 +434,4 @@
     </script>
 </body>
 
-</html> 
+</html>

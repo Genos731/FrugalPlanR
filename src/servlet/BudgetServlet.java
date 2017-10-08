@@ -13,21 +13,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import backend.accessor.AccountAccessor;
 import backend.accessor.AccountAccessorImpl;
+import backend.accessor.BudgetAccessorImpl;
 import backend.accessor.TransactionAccessorImpl;
 import backend.container.Account;
+import backend.container.Budget;
 import backend.container.Transaction;
 
 /**
- * Servlet implementation class IncomeServlet
+ * Servlet implementation class BudgetServlet
  */
-@WebServlet("/Income")
-public class IncomeServlet extends HttpServlet {
+@WebServlet("/Budget")
+public class BudgetServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public IncomeServlet() {
+    public BudgetServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,22 +41,17 @@ public class IncomeServlet extends HttpServlet {
 		String username = (String) request.getSession().getAttribute("userName");
 		if (username != null){
 			try {
-				TransactionAccessorImpl accountAccessor = new TransactionAccessorImpl();
+				BudgetAccessorImpl budgetAccessor = new BudgetAccessorImpl();
 				//Once Log in is working that'll replace this for who the account is.
 				AccountAccessor accessor = new AccountAccessorImpl();
 				Account userAccount = accessor.getAccount(username);
 				
-				List<Transaction> transactions = accountAccessor.getTransaction(userAccount);
-				List<Transaction> incomes = new ArrayList<Transaction>();
-				for (int x = 0; x < transactions.size(); x++){
-					if (transactions.get(x).isIncome()){
-						incomes.add(transactions.get(x));
-					}
-				}
-
-				request.setAttribute("transactions", incomes);
+				List<Budget> budgets = budgetAccessor.getBudgets(userAccount);
+				
+				
+				request.setAttribute("budgets", budgets);
 						
-				accountAccessor.close();
+				budgetAccessor.close();
 				accessor.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -64,7 +61,7 @@ public class IncomeServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		request.getRequestDispatcher("WEB-INF/pages/IncomePage.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/pages/BudgetPage.jsp").forward(request, response);
 	}
 
 	/**

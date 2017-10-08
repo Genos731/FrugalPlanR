@@ -233,10 +233,10 @@
                         <a class="nav-link" href="/budget">Overview</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Expenses">Expenses</a>
+                        <a class="nav-link active" href="Expenses">Expenses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="Income">Income</a>
+                        <a class="nav-link" href="Income">Income</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Budget">Budget</a>
@@ -354,7 +354,7 @@
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button> This is the Income page where you can see all your Income statements
+                </button> This is the Expenses page where you can see all your expenses
                 </div>
 
                 <!-- DATE PICKER -->
@@ -367,7 +367,7 @@
 
                 <!-- TABLE OF TRANSACTION -->
                 <section>
-                    <h2>Income</h2>
+                    <h2>Expenses</h2>
                     <div class="table-responsive">
                         <table class="table table-striped">
                            <thead>

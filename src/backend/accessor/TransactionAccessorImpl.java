@@ -145,7 +145,10 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 			calendar.setTimeInMillis(result.getDate("date").getTime());
 			String description = result.getString("description");
 			String location = result.getString("location");
-			Repeating repeating = Repeating.toRepeating(result.getString("type"));
+			Repeating repeating = null;
+			if (result.getString("type") != null){
+				 repeating = Repeating.toRepeating(result.getString("type"));
+			}
 			String category = result.getString("name");
 			int accountID = result.getInt("account_id");
 
@@ -163,7 +166,7 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 			return null;
 		return transactionList;
 	}
-
+	
 	@Override
 	public List<String> getCategories(Account a) throws SQLException {
 		// Check null

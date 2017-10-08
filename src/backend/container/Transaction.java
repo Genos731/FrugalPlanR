@@ -1,5 +1,6 @@
 package backend.container;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Transaction {
@@ -50,6 +51,14 @@ public class Transaction {
 
 	public int getId() {
 		return id;
+	}
+	
+	public double getActualValue(){
+		double value = this.value;
+		if (!isIncome()){
+			value = value*-1;
+		}
+		return value;
 	}
 
 	public boolean isIncome() {
@@ -160,4 +169,11 @@ public class Transaction {
 		
 		return s;
 	}
+	
+	public String getDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 1);
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        return format1.format(cal.getTime());
+    }
 }
