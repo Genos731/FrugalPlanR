@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class OverviewServlet
  */
-@WebServlet("/")
+@WebServlet("/overview")
 public class OverviewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
