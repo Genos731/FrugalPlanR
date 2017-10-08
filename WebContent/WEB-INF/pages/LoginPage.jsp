@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
         crossorigin="anonymous">
-    <title>Signup</title>
+    <title>Login</title>
     <style>
         .navbar {
             background: #4ea3ff;
@@ -116,18 +116,15 @@
     <nav class="navbar fixed-top navbar-light">
         <a href="#"><img class="logo" src="https://i.imgur.com/XTgvOoN.png" alt="FrugalPlanr" /></a>
         <span align="right" class="row">
-        	<!--<form action="SignUp">
+        	<form action="SignUp">
                 <input type="submit" class="btn btn-light" value="Sign Up">
-            </form>-->
+            </form>
             <!--<form action="EditProfile">
                 <input type="submit" class="btn btn-light" value="Edit Profile">
             </form>-->
             <!--<form action="Logout">
                 <input type="submit" class="btn btn-danger" value="Logout">
             </form>-->
-            <form action="Login">
-                <input type="submit" class="btn btn-danger" value="Login">
-            </form>
         </span>
     </nav>
     
@@ -137,7 +134,7 @@
 		    <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
 			<!-- LOGIN -->
 		    	<!-- <form class="form-horizontal" method="post" action="SignupServlet">-->
-		    	<form class="form-horizontal" method="post" action ="SignUp">
+		    	<form class="form-horizontal" method="post" action ="login">
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="username">Username:</label>
 						<div class="col-sm-10">
@@ -150,7 +147,7 @@
 			  				<input type="password" class="form-control" name="pwd" placeholder="Enter password">
 						</div>
 					</div>
-					<div class="form-group">
+					<div id = "email" class="form-group" style="display:none">
 						<label class="control-label col-sm-2" for="email">Email:</label>
 						<div class="col-sm-10">
 			 				<input type="text" class="form-control" name="email" placeholder="Enter email">
@@ -158,11 +155,35 @@
 					</div>
 					<div class="form-group"> 
 						<div class="col-sm-offset-2 col-sm-10">
-			  				<button type="submit" class="btn btn-default" value="login">Signup</button>
+			  					 <button type="submit" class="btn btn-default" value="login">Login</button>
 						</div>
 					</div>
-				</form>			
+				</form>
+				<!--<div class="col-sm-offset-2 col-sm-10">
+			  		<button type="submit" class="btn btn-default" value="Signup" onclick="showField()">Signup</button>
+				</div>-->
+				
+				<script>
+				function showField() {
+					document.getElementById('email').style.display = "block";	
+				}
+				</script>
+				
+				<!-- <script>
+				function validate() {
+					var username = document.getElementById("user").value;
+					var password = document.getElementById("pwd").value;
+					if ( username == "leo" && password == "fang") {
+						alert ("Login successfully");
+						window.location = "WEB-INF/pages/OverviewPage.jsp";
+						return false;
+					}
+				}
+				</script>-->
+			</div>
 			</main>
 		</div>
+
+
 </body>
 </html>

@@ -1,20 +1,26 @@
 package servlet;
 
-import java.io.*;
-import javax.servlet.http.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import backend.accessor.AccountAccessor;
 import backend.accessor.AccountAccessorImpl;
 import backend.container.Account;
-
-import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
-import java.sql.*;
+import backend.exception.DuplicateEmailException;
+import backend.exception.DuplicateUsernameException;
+import backend.exception.InvalidEmailException;
 
 /**
- * Servlet implementation class SignUpServlet
+ * Servlet implementation class SignUpPageServlet
  */
-@WebServlet("/")
+@WebServlet("/SignUp")
 public class SignUpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -31,6 +37,7 @@ public class SignUpServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.getRequestDispatcher("WEB-INF/pages/SignUpPage.jsp").forward(request, response);
 	}
 
@@ -39,13 +46,13 @@ public class SignUpServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//doGet(request, response);		
-		
+		//doGet(request, response);
 		response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
         String user = request.getParameter("user");
         String pwd = request.getParameter("pwd");
+        String email = request.getParameter("email");
         //System.out.println(user + "and" + pwd);
         
         AccountAccessor accessor = new AccountAccessorImpl();
@@ -57,25 +64,25 @@ public class SignUpServlet extends HttpServlet {
 		}
 		
         if (accessor.isValidAccount(curr)) {	
-        	//validate if user exists
-        	if (curr.getPassword().equals(pwd)) {
-        		System.out.println("Login Successful");
-        		request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
-        	} else {
-        		System.out.println("Invalid Password");
-        	}
+        	System.out.println("Username already exists");
+			response.sendRedirect(request.getContextPath() + "/SignUp");
         } else {
-        	System.out.println("Account does not exist");
-        	request.getRequestDispatcher("WEB-INF/pages/SignUpPage.jsp").forward(request, response);
-        }
-        	
+        	try {
+				accessor.create(user, pwd, email);
+				System.out.println("Account created successfully");
+				response.sendRedirect(request.getContextPath() + "/Login");
+			} catch (IllegalArgumentException | InvalidEmailException | DuplicateUsernameException
+					| DuplicateEmailException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}       
+        }	
         try {
 			accessor.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 }
