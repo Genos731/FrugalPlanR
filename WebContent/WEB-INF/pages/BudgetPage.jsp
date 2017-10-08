@@ -239,7 +239,7 @@
                         <a class="nav-link" href="Income">Income</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="Budget">Budget</a>
+                        <a class="nav-link" href="Budget active">Budget</a>
                     </li>
                 </ul>
 
