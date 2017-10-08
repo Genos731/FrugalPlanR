@@ -1,6 +1,5 @@
 package servlet;
 
-
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,31 +7,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import backend.accessor.AccountAccessor;
-import backend.accessor.AccountAccessorImpl;
-import backend.container.Account;
-
 /**
- * Servlet implementation class OverviewServlet
+ * Servlet implementation class IncomeServlet
  */
-@WebServlet("/Overview")
-public class OverviewServlet extends HttpServlet {
+@WebServlet("/Income")
+public class IncomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public OverviewServlet() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public IncomeServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
+		// TODO Auto-generated method stub
+		request.getRequestDispatcher("WEB-INF/pages/IncomePage.jsp").forward(request, response);
 	}
 
 	/**

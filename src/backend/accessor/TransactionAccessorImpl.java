@@ -47,8 +47,10 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 
 		// If categoryID is 0, then it doesn't exist
 		// Create new category
-		if (categoryID == 0)
+		if (categoryID == 0) {
 			createCategory(category, a.getId());
+			categoryID = getCategoryID(category, a.getId());
+		}
 
 		// Get Repeating id
 		int repeatID = getRepeatingID(repeating);
@@ -294,6 +296,10 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 	}
 
 	private int getRepeatingID(Repeating repeating) throws SQLException {
+		// Check null
+		if (repeating == null)
+			return 0;
+		
 		// Prepare sql query
 		String sqlQuery = "SELECT id "
 				+ "FROM repeating "

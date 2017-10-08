@@ -105,6 +105,14 @@ public class TransactionAccessorTest {
 		}
 		**/
 		
+		// Close transaction accessor
+		try {
+			accessor.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		// Test get category
 		try {

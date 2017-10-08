@@ -103,16 +103,8 @@
             border-color: #4ea3ff;
         }
 
-        .form-control {
+        .form-control#Amount {
             line-height: 1.5
-        }
-
-        .form-control#Repeating, .form-control#Category {
-            height: 45px;
-        }
-
-        .new-category {
-            margin-top: 15px;
         }
 
         #transaction-datepicker .datepicker {
@@ -264,13 +256,21 @@
                             <div class="modal-body text-center">
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn transaction-type btn-secondary active">
-                                    <input type="radio" name="type" id="expense" value="false" autocomplete="off" checked> Expense
+                                    <input type="radio" name="type" id="expense" value="Expense" autocomplete="off" checked> Expense
                                 </label>
                                     <label class="btn transaction-type btn-secondary">
-                                    <input type="radio" name="type" id="income" value="true" autocomplete="off"> Income
+                                    <input type="radio" name="type" id="income" value="Income" autocomplete="off"> Income
                                 </label>
                                 </div>
                             </div>
+                            <!--Amount (currency) + for positive/income, - for negative/expense
+                                Category
+                                Date
+                                More options
+                                Description
+                                Location
+                                Repeating
+                                Reminder-->
                             <div class="container">
                                 <div class="form-group row">
                                     <label for="Amount" class="col-sm-3 col-form-label">Amount</label>
@@ -279,18 +279,6 @@
                                             <span class="input-group-addon">$</span>
                                             <input type="number" name="amount" min="0.00" step="0.01" class="form-control" id="Amount" placeholder="0.00">
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="container">
-                                <div class="form-group row">
-                                    <label for="Category" class="col-sm-3 col-form-label">Category</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" name="category" id="Category" onchange="changeCategory()">
-                                            <option value="default" selected="selected">Default</option>
-                                            <option value="new">Create new category...</option>
-                                        </select>
-                                        <input class="form-control new-category" id="new-category" name="new" type="text" placeholder="New category name" maxlength="45">
                                     </div>
                                 </div>
                             </div>
@@ -313,25 +301,13 @@
                                     <div class="form-group row">
                                         <label for="Description" class="col-sm-3 col-form-label">Description</label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="description" class="form-control" id="Description" placeholder="Optional" maxlength="255">
+                                            <input type="text" name="description" class="form-control" id="Description" placeholder="Optional">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="Location" class="col-sm-3 col-form-label">Location</label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="location" class="form-control" id="Location" placeholder="Optional" maxlength="45">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="Repeating" class="col-sm-3 col-form-label">Repeating</label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" name="repeating" id="Repeating">
-                                                <option value="never" selected="selected">Never</option>
-                                                <option value="daily">Daily</option>
-                                                <option value="weekly">Weekly</option>
-                                                <option value="fortnightly">Fortnightly</option>
-                                                <option value="monthly">Monthly</option>
-                                            </select>
+                                            <input type="text" name="location" class="form-control" id="Location" placeholder="Optional">
                                         </div>
                                     </div>
                                 </div>
@@ -341,8 +317,8 @@
                                 <input type="submit" class="btn btn-primary" value="Add transaction">
                             </div>
                         </div>
-                    </form>
                 </div>
+                </form>
             </div>
 
             <!-- MAIN -->
@@ -464,16 +440,6 @@
                 $("#transaction-datepicker .today").trigger('click');
             }, 10);
         });
-
-        $('#new-category').hide();
-
-        function changeCategory() {
-            if(document.getElementById('Category').value == "new") {
-                $('#new-category').show();
-            } else {
-                $('#new-category').hide();
-            }
-        }
 
         $('#add-transaction-error').hide();
 
