@@ -213,7 +213,7 @@
 <body>
     <!-- NAVBAR/HEADER -->
     <nav class="navbar fixed-top navbar-light">
-        <a href="#"><img class="logo" src="https://i.imgur.com/XTgvOoN.png" alt="FrugalPlanr" /></a>
+        <a href="Overview"><img class="logo" src="https://i.imgur.com/XTgvOoN.png" alt="FrugalPlanr" /></a>
         <span align="right" class="row">
 	        <form action="EditProfile">
 	            <input type="submit" class="btn btn-light" value="Edit Profile">
@@ -239,7 +239,7 @@
                         <a class="nav-link" href="Income">Income</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="Budget active">Budget</a>
+                        <a class="nav-link active" href="Budget active">Budget</a>
                     </li>
                 </ul>
 

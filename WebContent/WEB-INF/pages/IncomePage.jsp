@@ -213,7 +213,7 @@
 <body>
     <!-- NAVBAR/HEADER -->
     <nav class="navbar fixed-top navbar-light">
-        <a href="#"><img class="logo" src="https://i.imgur.com/XTgvOoN.png" alt="FrugalPlanr" /></a>
+        <a href="Overview"><img class="logo" src="https://i.imgur.com/XTgvOoN.png" alt="FrugalPlanr" /></a>
         <span align="right" class="row">
 	        <form action="EditProfile">
 	            <input type="submit" class="btn btn-light" value="Edit Profile">

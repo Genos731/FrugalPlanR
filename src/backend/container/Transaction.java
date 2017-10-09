@@ -171,7 +171,7 @@ public class Transaction {
 	}
 	
 	public String getDate() {
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = getCalendar();
         cal.add(Calendar.DATE, 1);
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         return format1.format(cal.getTime());
