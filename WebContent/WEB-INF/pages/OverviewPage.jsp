@@ -290,7 +290,9 @@
                                     <label for="Category" class="col-sm-3 col-form-label">Category</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" name="category" id="Category" onchange="changeCategory()">
-                                            <option value="default" selected="selected">Default</option>
+                                            <c:forEach items="${categories}" var="category">
+                                            	<option value="<c:out value="${category}"/>"><c:out value="${category}"/></option>
+											</c:forEach>
                                             <option value="new">Create new category...</option>
                                         </select>
                                         <input class="form-control new-category" id="new-category" name="new" type="text" placeholder="New category name" maxlength="45">
@@ -443,6 +445,8 @@
                 $('#new-category').hide();
             }
         }
+        
+        changeCategory();
 
         $('#add-transaction-error').hide();
 

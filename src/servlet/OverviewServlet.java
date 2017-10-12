@@ -40,11 +40,9 @@ public class OverviewServlet extends HttpServlet {
 		if (username != null){
 			try {
 				TransactionAccessorImpl accountAccessor = new TransactionAccessorImpl();
-				//Once Log in is working that'll replace this for who the account is.
 				AccountAccessor accessor = new AccountAccessorImpl();
 				Account userAccount = accessor.getAccount(username);
 				List<Transaction> transactions = accountAccessor.getTransaction(userAccount);	
-						
 				
 				double totalExpenses = totalExpenses(transactions);
 				double totalIncome = totalIncome(transactions);
@@ -53,7 +51,9 @@ public class OverviewServlet extends HttpServlet {
 				request.setAttribute("totalExpenses", totalExpenses);
 				request.setAttribute("totalIncome", totalIncome);
 				request.setAttribute("balance", balance);
-				
+
+				List<String> categories = accountAccessor.getCategories(userAccount);
+				request.setAttribute("categories", categories);
 				
 				accountAccessor.close();
 				accessor.close();
