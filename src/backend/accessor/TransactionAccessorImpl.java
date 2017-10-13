@@ -101,14 +101,34 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 			throw new InvalidTransactionException("Invalid Transaction");
 
 		// Prepare SQL
-		String sqlQuery = "DELETE FROM transaction " + "WHERE id = ?";
+		String sqlQuery = "DELETE FROM transaction WHERE id = ?";
 
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setInt(1, t.getId());
 
 		// Execute, throws error if failed
 		statement.executeUpdate();
+
+		// Delete empty categories
+		// Get category id
+		int categoryID = getCategoryID(t.getCategory(), t.getAccountID());
+
+		// Get all transactions with that category
+		sqlQuery = "SELECT * FROM transaction WHERE category_id = ?";
+		statement = dbConnection.prepareStatement(sqlQuery);
+		statement.setInt(1, categoryID);
+
+		ResultSet result = statement.executeQuery();
+		// If no more transactions have that category id
+		if (!result.next()){
+			sqlQuery = "DELETE FROM category WHERE id = ?";
+			statement = dbConnection.prepareStatement(sqlQuery);
+			statement.setInt(1, categoryID);
+			statement.executeUpdate();
+		}
+		
 		statement.close();
+		result.close();
 	}
 
 	@Override
@@ -312,12 +332,13 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 		// If transaction does not exists, do nothing
 		if (!isValidTransaction(t))
 			return;
-		
+
 		// Create transaction, to test it follows proper syntax
 		@SuppressWarnings("unused")
 		Transaction tempTrans = new Transaction(t.getId(), t.isIncome(),
-				t.getValue(), t.getCalendar(), t.getDescription(), t.getLocation(),
-				t.getRepeating(), newCategory, t.getAccountID());
+				t.getValue(), t.getCalendar(), t.getDescription(),
+				t.getLocation(), t.getRepeating(), newCategory,
+				t.getAccountID());
 
 		// Get category id
 		int categoryID = getCategoryID(newCategory, t.getAccountID());
@@ -328,7 +349,7 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 			createCategory(newCategory, t.getAccountID());
 			categoryID = getCategoryID(newCategory, t.getAccountID());
 		}
-		
+
 		// Prepare SQL line
 		String sqlQuery = "UPDATE transaction " + "SET category_id = ? "
 				+ "WHERE id = ?";
