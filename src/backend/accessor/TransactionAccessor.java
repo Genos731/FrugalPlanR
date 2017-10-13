@@ -55,4 +55,49 @@ public interface TransactionAccessor extends AutoCloseable {
 	 * @throws SQLException If a database error occurs
 	 */
 	public List<String> getCategories(Account a) throws SQLException;
+	
+	/**
+	 * Update the value for the transaction
+	 * @param t Transaction to update
+	 * @param newValue New value for transaction
+	 * @throws SQLException If a database error occurs
+	 * @throws IllegalArgumentException If updated transaction is invalid
+	 */
+	public void updateValue(Transaction t, double newValue ) throws SQLException, IllegalArgumentException;
+	
+	/**
+	 * Update the calendar for the transaction
+	 * @param t Transaction to update
+	 * @param newCalendar New calendar for transaction
+	 * @throws SQLException If a database error occurs
+	 * @throws IllegalArgumentException If updated transaction is invalid
+	 */
+	public void updateCalendar(Transaction t, Calendar newCalendar) throws SQLException, IllegalArgumentException;
+	
+	/**
+	 * Update the description for the transaction
+	 * @param t Transaction to update
+	 * @param newDescription New description for transaction
+	 * @throws SQLException If a database error occurs
+	 * @throws IllegalArgumentException If updated transaction is invalid
+	 */
+	public void updateDescription(Transaction t, String newDescription) throws SQLException, IllegalArgumentException;
+	
+	/**
+	 * Update the location for the transaction
+	 * @param t Transaction to update
+	 * @param newLocation New location for transaction
+	 * @throws SQLException If a database error occurs
+	 * @throws IllegalArgumentException If updated transaction is invalid
+	 */
+	public void updateLocation(Transaction t, String newLocation) throws SQLException, IllegalArgumentException;
+	
+	/**
+	 * Update the category for the transaction
+	 * @param t Transaction to update
+	 * @param newCategory New category for transaction
+	 * @throws SQLException If a database error occurs
+	 * @throws IllegalArgumentException If updated transaction is invalid
+	 */
+	public void updateCategory(Transaction t, String newCategory) throws SQLException, IllegalArgumentException;
 }
