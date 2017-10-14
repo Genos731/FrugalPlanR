@@ -110,20 +110,26 @@
             line-height: 1.5
         }
 
-        .form-control#Repeating, .form-control#Category {
+        .form-control#Repeating, .form-control#Category, .form-control#edit-repeating, .form-control#edit-category {
             height: 45px;
         }
 
         .new-category {
             margin-top: 15px;
         }
+        
+        #EditTransaction .modal-header {
+            margin-bottom: 15px;
+        }
 
-        #transaction-datepicker .datepicker {
+        .datepicker {
             margin: 0 auto;
         }
 
         #transaction-datepicker tfoot,
-        #transaction-date {
+        #transaction-date,
+        #edit-transaction-datepicker tfoot,
+        #edit-transaction-date {
             display: none;
         }
 
@@ -197,6 +203,14 @@
         .date-picker a {
             margin: 0 15px;
         }
+        
+        tr .edit {
+        	opacity: 0;
+        }
+        
+        tr:hover .edit {
+        	opacity: 1;
+       	}
 
         section {
             margin-top: 10px;
@@ -402,6 +416,12 @@
 		                            	<td> <c:out value="${transaction.description}" /> </td>
 		                            	<td> $<c:out value="${transaction.getActualValue()}" /> </td>
 		                            	<td> <c:out value="${transaction.category}" /> </td>
+		                            	<td class="text-right">
+		                            		<button class="btn btn-secondary edit" data-toggle="modal" data-target="#editTransaction" id="edit-transaction"
+		                            			onclick='editTransaction(<c:out value="${transaction.getId()}" />, <c:out value="${transaction.isIncome()}" />, <c:out value="${transaction.getValue()}" />,
+		                            			"<c:out value="${transaction.getCategory()}" />", "<c:out value="${transaction.getDate()}" />", "<c:out value="${transaction.getDescription()}" />",
+		                            			"<c:out value="${transaction.getLocation()}" />", "<c:out value="${transaction.getRepeating()}" />")'>Edit</button>
+		                            	</td>
 	                            	</tr>
 							 	</c:forEach>
 						 	</tbody>
@@ -430,6 +450,14 @@
             todayHighlight: true
         });
 
+        $('#edit-transaction-datepicker').datepicker({
+            format: "yyyy-mm-dd",
+            weekStart: 1,
+            maxViewMode: 2,
+            todayBtn: "linked",
+            todayHighlight: true
+        });
+
         $("#add-transaction").click(function () {
             setTimeout(function () {
                 $("#transaction-datepicker .today").trigger('click');
@@ -437,6 +465,7 @@
         });
 
         $('#new-category').hide();
+        $('#edit-new-category').hide();
 
         function changeCategory() {
             if(document.getElementById('Category').value == "new") {
@@ -445,27 +474,79 @@
                 $('#new-category').hide();
             }
         }
+
+        function editChangeCategory() {
+            if(document.getElementById('edit-category').value == "new") {
+                $('#edit-new-category').show();
+            } else {
+                $('#edit-new-category').hide();
+            }
+        }
         
         changeCategory();
 
         $('#add-transaction-error').hide();
+        $('#edit-transaction-error').hide();
 
         $('#AddTransaction').submit(function (e) {
             // set date
             var date = $("#transaction-datepicker").find(".active").data("date");
             $('#transaction-date').val(date);
-            console.log($('#transaction-date').val());
 
             // form validation
             var error = "";
             $('#add-transaction-error').hide();
             if (!$('#Amount').val()) error += "Please enter an amount.";
+            if ($('#category') === "new" && !$('#new-category').val()) error += "Please enter a new category.";
             if (error.length > 0) {
                 $('#add-transaction-error').text(error);
                 $('#add-transaction-error').show();
                 return false;
             }
         });
+        
+        function editTransaction(id, type, amount, category, date, description, location, repeating) {
+        	// set id
+        	$('#edit-id').val(id);
+        	// set type
+        	if (type === true) $('#edit-type').text("income");
+        	else $('#edit-type').text("expense");
+        	// set amount
+        	$('#edit-amount').val(amount);
+        	// set category
+        	$('#edit-category').val(category);
+        	editChangeCategory();
+        	// set date
+        	$('#edit-transaction-datepicker').datepicker("update", date);
+        	// set description
+        	$('#edit-description').val(description);
+        	// set location
+        	$('#edit-location').val(location);
+        	// set repeating
+        	if (repeating) $('#edit-repeating').val(repeating.toLowerCase());
+        	else $('#edit-repeating').val("never");
+        }
+        
+        $('#EditTransaction').submit(function (e) {
+            // set date
+            var date = $("#edit-transaction-datepicker").find(".active").data("date");
+            $('#edit-transaction-date').val(date);
+
+            // form validation
+            var error = "";
+            $('#edit-transaction-error').hide();
+            if (!$('#edit-amount').val()) error += "Please enter an amount.";
+            if ($('#category') === "new" && !$('#edit-new-category').val()) error += "Please enter a new category.";
+            if (error.length > 0) {
+                $('#edit-transaction-error').text(error);
+                $('#edit-transaction-error').show();
+                return false;
+            }
+        });
+        
+        function deleteTransaction() {
+        	$('#is-delete').val(true);
+        }
     </script>
 </body>
 

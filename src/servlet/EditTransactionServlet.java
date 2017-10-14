@@ -48,6 +48,7 @@ public class EditTransactionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Get parameters
+		int id = new Integer(request.getParameter("edit-id"));
 		Double amount = new Double(request.getParameter("edit-amount"));
 		String category = request.getParameter("edit-category");
 		if (category.equals("new")) category = request.getParameter("edit-new-category");
@@ -92,12 +93,21 @@ public class EditTransactionServlet extends HttpServlet {
 		}
 		
 		// Find transaction by id
-		int id = new Integer(request.getParameter("edit-id"));
 		Transaction t = null;
 		for (Transaction transaction : transactionList) {
 			if (transaction.getId() == id) t = transaction;
 		}
 
+		// Delete transaction
+		if (request.getParameter("is-delete").equals("true")) {
+			try {
+				accessor.delete(t);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		// Edit transaction				
 		try {
 			accessor.updateTransaction(t, amount, date, description, location, category);
