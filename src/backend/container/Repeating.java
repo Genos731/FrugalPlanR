@@ -7,6 +7,9 @@ public enum Repeating {
 	MONTHLY;
 	
 	public static Repeating toRepeating(String s) {
+		if (s == null){
+			return null;	
+		}
 		switch (s.toLowerCase()) {
 		case ("daily"):
 			return DAILY;
