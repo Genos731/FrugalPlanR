@@ -20,15 +20,6 @@ VALUES ("Betsy", "Betsy", "Betsy@email.com");
 INSERT INTO account (username, password, email)
 VALUES ("Cockless", "Cockless", "Cockless@email.com");
 
-INSERT INTO budget (goalValue, startDate, endDate, account_id)
-VALUES (10, "2017-01-01", "2017-12-31", 1);
-
-INSERT INTO budget (goalValue, startDate, endDate, account_id)
-VALUES (69, "2017-04-01", "2017-06-01", 2);
-
-INSERT INTO budget (goalValue, startDate, endDate, account_id)
-VALUES (2657, "2017-06-26", "2017-12-16", 2);
-
 INSERT INTO category (name, account_id)
 VALUES ("Food", 1);
 
