@@ -120,13 +120,13 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 
 		ResultSet result = statement.executeQuery();
 		// If no more transactions have that category id
-		if (!result.next()){
+		if (!result.next()) {
 			sqlQuery = "DELETE FROM category WHERE id = ?";
 			statement = dbConnection.prepareStatement(sqlQuery);
 			statement.setInt(1, categoryID);
 			statement.executeUpdate();
 		}
-		
+
 		statement.close();
 		result.close();
 	}
@@ -221,6 +221,54 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 		if (categoryList.size() == 0)
 			return null;
 		return categoryList;
+	}
+
+	public void updateTransaction(Transaction t, double newValue,
+			Calendar newCalendar, String newDescription, String newLocation,
+			String newCategory) throws SQLException, IllegalArgumentException {
+
+		// If transaction does not exists, do nothing
+		if (!isValidTransaction(t))
+			return;
+
+		// Create transaction, to test it follows proper syntax
+		@SuppressWarnings("unused")
+		Transaction tempTrans = new Transaction(t.getId(), t.isIncome(),
+				newValue, newCalendar, newDescription, newLocation,
+				t.getRepeating(), newCategory, t.getAccountID());
+
+		// Convert calendar to sqlDate
+		Date newDate = new Date(newCalendar.getTimeInMillis());
+
+		// Get category id
+		int categoryID = getCategoryID(newCategory, t.getAccountID());
+
+		// If categoryID is 0, then it doesn't exist
+		// Create new category
+		if (categoryID == 0) {
+			createCategory(newCategory, t.getAccountID());
+			categoryID = getCategoryID(newCategory, t.getAccountID());
+		}
+
+		// Prepare SQL line
+		String sqlQuery = "UPDATE transaction "
+				+ "SET value = ?, "
+				+ "date = ?, "
+				+ "description = ?, "
+				+ "location = ?, "
+				+ "category_id = ? "
+				+ "WHERE id = ?";
+		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
+		statement.setDouble(1, newValue);
+		statement.setDate(2, newDate);
+		statement.setString(3, newDescription);
+		statement.setString(4, newLocation);
+		statement.setInt(5, categoryID);
+		statement.setInt(6, t.getId());
+
+		// Execute, throws error if failed
+		statement.executeUpdate();
+		statement.close();
 	}
 
 	@Override
