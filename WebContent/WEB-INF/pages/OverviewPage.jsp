@@ -110,26 +110,20 @@
             line-height: 1.5
         }
 
-        .form-control#Repeating, .form-control#Category, .form-control#edit-repeating, .form-control#edit-category {
+        .form-control#Repeating, .form-control#Category {
             height: 45px;
         }
 
         .new-category {
             margin-top: 15px;
         }
-        
-        #EditTransaction .modal-header {
-            margin-bottom: 15px;
-        }
 
-        .datepicker {
+        #transaction-datepicker .datepicker {
             margin: 0 auto;
         }
 
         #transaction-datepicker tfoot,
-        #transaction-date,
-        #edit-transaction-datepicker tfoot,
-        #edit-transaction-date {
+        #transaction-date {
             display: none;
         }
 
@@ -203,14 +197,6 @@
         .date-picker a {
             margin: 0 15px;
         }
-        
-        tr .edit {
-        	opacity: 0;
-        }
-        
-        tr:hover .edit {
-        	opacity: 1;
-       	}
 
         section {
             margin-top: 10px;
@@ -416,105 +402,11 @@
 		                            	<td> <c:out value="${transaction.description}" /> </td>
 		                            	<td> $<c:out value="${transaction.getActualValue()}" /> </td>
 		                            	<td> <c:out value="${transaction.category}" /> </td>
-		                            	<td class="text-right">
-		                            		<button class="btn btn-secondary edit" data-toggle="modal" data-target="#editTransaction" id="edit-transaction"
-		                            			onclick='editTransaction(<c:out value="${transaction.getId()}" />, <c:out value="${transaction.isIncome()}" />, <c:out value="${transaction.getValue()}" />,
-		                            			"<c:out value="${transaction.getCategory()}" />", "<c:out value="${transaction.getDate()}" />", "<c:out value="${transaction.getDescription()}" />",
-		                            			"<c:out value="${transaction.getLocation()}" />", "<c:out value="${transaction.getRepeating()}" />")'>Edit</button>
-		                            	</td>
 	                            	</tr>
 							 	</c:forEach>
 						 	</tbody>
                         </table>
                     </div>
-                      	<!-- EDIT TRANSACTION MODAL -->
-		            <div class="modal fade" id="editTransaction" tabindex="-1" role="dialog" aria-labelledby="editTransactionLabel" aria-hidden="true">
-		                <div class="modal-dialog" role="document">
-		                    <form id="EditTransaction" action="EditTransaction" method="post">
-		                        <div class="modal-content">
-		                            <div class="modal-header">
-		                                <h5 class="modal-title" id="editTransactionLabel">Edit <span id="edit-type"></span></h5>
-		                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		                                        <span aria-hidden="true">&times;</span>
-		                                    </button>
-		                            </div>
-		                            <div class="alert alert-danger" id="edit-transaction-error" role="alert"></div>
-		                            <input type="hidden" name="edit-id" id="edit-id">
-		                            <div class="container">
-		                                <div class="form-group row">
-		                                    <label for="edit-amount" class="col-sm-3 col-form-label">Amount</label>
-		                                    <div class="col-sm-9">
-		                                        <div class="input-group">
-		                                            <span class="input-group-addon">$</span>
-		                                            <input type="number" name="edit-amount" min="0.00" step="0.01" class="form-control" id="edit-amount" placeholder="0.00">
-		                                        </div>
-		                                    </div>
-		                                </div>
-		                            </div>
-		                            <div class="container">
-		                                <div class="form-group row">
-		                                    <label for="edit-category" class="col-sm-3 col-form-label">Category</label>
-		                                    <div class="col-sm-9">
-		                                        <select class="form-control" name="edit-category" id="edit-category" onchange="editChangeCategory()">
-		                                            <c:forEach items="${categories}" var="category">
-		                                            	<option value="<c:out value="${category}"/>"><c:out value="${category}"/></option>
-													</c:forEach>
-		                                            <option value="new">Create new category...</option>
-		                                        </select>
-		                                        <input class="form-control new-category" id="edit-new-category" name="edit-new-category" type="text" placeholder="New category name" maxlength="45">
-		                                    </div>
-		                                </div>
-		                            </div>
-		                            <div class="container">
-		                                <div class="form-group row">
-		                                    <label for="Date" class="col-sm-3 col-form-label">Date</label>
-		                                    <div class="col-sm-9">
-		                                        <div id="edit-transaction-datepicker"></div>
-		                                        <input id="edit-transaction-date" type="date" name="edit-date">
-		                                    </div>
-		                                </div>
-		                            </div>
-		                            <div class="container text-center">
-		                                <a class="btn btn-secondary more-options" data-toggle="collapse" href="#edit-more-options" aria-expanded="false" aria-controls="edit-more-options">
-		                                Show more options
-		                            </a>
-		                            </div>
-		                            <div class="collapse" id="edit-more-options">
-		                                <div class="container">
-		                                    <div class="form-group row">
-		                                        <label for="edit-description" class="col-sm-3 col-form-label">Description</label>
-		                                        <div class="col-sm-9">
-		                                            <input type="text" name="edit-description" class="form-control" id="edit-description" placeholder="Optional" maxlength="255">
-		                                        </div>
-		                                    </div>
-		                                    <div class="form-group row">
-		                                        <label for="edit-location" class="col-sm-3 col-form-label">Location</label>
-		                                        <div class="col-sm-9">
-		                                            <input type="text" name="edit-location" class="form-control" id="edit-location" placeholder="Optional" maxlength="45">
-		                                        </div>
-		                                    </div>
-		                                    <div class="form-group row">
-		                                        <label for="edit-repeating" class="col-sm-3 col-form-label">Repeating</label>
-		                                        <div class="col-sm-9">
-		                                            <select class="form-control" name="edit-repeating" id="edit-repeating" disabled readonly>
-		                                                <option value="never">Never</option>
-		                                                <option value="daily">Daily</option>
-		                                                <option value="weekly">Weekly</option>
-		                                                <option value="fortnightly">Fortnightly</option>
-		                                                <option value="monthly">Monthly</option>
-		                                            </select>
-		                                        </div>
-		                                    </div>
-		                                </div>
-		                            </div>
-		                            <div class="modal-footer">
-		                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		                                <input type="submit" class="btn btn-primary" value="Edit transaction">
-		                            </div>
-		                        </div>
-		                    </form>
-		                </div>
-		            </div>
                 </section>
             </main>
         </div>
@@ -538,14 +430,6 @@
             todayHighlight: true
         });
 
-        $('#edit-transaction-datepicker').datepicker({
-            format: "yyyy-mm-dd",
-            weekStart: 1,
-            maxViewMode: 2,
-            todayBtn: "linked",
-            todayHighlight: true
-        });
-
         $("#add-transaction").click(function () {
             setTimeout(function () {
                 $("#transaction-datepicker .today").trigger('click');
@@ -553,7 +437,6 @@
         });
 
         $('#new-category').hide();
-        $('#edit-new-category').hide();
 
         function changeCategory() {
             if(document.getElementById('Category').value == "new") {
@@ -562,72 +445,24 @@
                 $('#new-category').hide();
             }
         }
-
-        function editChangeCategory() {
-            if(document.getElementById('edit-category').value == "new") {
-                $('#edit-new-category').show();
-            } else {
-                $('#edit-new-category').hide();
-            }
-        }
         
         changeCategory();
 
         $('#add-transaction-error').hide();
-        $('#edit-transaction-error').hide();
 
         $('#AddTransaction').submit(function (e) {
             // set date
             var date = $("#transaction-datepicker").find(".active").data("date");
             $('#transaction-date').val(date);
+            console.log($('#transaction-date').val());
 
             // form validation
             var error = "";
             $('#add-transaction-error').hide();
             if (!$('#Amount').val()) error += "Please enter an amount.";
-            if ($('#category') === "new" && !$('#new-category').val()) error += "Please enter a new category.";
             if (error.length > 0) {
                 $('#add-transaction-error').text(error);
                 $('#add-transaction-error').show();
-                return false;
-            }
-        });
-        
-        function editTransaction(id, type, amount, category, date, description, location, repeating) {
-        	// set id
-        	$('#edit-id').val(id);
-        	// set type
-        	if (type === true) $('#edit-type').text("income");
-        	else $('#edit-type').text("expense");
-        	// set amount
-        	$('#edit-amount').val(amount);
-        	// set category
-        	$('#edit-category').val(category);
-        	editChangeCategory();
-        	// set date
-        	$('#edit-transaction-datepicker').datepicker("update", date);
-        	// set description
-        	$('#edit-description').val(description);
-        	// set location
-        	$('#edit-location').val(location);
-        	// set repeating
-        	if (repeating) $('#edit-repeating').val(repeating.toLowerCase());
-        	else $('#edit-repeating').val("never");
-        }
-        
-        $('#EditTransaction').submit(function (e) {
-            // set date
-            var date = $("#edit-transaction-datepicker").find(".active").data("date");
-            $('#edit-transaction-date').val(date);
-
-            // form validation
-            var error = "";
-            $('#edit-transaction-error').hide();
-            if (!$('#edit-amount').val()) error += "Please enter an amount.";
-            if ($('#category') === "new" && !$('#edit-new-category').val()) error += "Please enter a new category.";
-            if (error.length > 0) {
-                $('#edit-transaction-error').text(error);
-                $('#edit-transaction-error').show();
                 return false;
             }
         });
