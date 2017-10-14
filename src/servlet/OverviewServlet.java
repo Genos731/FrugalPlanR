@@ -3,7 +3,12 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -55,6 +60,19 @@ public class OverviewServlet extends HttpServlet {
 				List<String> categories = accountAccessor.getCategories(userAccount);
 				request.setAttribute("categories", categories);
 				
+				HashMap<String, Integer> totals = getTotals(transactions);
+				List<String> graphCategories = new ArrayList<String>(totals.size());
+				List<String> graphTotals = new ArrayList<String>(totals.size());
+				Set set = totals.entrySet();
+				Iterator iterator = set.iterator();
+				while(iterator.hasNext()) {
+					Map.Entry a = (Map.Entry) iterator.next();
+					graphCategories.add((String) a.getKey());
+					graphTotals.add((String) String.valueOf(a.getValue()));
+				}
+				request.setAttribute("graphCategories", graphCategories);
+				request.setAttribute("graphTotals", graphTotals);
+				
 				accountAccessor.close();
 				accessor.close();
 			} catch (SQLException e) {
@@ -76,9 +94,6 @@ public class OverviewServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
-
-	
-	//NOT sure if these should be done here or somewhere else
 	private double totalIncome(List<Transaction> transactions){
 		double expenses = 0;
 		for (int x = 0; x < transactions.size(); x++){
@@ -97,6 +112,20 @@ public class OverviewServlet extends HttpServlet {
 			}
 		}
 		return expenses;
+	}
+	
+	private HashMap<String, Integer> getTotals(List<Transaction> transactions) {
+		HashMap<String, Integer> totals = new HashMap<String, Integer>();
+		for (Transaction transaction : transactions) {
+			String category = transaction.getCategory();
+			int value = Double.valueOf(transaction.getValue()).intValue();
+			if (totals.containsKey(category)) {
+				totals.put(category, totals.get(category) + value);
+			} else {
+				totals.put(category, value);
+			}
+		}		
+		return totals;
 	}
 
 }

@@ -47,17 +47,6 @@ public class EditTransactionServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get parameters
-		int id = new Integer(request.getParameter("edit-id"));
-		Double amount = new Double(request.getParameter("edit-amount"));
-		String category = request.getParameter("edit-category");
-		if (category.equals("new")) category = request.getParameter("edit-new-category");
-		Calendar date = new GregorianCalendar();
-		date.setTimeInMillis(Long.parseLong(request.getParameter("edit-date")));
-		String description = request.getParameter("edit-description");
-		String location = request.getParameter("edit-location");
-		Repeating repeating = Repeating.toRepeating(request.getParameter("edit-repeating"));
-		
 		// Get the account
 		AccountAccessor accountAccessor = new AccountAccessorImpl();
 		String username = (String) request.getSession().getAttribute("userName");
@@ -93,6 +82,7 @@ public class EditTransactionServlet extends HttpServlet {
 		}
 		
 		// Find transaction by id
+		int id = new Integer(request.getParameter("edit-id"));
 		Transaction t = null;
 		for (Transaction transaction : transactionList) {
 			if (transaction.getId() == id) t = transaction;
@@ -107,6 +97,16 @@ public class EditTransactionServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+
+		// Get parameters
+		Double amount = new Double(request.getParameter("edit-amount"));
+		String category = request.getParameter("edit-category");
+		if (category.equals("new")) category = request.getParameter("edit-new-category");
+		Calendar date = new GregorianCalendar();
+		date.setTimeInMillis(Long.parseLong(request.getParameter("edit-date")));
+		String description = request.getParameter("edit-description");
+		String location = request.getParameter("edit-location");
+		Repeating repeating = Repeating.toRepeating(request.getParameter("edit-repeating"));
 		
 		// Edit transaction				
 		try {
