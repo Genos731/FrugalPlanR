@@ -100,12 +100,7 @@ public class EditTransactionServlet extends HttpServlet {
 
 		// Edit transaction				
 		try {
-			if (t.getValue() != amount) accessor.updateValue(t, amount);
-			if (t.getCategory() != category) accessor.updateCategory(t, category);
-			if (t.getCalendar() != date) accessor.updateCalendar(t, date);
-			if (t.getDescription() != description) accessor.updateDescription(t, description);
-			if (t.getLocation() != location) accessor.updateLocation(t, location);
-			// if (t.getRepeating() != repeating) accessor.updateRepeating(t, repeating);
+			accessor.updateTransaction(t, amount, date, description, location, category);
 		} catch (InvalidAccountException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
