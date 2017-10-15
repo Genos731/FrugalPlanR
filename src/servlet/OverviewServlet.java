@@ -60,18 +60,31 @@ public class OverviewServlet extends HttpServlet {
 				List<String> categories = accountAccessor.getCategories(userAccount);
 				request.setAttribute("categories", categories);
 				
-				HashMap<String, Integer> totals = getTotals(transactions);
-				List<String> graphCategories = new ArrayList<String>(totals.size());
-				List<String> graphTotals = new ArrayList<String>(totals.size());
-				Set set = totals.entrySet();
+				HashMap<String, Integer> income = getTotals(true, transactions);
+				List<String> incomeCategories = new ArrayList<String>(income.size());
+				List<String> incomeTotals = new ArrayList<String>(income.size());
+				Set set = income.entrySet();
 				Iterator iterator = set.iterator();
 				while(iterator.hasNext()) {
 					Map.Entry a = (Map.Entry) iterator.next();
-					graphCategories.add((String) a.getKey());
-					graphTotals.add((String) String.valueOf(a.getValue()));
+					incomeCategories.add((String) a.getKey());
+					incomeTotals.add((String) String.valueOf(a.getValue()));
 				}
-				request.setAttribute("graphCategories", graphCategories);
-				request.setAttribute("graphTotals", graphTotals);
+				request.setAttribute("incomeCategories", incomeCategories);
+				request.setAttribute("incomeTotals", incomeTotals);
+				
+				HashMap<String, Integer> expenses = getTotals(false, transactions);
+				List<String> expensesCategories = new ArrayList<String>(expenses.size());
+				List<String> expensesTotals = new ArrayList<String>(expenses.size());
+				set = expenses.entrySet();
+				iterator = set.iterator();
+				while(iterator.hasNext()) {
+					Map.Entry a = (Map.Entry) iterator.next();
+					expensesCategories.add((String) a.getKey());
+					expensesTotals.add((String) String.valueOf(a.getValue()));
+				}
+				request.setAttribute("expensesCategories", expensesCategories);
+				request.setAttribute("expensesTotals", expensesTotals);
 				
 				accountAccessor.close();
 				accessor.close();
@@ -114,17 +127,19 @@ public class OverviewServlet extends HttpServlet {
 		return expenses;
 	}
 	
-	private HashMap<String, Integer> getTotals(List<Transaction> transactions) {
+	private HashMap<String, Integer> getTotals(boolean isIncome, List<Transaction> transactions) {
 		HashMap<String, Integer> totals = new HashMap<String, Integer>();
 		for (Transaction transaction : transactions) {
-			String category = transaction.getCategory();
-			int value = Double.valueOf(transaction.getValue()).intValue();
-			if (totals.containsKey(category)) {
-				totals.put(category, totals.get(category) + value);
-			} else {
-				totals.put(category, value);
+			if (transaction.isIncome() == isIncome) {
+				String category = transaction.getCategory();
+				int value = Double.valueOf(transaction.getValue()).intValue();
+				if (totals.containsKey(category)) {
+					totals.put(category, totals.get(category) + value);
+				} else {
+					totals.put(category, value);
+				}
 			}
-		}		
+		}
 		return totals;
 	}
 

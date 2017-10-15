@@ -394,8 +394,10 @@
                 </div>
 
                 <!-- GRAPH OF TRANSACTION -->
-                <canvas id="graphs" width="700" height="400" style="display: block; width: 700px; height: 400px;"></canvas>
-
+                <div class="row">
+                	<canvas id="graph-income" width="500" height="300" style="display: block; width: 500px; height: 300px; margin: 0 auto;"></canvas>
+                	<canvas id="graph-expenses" width="500" height="300" style="display: block; width: 500px; height: 300px; margin: 0 auto;"></canvas>
+				</div>
                 <!-- TABLE OF TRANSACTION -->
                 <section>
                     <h2>Transactions</h2>
@@ -642,30 +644,61 @@
         }
     </script>
     <script>
-	    var ctx = document.getElementById('graphs').getContext('2d');
-	    
-	    var dataset = <c:out value="${graphTotals}" />;
-	    var labels = [<c:forEach var= "category" items="${graphCategories}" >"<c:out value='${category}' />",</c:forEach>]
-	    
-    	data = {
+	    var graphIncome = document.getElementById('graph-income').getContext('2d');
+	    var graphExpenses = document.getElementById('graph-expenses').getContext('2d');
+
+    	var incomeDataSet = <c:out value="${incomeTotals}" />;
+       	var expensesDataSet = <c:out value="${expensesTotals}" />;
+       	
+    	var incomeData = {
     	    datasets: [{
-    	        data: dataset,
-    	        backgroundColor: palette('cb-Spectral', dataset.length).map(function(hex) {
+    	        data: incomeDataSet,
+    	        backgroundColor: palette('cb-Spectral', incomeDataSet.length).map(function(hex) {
     	            return '#' + hex;
     	          })
     	    }],
 
-    	    labels: labels
+    	    labels: [<c:forEach var= "category" items="${incomeCategories}" >"<c:out value='${category}' />",</c:forEach>]
     	};
     	
-    	options = {
-   			responsive: false
-    	};
+    	var expensesData = {
+       	    datasets: [{
+       	        data: expensesDataSet,
+       	        backgroundColor: palette('cb-Spectral', expensesDataSet.length).map(function(hex) {
+       	            return '#' + hex;
+       	          })
+       	    }],
+
+       	    labels: [<c:forEach var= "category" items="${expensesCategories}" >"<c:out value='${category}' />",</c:forEach>]
+       	};
+
+    	Chart.defaults.global.responsive = false;
+    	Chart.defaults.global.title.display = true;
+    	Chart.defaults.global.title.position = 'top';
+    	Chart.defaults.global.title.fontSize = 30;
+    	Chart.defaults.global.title.fontFamily = '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    	Chart.defaults.global.title.fontStyle = 'normal';
+    	Chart.defaults.global.title.fontColor = '#212529';
+    	Chart.defaults.global.legend.position = 'right';
 	    
-	    var expenses = new Chart(ctx, {
+	    var income = new Chart(graphIncome, {
 	        type: 'doughnut',
-	        data: data,
-	        options: options
+	        data: incomeData,
+	        options: {
+	   	        title: {
+	   	            text: 'Income'
+	   	        }
+	    	}
+	    });
+	    
+	    var expenses = new Chart(graphExpenses, {
+	        type: 'doughnut',
+	        data: expensesData,
+	        options: {
+	   	        title: {
+	   	            text: 'Expenses'
+	   	        }
+	    	}
 	    });
     </script>
 </body>
