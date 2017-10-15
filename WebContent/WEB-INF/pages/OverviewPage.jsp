@@ -263,6 +263,13 @@
                     Add transaction
                 </button>
                 </ul>
+                
+                 <!-- TRIGGERS ADD BUDGET MODAL -->
+                <ul class="nav nav-pills flex-column add-budget">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBudget" id="add-budget">
+                    Add budget
+                </button>
+                </ul>
             </nav>
 
             <!-- ADD TRANSACTION MODAL -->
@@ -363,6 +370,49 @@
                     </form>
                 </div>
             </div>
+            
+            <!-- ADD BUDGET MODAL -->
+            <div class="modal fade" id="addBudget" tabindex="-1" role="dialog" aria-labelledby="addBudgetLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <form id="AddBudget" action="AddBudget" method="post">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addBudgetLabel">Add Budget</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="alert alert-danger" id="add-Budget-error" role="alert">
+                            </div>
+                            <div class="container">
+                                <div class="form-group row">
+                                    <label for="Amount" class="col-sm-3 col-form-label">Amount</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">$</span>
+                                            <input type="number" name="amount" min="0.00" step="0.01" class="form-control" id="Amount" placeholder="0.00">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                           <div class="container">
+                                <div class="form-group row">
+                                    <label for="Date" class="col-sm-3 col-form-label">Date</label>
+                                    <div class="col-sm-9">
+                                        <div id="Budget-datepicker"></div>
+                                        <input id="Budget-date" type="date" name="date">
+                                    </div>
+                                </div>
+                            </div>                        
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary" value="Add Budget">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <!-- MAIN -->
             <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
@@ -402,19 +452,13 @@
                 <section>
                     <h2>Transactions</h2>
                     <div class="table-responsive">
-                   		<script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
-                        <table class="table table-striped sortable">
+                        <table class="table table-striped">
                            <thead>
                                 <tr>
-                                   <th style="cursor:pointer" data-autoclick="true">Date 
-                                   <script>
-									    window.onload = function() {
-									        $('[data-autoclick="true"]').click();
-									    };
-									</script></th>
-                                   <th style="cursor:pointer">Description</th>
-                                   <th style="cursor:pointer">Value</th>
-                                   <th style="cursor:pointer">Category</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Value</th>
+                                    <th>Category</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -550,6 +594,14 @@
             todayBtn: "linked",
             todayHighlight: true
         });
+        
+        $('#budget-datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            weekStart: 1,
+            maxViewMode: 2,
+            todayBtn: "linked",
+            todayHighlight: true
+        });
 
         $('#edit-transaction-datepicker').datepicker({
             format: "yyyy-mm-dd",
@@ -560,6 +612,12 @@
         });
 
         $("#add-transaction").click(function () {
+            setTimeout(function () {
+                $("#transaction-datepicker .today").trigger('click');
+            }, 10);
+        });
+        
+        $("#add-budget").click(function () {
             setTimeout(function () {
                 $("#transaction-datepicker .today").trigger('click');
             }, 10);
@@ -588,6 +646,7 @@
 
         $('#add-transaction-error').hide();
         $('#edit-transaction-error').hide();
+        $('#add-budget-error').hide();
 
         $('#AddTransaction').submit(function (e) {
             // set date
@@ -602,6 +661,22 @@
             if (error.length > 0) {
                 $('#add-transaction-error').text(error);
                 $('#add-transaction-error').show();
+                return false;
+            }
+        });
+        
+        $('#AddBudget').submit(function (e) {
+            // set date
+            var date = $("#transaction-datepicker").find(".active").data("date");
+            $('#transaction-date').val(date);
+
+            // form validation
+            var error = "";
+            $('#add-transaction-error').hide();
+            if (!$('#Amount').val()) error += "Please enter an amount.";
+            if (error.length > 0) {
+                $('#add-budget-error').text(error);
+                $('#add-budget-error').show();
                 return false;
             }
         });
