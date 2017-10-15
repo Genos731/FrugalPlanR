@@ -51,7 +51,7 @@ public class SignUpServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         String user = request.getParameter("user");
-        String pwd = request.getParameter("pwd");
+        String pwd = String.valueOf(request.getParameter("pwd").hashCode());
         String email = request.getParameter("email");
         //System.out.println(user + "and" + pwd);
         

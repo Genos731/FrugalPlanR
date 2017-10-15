@@ -61,7 +61,11 @@ public class BudgetServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		request.getRequestDispatcher("WEB-INF/pages/BudgetPage.jsp").forward(request, response);
+		if (request.getSession().getAttribute("userName") == null) {
+			response.sendRedirect(request.getContextPath() + "/Login");
+		} else {
+			request.getRequestDispatcher("WEB-INF/pages/BudgetPage.jsp").forward(request, response);
+		}
 	}
 
 	/**

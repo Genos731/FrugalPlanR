@@ -96,8 +96,13 @@ public class OverviewServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
-	}
+		if (request.getSession().getAttribute("userName") == null) {
+			response.sendRedirect(request.getContextPath() + "/Login");
+		} else {
+			request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
+		}
+		}
+		
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

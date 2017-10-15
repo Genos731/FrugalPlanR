@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         String user = request.getParameter("user");
-        String pwd = request.getParameter("pwd");
+        String pwd = String.valueOf(request.getParameter("pwd").hashCode());
         //System.out.println(user + "and" + pwd);
         
         AccountAccessor accessor = new AccountAccessorImpl();

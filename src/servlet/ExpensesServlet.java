@@ -64,7 +64,11 @@ public class ExpensesServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		request.getRequestDispatcher("WEB-INF/pages/ExpensePage.jsp").forward(request, response);
+		if (request.getSession().getAttribute("userName") == null) {
+			response.sendRedirect(request.getContextPath() + "/Login");
+		} else {
+			request.getRequestDispatcher("WEB-INF/pages/ExpensePage.jsp").forward(request, response);
+		}
 	}
 
 	/**

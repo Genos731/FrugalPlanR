@@ -30,7 +30,11 @@ public class EditProfileServlet extends HttpServlet {
 		String bullshit = request.getParameter("bullshit");
 		
 		request.setAttribute("newBullshit", bullshit);
-		request.getRequestDispatcher("WEB-INF/pages/EditProfilePage.jsp").forward(request, response);
+		if (request.getSession().getAttribute("userName") == null) {
+			response.sendRedirect(request.getContextPath() + "/Login");
+		} else {
+			request.getRequestDispatcher("WEB-INF/pages/EditProfilePage.jsp").forward(request, response);
+		}
 	}
 
 	/**
