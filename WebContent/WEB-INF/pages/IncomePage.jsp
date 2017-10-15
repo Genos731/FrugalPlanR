@@ -369,13 +369,20 @@
                 <section>
                     <h2>Income</h2>
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                    	<script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+                        <table class="table table-striped sortable">
                            <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Value</th>
-                                    <th>Category</th>
+                                   <th style="cursor:pointer" data-autoclick="true">
+                                   <script>
+									    window.onload = function() {
+									        $('[data-autoclick="true"]').click();
+									    };
+									</script>
+									Date</th>
+                                   <th style="cursor:pointer">Description</th>
+                                   <th style="cursor:pointer">Value</th>
+                                   <th style="cursor:pointer">Category</th>
                                     <th></th>
                                 </tr>
                             </thead>
