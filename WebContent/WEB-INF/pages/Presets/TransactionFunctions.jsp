@@ -1,4 +1,4 @@
-<script>
+	<script>
         $('#transaction-datepicker').datepicker({
             format: "dd/mm/yyyy",
             weekStart: 1,

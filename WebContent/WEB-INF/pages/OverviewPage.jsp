@@ -229,6 +229,8 @@
     
     <%@include file="Presets/Header.jsp" %>
     
+    <div class="container-fluid">
+        <div class="row">
             <!-- SIDEBAR -->
             <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
                 <ul class="nav nav-pills flex-column">
@@ -318,10 +320,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 	<script src="https://codepen.io/anon/pen/aWapBE.js"></script> <!-- http://google.github.io/palette.js/ -->
-    
-    
+	
     <%@include file="Presets/TransactionFunctions.jsp" %>
-    
     
     <script>
 	    var graphIncome = document.getElementById('graph-income').getContext('2d');
@@ -382,8 +382,4 @@
 	    });
     </script>
 </body>
-
-
-
-
 </html>

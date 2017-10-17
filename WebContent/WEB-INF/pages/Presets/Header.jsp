@@ -1,4 +1,4 @@
-<nav class="navbar fixed-top navbar-light">
+	<nav class="navbar fixed-top navbar-light">
         <a href="Overview"><img class="logo" src="https://i.imgur.com/XTgvOoN.png" alt="FrugalPlanr" /></a>
         <span align="right" class="row">
 	        <form action="EditProfile">
@@ -9,6 +9,3 @@
 	        </form>
     </span>
     </nav>
-
-    <div class="container-fluid">
-        <div class="row">

@@ -1,4 +1,4 @@
-<div class="modal fade" id="addTransaction" tabindex="-1" role="dialog" aria-labelledby="addTransactionLabel" aria-hidden="true">
+			<div class="modal fade" id="addTransaction" tabindex="-1" role="dialog" aria-labelledby="addTransactionLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <form id="AddTransaction" action="AddTransaction" method="post">
                         <div class="modal-content">
@@ -50,7 +50,7 @@
                                     <label for="Date" class="col-sm-3 col-form-label">Date</label>
                                     <div class="col-sm-9">
                                         <div id="transaction-datepicker"></div>
-                                        <input id="transaction-date" type="date" name="date">
+                                        <input id="transaction-date" type="number" name="date">
                                     </div>
                                 </div>
                             </div>
