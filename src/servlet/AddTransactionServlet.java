@@ -37,8 +37,16 @@ public class AddTransactionServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect(request.getContextPath() + "/");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+		String redirect = request.getHeader("referer");
+		if (redirect == null){
+			response.sendRedirect(request.getContextPath() + "/");
+		}
+		
+		String parts[] = redirect.split("/");
+		String lastPart = parts[parts.length - 1];
+		response.sendRedirect(request.getContextPath() + "/" + lastPart);
+		
 	}
 
 	/**

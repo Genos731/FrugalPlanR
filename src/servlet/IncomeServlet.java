@@ -53,6 +53,9 @@ public class IncomeServlet extends HttpServlet {
 				}
 
 				request.setAttribute("transactions", incomes);
+				
+				List<String> categories = accountAccessor.getCategories(userAccount);
+				request.setAttribute("categories", categories);
 						
 				accountAccessor.close();
 				accessor.close();

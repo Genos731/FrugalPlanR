@@ -61,6 +61,7 @@ public class OverviewServlet extends HttpServlet {
 				request.setAttribute("categories", categories);
 				
 				HashMap<String, Integer> income = getTotals(true, transactions);
+				
 				List<String> incomeCategories = new ArrayList<String>(income.size());
 				List<String> incomeTotals = new ArrayList<String>(income.size());
 				Set set = income.entrySet();
@@ -101,7 +102,7 @@ public class OverviewServlet extends HttpServlet {
 		} else {
 			request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
 		}
-		}
+	}
 		
 
 	/**

@@ -110,20 +110,26 @@
             line-height: 1.5
         }
 
-        .form-control#Repeating, .form-control#Category {
+        .form-control#Repeating, .form-control#Category, .form-control#edit-repeating, .form-control#edit-category {
             height: 45px;
         }
 
         .new-category {
             margin-top: 15px;
         }
+        
+        #EditTransaction .modal-header {
+            margin-bottom: 15px;
+        }
 
-        #transaction-datepicker .datepicker {
+        .datepicker {
             margin: 0 auto;
         }
 
         #transaction-datepicker tfoot,
-        #transaction-date {
+        #transaction-date,
+        #edit-transaction-datepicker tfoot,
+        #edit-transaction-date {
             display: none;
         }
 
@@ -197,6 +203,14 @@
         .date-picker a {
             margin: 0 15px;
         }
+        
+        tr .edit {
+        	opacity: 0;
+        }
+        
+        tr:hover .edit {
+        	opacity: 1;
+       	}
 
         section {
             margin-top: 10px;
@@ -265,6 +279,9 @@
                 <section>
                     <h2>Income</h2>
                     <%@include file="Presets/Table.jsp" %>
+                    
+                    <!-- EDIT TRANSACTION MODAL -->
+		            <%@include file="Presets/EditTransaction.jsp" %>
                 </section>
             </main>
         </div>
@@ -279,50 +296,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
-    <script>
-        $('#transaction-datepicker').datepicker({
-            format: "dd/mm/yyyy",
-            weekStart: 1,
-            maxViewMode: 2,
-            todayBtn: "linked",
-            todayHighlight: true
-        });
-
-        $("#add-transaction").click(function () {
-            setTimeout(function () {
-                $("#transaction-datepicker .today").trigger('click');
-            }, 10);
-        });
-
-        $('#new-category').hide();
-
-        function changeCategory() {
-            if(document.getElementById('Category').value == "new") {
-                $('#new-category').show();
-            } else {
-                $('#new-category').hide();
-            }
-        }
-
-        $('#add-transaction-error').hide();
-
-        $('#AddTransaction').submit(function (e) {
-            // set date
-            var date = $("#transaction-datepicker").find(".active").data("date");
-            $('#transaction-date').val(date);
-            console.log($('#transaction-date').val());
-
-            // form validation
-            var error = "";
-            $('#add-transaction-error').hide();
-            if (!$('#Amount').val()) error += "Please enter an amount.";
-            if (error.length > 0) {
-                $('#add-transaction-error').text(error);
-                $('#add-transaction-error').show();
-                return false;
-            }
-        });
-    </script>
+   <%@include file="Presets/TransactionFunctions.jsp" %>
 </body>
 
 </html> 
