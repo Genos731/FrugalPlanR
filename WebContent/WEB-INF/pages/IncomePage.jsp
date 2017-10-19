@@ -22,7 +22,8 @@
     <!-- NAVBAR/HEADER -->
     
     <%@include file="Presets/Header.jsp" %>
-    
+    <div class="container-fluid">
+        <div class="row">
             <!-- SIDEBAR -->
             <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
                 <ul class="nav nav-pills flex-column">
@@ -55,10 +56,9 @@
             <!-- MAIN -->
             <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
                 <!-- EXPLANATION -->
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button> This is the Income page where you can see all your Income statements
+                <div class="alert alert-info alert-dismissible fade show" role="alert" id="explanation" style="display: none">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="hideExplanation()"><span aria-hidden="true">&times;</span></button>
+                    This is the Income page where you can see a list of your income transactions.
                 </div>
 
                 <!-- DATE PICKER -->
@@ -91,6 +91,13 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
    <%@include file="Presets/TransactionFunctions.jsp" %>
+    <script>    
+    	function hideExplanation() {
+    		localStorage.setItem('<c:out value="${userName}" /> income', true);
+    	}
+    	
+    	if (!localStorage.getItem('<c:out value="${userName}" /> income')) $('#explanation').show();
+    </script>
 </body>
 
 </html> 

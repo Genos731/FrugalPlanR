@@ -58,10 +58,16 @@
             <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
             
                 <!-- EXPLANATION -->
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button> This is the Overview page where you can see all your transactions
+                <div class="alert alert-info alert-dismissible fade show" role="alert" id="explanation" style="display: none">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="hideExplanation()"><span aria-hidden="true">&times;</span></button>
+                    Welcome to <strong>FrugalPlanR</strong>! This is the Overview page where you can see all of your transactions for both expenses and income.<br>
+                    Here are a few tips that might help you out:
+                    <ul>
+	                    <li>The sortable table shows a list of transactions for the time range you've selected.</li>
+	                    <li>The pie charts show the proportion of your spending in each category.</li>
+	                    <li>To add a transaction, click the <em>Add transaction</em> button in the sidebar.</li>
+	                    <li>To edit or delete a transaction, hover over the relevant row in the table and click the <em>Edit</em> button.</li>
+                    </ul>
                 </div>
 
                 <!-- DATE PICKER -->
@@ -173,6 +179,13 @@
 	   	        }
 	    	}
 	    });
+    </script>
+    <script>    
+    	function hideExplanation() {
+    		localStorage.setItem('<c:out value="${userName}" /> overview', true);
+    	}
+    	
+    	if (!localStorage.getItem('<c:out value="${userName}" /> overview')) $('#explanation').show();
     </script>
 </body>
 </html>

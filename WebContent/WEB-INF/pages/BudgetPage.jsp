@@ -55,9 +55,9 @@
             <!-- MAIN -->
             <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
                 <!-- EXPLANATION -->
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <div class="alert alert-info alert-dismissible fade show" role="alert" id="explanation" style="display: none">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="hideExplanation()"><span aria-hidden="true">&times;</span></button>
+                    This is the Budget page where you can organise your budgets.
                 </div>
 
                 <!-- DATE PICKER -->
@@ -93,6 +93,13 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
     <%@include file="Presets/TransactionFunctions.jsp" %>
+    <script>    
+    	function hideExplanation() {
+    		localStorage.setItem('<c:out value="${userName}" /> budget', true);
+    	}
+    	
+    	if (!localStorage.getItem('<c:out value="${userName}" /> budget')) $('#explanation').show();
+    </script>
 </body>
 
 </html>
