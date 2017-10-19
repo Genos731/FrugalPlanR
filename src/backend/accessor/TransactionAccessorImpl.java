@@ -29,7 +29,7 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 	public void create(Account a, boolean isIncome, double value,
 			Calendar calendar, String description, String location,
 			Repeating repeating, String category) throws SQLException,
-			InvalidAccountException, IllegalArgumentException {
+	InvalidAccountException, IllegalArgumentException {
 		// Check that account is valid
 		AccountAccessorImpl accountImpl = new AccountAccessorImpl();
 		if (!accountImpl.isValidAccount(a)) {
@@ -95,13 +95,14 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 
 	@Override
 	public void delete(Transaction t) throws SQLException,
-			InvalidTransactionException {
+	InvalidTransactionException {
 		// Do nothing if transaction does not exists.
 		if (!isValidTransaction(t))
 			throw new InvalidTransactionException("Invalid Transaction");
 
 		// Prepare SQL
-		String sqlQuery = "DELETE FROM transaction WHERE id = ?";
+		String sqlQuery = "DELETE FROM transaction "
+				+ "WHERE id = ?";
 
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setInt(1, t.getId());
@@ -114,17 +115,33 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 		int categoryID = getCategoryID(t.getCategory(), t.getAccountID());
 
 		// Get all transactions with that category
-		sqlQuery = "SELECT * FROM transaction WHERE category_id = ?";
+		sqlQuery = "SELECT * "
+				+ "FROM transaction "
+				+ "WHERE category_id = ?";
 		statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setInt(1, categoryID);
 
 		ResultSet result = statement.executeQuery();
 		// If no more transactions have that category id
 		if (!result.next()) {
-			sqlQuery = "DELETE FROM category WHERE id = ?";
-			statement = dbConnection.prepareStatement(sqlQuery);
-			statement.setInt(1, categoryID);
-			statement.executeUpdate();
+			// If nothing in category_list references this category id
+			String sqlQuery2 = "SELECT * "
+					+ "FROM category_list "
+					+ "WHERE category_id = ?";
+			PreparedStatement statement2 = dbConnection.prepareStatement(sqlQuery2);
+			statement2.setInt(1, categoryID);
+
+			ResultSet result2 = statement.executeQuery();
+			// Nothing reference this categoryid, delete it
+			if (!result2.next() ) {
+				sqlQuery = "DELETE FROM category "
+						+ "WHERE id = ?";
+				statement = dbConnection.prepareStatement(sqlQuery);
+				statement.setInt(1, categoryID);
+				statement.executeUpdate();
+			}
+			statement2.close();
+			result2.close();
 		}
 
 		statement.close();

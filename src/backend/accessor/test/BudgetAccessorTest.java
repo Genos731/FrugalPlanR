@@ -1,9 +1,8 @@
 package backend.accessor.test;
 
-import java.sql.Date;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import backend.accessor.AccountAccessor;
@@ -12,87 +11,37 @@ import backend.accessor.BudgetAccessor;
 import backend.accessor.BudgetAccessorImpl;
 import backend.container.Account;
 import backend.container.Budget;
-import backend.exception.InvalidAccountException;
 
 public class BudgetAccessorTest {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// Get an account
 		AccountAccessor accountAccessor = new AccountAccessorImpl();
-		Account account = null;
-		try {
-			account = accountAccessor.getAccount("Bobby");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			accountAccessor.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		// Create budget accessor
-		BudgetAccessor accessor = new BudgetAccessorImpl();
+		Account a = accountAccessor.getAccount("Betsy");
+		accountAccessor.close();
 
 		// Test create
-		try {
-			Date startDate = java.sql.Date.valueOf("2013-01-01");
-			Date endDate = java.sql.Date.valueOf("2012-12-31");
-			accessor.create(account, 6969, startDate, endDate);
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidAccountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		BudgetAccessor budgetAccessor = new BudgetAccessorImpl();
+		//Calendar startDate = new GregorianCalendar(2012, 06, 06);
+		//Calendar endDate = new GregorianCalendar(2017, 12, 25);
+		//ArrayList<String> list = new ArrayList<String>();
+		//list.add("Porn");
+		//list.add("Anime");
+		//list.add("Whips");
+		//budgetAccessor.create(a, 1050.44, startDate, endDate, list);
 		
 		// Test get
-		List<Budget> budgetList = null;
-		try {
-			budgetList = accessor.getBudgets(account);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+		List<Budget> bList = budgetAccessor.getBudgets(a);
+		Budget b = bList.get(0);
+		//System.out.println(b.getGoalValue());
 		
-		// Test updateGoalValue
-		/**
-		try {
-			//accessor.updateGoalValue(budgetList.get(0), 2017);	
-			
-			// Date needs to be in the format java.sql.Date.valueOf("2013-09-04")
-			//Date startDate = java.sql.Date.valueOf("2013-09-04");
-			//accessor.updateStartDate(budgetList.get(0), startDate);
-			
-			Date endDate = java.sql.Date.valueOf("2012-09-04");
-			accessor.updateEndDate(budgetList.get(0), endDate);
-		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		**/
+		// Test update
+		//budgetAccessor.updateGoalValue(b, 69.69);
+		//budgetAccessor.updateStartDate(b, new GregorianCalendar(2015, 1, 1));
+		//budgetAccessor.updateEndDate(b, new GregorianCalendar(2015, 1, 1));
 		
-		/**
 		// Test delete
-		try {
-			accessor.delete(budgetList.get(0));
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		**/
-		
-		try {
-			accessor.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		budgetAccessor.delete(b);
 	}
 
 }

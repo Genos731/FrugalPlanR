@@ -1,7 +1,7 @@
 package backend.accessor;
 
-import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 import backend.container.Account;
@@ -18,11 +18,12 @@ public interface BudgetAccessor extends AutoCloseable {
 	 * @param goalValue Goal value of budget
 	 * @param startDate Start date of budget
 	 * @param endDate End date of budget
+	 * @param categoryList List of categories associated with budget
 	 * @throws SQLException If a database error occurs
 	 * @throws IllegalArgumentException If dates are invalid
 	 * @throws InvalidAccountException If account is invalid
 	 */
-	public void create(Account a, double goalValue, Date startDate, Date endDate) throws SQLException, IllegalArgumentException, InvalidAccountException;
+	public void create(Account a, double goalValue, Calendar startDate, Calendar endDate, List<String> categoryList) throws SQLException, IllegalArgumentException, InvalidAccountException;
 
 	/**
 	 * Delete a budget from the database
@@ -38,7 +39,7 @@ public interface BudgetAccessor extends AutoCloseable {
 	 * @param goalValue The new goal value
 	 * @throws SQLException If a database error occurs
 	 */
-	public void updateGoalValue(Budget b, double goalValue) throws SQLException;
+	public void updateGoalValue(Budget b, double goalValue) throws SQLException, InvalidBudgetException;
 	
 	/**
 	 * Updates the start date of a budget
@@ -47,7 +48,7 @@ public interface BudgetAccessor extends AutoCloseable {
 	 * @throws SQLException If a database error occurs
 	 * @throws IllegalArgumentException If the start date is invalid (after end date)
 	 */
-	public void updateStartDate(Budget b, Date startDate) throws SQLException, IllegalArgumentException;
+	public void updateStartDate(Budget b, Calendar startDate) throws SQLException, IllegalArgumentException, InvalidBudgetException;
 	
 	/**
 	 * Updates the end date of a budget
@@ -56,7 +57,7 @@ public interface BudgetAccessor extends AutoCloseable {
 	 * @throws SQLException If a database error occurs
 	 * @throws IllegalArgumentException If the end date is invalid (before start date)
 	 */
-	public void updateEndDate(Budget b, Date endDate) throws SQLException, IllegalArgumentException;
+	public void updateEndDate(Budget b, Calendar endDate) throws SQLException, IllegalArgumentException, InvalidBudgetException;
 	
 	/**
 	 * Returns a list of all budgets associated with the account
