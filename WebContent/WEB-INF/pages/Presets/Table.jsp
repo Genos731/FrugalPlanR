@@ -1,4 +1,4 @@
-<div class="table-responsive">
+					<div class="table-responsive">
                    		<script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
                         <table class="table table-striped sortable">
                            <thead>
