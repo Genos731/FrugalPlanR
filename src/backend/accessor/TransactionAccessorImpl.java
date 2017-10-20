@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -204,6 +205,52 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 		// Otherwise return the list
 		if (transactionList.size() == 0)
 			return null;
+		return transactionList;
+	}
+	
+	@Override
+	public List<Transaction> getTransactionWithOptions(Account a, Calendar date, int option, int neutrality) throws SQLException {
+		List<Transaction> transactionList = getTransaction(a);
+		
+		if (neutrality == 1){
+			for (int counter = 0; counter < transactionList.size(); counter++){
+				if (transactionList.get(counter).getActualValue() < 0){
+					transactionList.remove(counter);
+					counter--;
+				}
+			}
+		}
+		else if (neutrality == 2){
+			for (int counter = 0; counter < transactionList.size(); counter++){
+				if (transactionList.get(counter).getActualValue() > 0){
+					transactionList.remove(counter);
+					counter--;
+				}
+			}
+		}
+		Calendar secondDate = new GregorianCalendar();
+		secondDate.setTimeInMillis(date.getTimeInMillis());
+		if (option == 1){
+			secondDate.add(Calendar.DATE, 1);
+		}
+		else if (option == 2){
+			secondDate.add(Calendar.DATE, 7);
+		}
+		else if (option == 3){
+			secondDate.add(Calendar.MONTH, 1);
+		}
+		if (option != 0){
+			long dateInMillis = date.getTimeInMillis();
+			long secondDateInMillis = secondDate.getTimeInMillis();
+			for (int counter = 0; counter < transactionList.size(); counter++){	
+				long current = transactionList.get(counter).getCalendar().getTimeInMillis();
+				if (current < dateInMillis || current > secondDateInMillis){
+					transactionList.remove(counter);
+					counter--;
+				}
+			}
+		}
+		
 		return transactionList;
 	}
 

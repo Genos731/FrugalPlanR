@@ -80,6 +80,31 @@ public interface TransactionAccessor extends AutoCloseable {
 	 * @throws SQLException
 	 *             If a database error occurs
 	 */
+	
+	public List<Transaction> getTransactionWithOptions(Account a, Calendar date, int option, int neutrality) throws SQLException;
+	
+	/**
+	 * Returns a specified list of categories associated with the account
+	 * Returns null if list is empty or account doesnt exists
+	 * 
+	 * @param a
+	 *            Account categories are associated with
+	 * @param date
+	 * 			  date is the current date.           
+	 * @param option
+	 * 			  if option = 0 then returns all data
+	 * 			  if option = 1 then returns within a day
+	 * 			  if option = 2 then returns within a week
+	 * 			  if option = 3 then returns within a month   
+	 * @param neutrality
+	 * 			  if neutrality = 0 then returns + and - results
+	 * 			  if neutrality = 1 then returns + results
+	 * 			  if neutrality = 2 then returns - results        
+	 * @return A list of categories, null if list is empty
+	 * @throws SQLException
+	 *             If a database error occurs
+	 */
+	
 	public List<String> getCategories(Account a) throws SQLException;
 
 	/**

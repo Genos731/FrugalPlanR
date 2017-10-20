@@ -3,7 +3,10 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +50,33 @@ public class OverviewServlet extends HttpServlet {
 				TransactionAccessorImpl accountAccessor = new TransactionAccessorImpl();
 				AccountAccessor accessor = new AccountAccessorImpl();
 				Account userAccount = accessor.getAccount(username);
-				List<Transaction> transactions = accountAccessor.getTransaction(userAccount);	
+				
+				
+				Calendar currentDate = new GregorianCalendar();
+				String stringDate = (String) request.getSession().getAttribute("date");
+				if (stringDate == null){
+					currentDate = Calendar.getInstance();
+				}else{
+					currentDate = Calendar.getInstance();
+				}
+				
+				String dateFrequency = (String) request.getSession().getAttribute("dateFrequency");
+				int frequencyNum = 0;
+				if (dateFrequency != null){
+					if (dateFrequency.equals("daily")){
+						frequencyNum = 1;
+					}
+					else if (dateFrequency.equals("weekly")){
+						frequencyNum = 2;
+					}
+					else if (dateFrequency.equals("monthly")){
+						frequencyNum = 3;
+					}
+				}
+				
+				currentDate = Calendar.getInstance();
+							
+				List<Transaction> transactions = accountAccessor.getTransactionWithOptions(userAccount, currentDate, frequencyNum, 0);	
 				
 				double totalExpenses = totalExpenses(transactions);
 				double totalIncome = totalIncome(transactions);
