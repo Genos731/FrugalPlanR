@@ -3,12 +3,16 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,7 +51,101 @@ public class OverviewServlet extends HttpServlet {
 				TransactionAccessorImpl accountAccessor = new TransactionAccessorImpl();
 				AccountAccessor accessor = new AccountAccessorImpl();
 				Account userAccount = accessor.getAccount(username);
-				List<Transaction> transactions = accountAccessor.getTransaction(userAccount);	
+				
+				int frequencyNum = 0;
+				String frequency = (String) request.getParameter("frequency");
+				String frequency2 = (String) request.getSession().getAttribute("frequency");
+				
+				if (frequency != null){
+					if (frequency.equals("all time")){
+						request.setAttribute("frequency", "all time");
+					}
+					else if (frequency.equals("daily")){
+						frequencyNum = 1;
+						request.setAttribute("frequency", "daily");
+					}
+					else if (frequency.equals("weekly")){
+						frequencyNum = 2;
+						request.setAttribute("frequency", "weekly");
+					}
+					else if (frequency.equals("monthly")){
+						frequencyNum = 3;
+						request.setAttribute("frequency", "monthly");
+					}	
+				}
+				else{
+					if (frequency2 == null){
+						request.setAttribute("frequency", "all time");
+					}
+					else{
+						if (frequency2.equals("daily")){
+							frequencyNum = 1;
+							request.setAttribute("frequency", "daily");
+						}
+						else if (frequency2.equals("weekly")){
+							frequencyNum = 2;
+							request.setAttribute("frequency", "weekly");
+						}
+						else if (frequency2.equals("monthly")){
+							frequencyNum = 3;
+							request.setAttribute("frequency", "monthly");
+						}	
+					}
+				}
+				
+				Calendar currentDate = new GregorianCalendar();
+				Calendar stringDate = (Calendar) request.getSession().getAttribute("date");
+				if (stringDate == null){
+					currentDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
+					TimeZone timeZone = TimeZone.getTimeZone("Australia/Sydney");
+					currentDate.setTimeZone(timeZone);
+					
+					currentDate.set(Calendar.HOUR, 0);
+					currentDate.set(Calendar.MINUTE, 1);
+					currentDate.set(Calendar.SECOND, 0);
+					currentDate.set(Calendar.MILLISECOND, 0); 
+					
+					
+					System.out.println(currentDate.get(Calendar.HOUR));
+					
+					request.getSession().setAttribute("date", currentDate);
+				}else{
+					currentDate = stringDate;
+				}
+				
+				String changeTime = (String) request.getParameter("timeDirection");
+				if (changeTime != null){
+					if (changeTime.equals("<")){
+						if (frequencyNum == 1){
+							currentDate.add(Calendar.DATE, -1);
+						}
+						else if (frequencyNum == 2){
+							currentDate.add(Calendar.DATE, -7);
+						}
+						else if (frequencyNum == 3){
+							currentDate.add(Calendar.MONTH, -1);
+						}
+					}
+					else{
+						if (frequencyNum == 1){
+							currentDate.add(Calendar.DATE, 1);
+						}
+						else if (frequencyNum == 2){
+							currentDate.add(Calendar.DATE, 7);
+						}
+						else if (frequencyNum == 3){
+							currentDate.add(Calendar.MONTH, 1);
+						}
+					}
+					request.getSession().setAttribute("date", currentDate);
+					
+				}
+				request.setAttribute("day", currentDate.get(Calendar.DATE));
+				request.setAttribute("month", currentDate.get(Calendar.MONTH));
+				request.setAttribute("year", currentDate.get(Calendar.YEAR));
+				
+				
+				List<Transaction> transactions = accountAccessor.getTransactionWithOptions(userAccount, currentDate, frequencyNum, 0);	
 				
 				double totalExpenses = totalExpenses(transactions);
 				double totalIncome = totalIncome(transactions);

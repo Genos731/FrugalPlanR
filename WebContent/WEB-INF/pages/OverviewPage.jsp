@@ -73,19 +73,13 @@
                 </div>
 
                 <!-- DATE PICKER -->
-                <div class="card date-picker text-center">
-                    <div>
-                        <a class="text-secondary" href="#">&lt;</a> 
-                        <a class="text-secondary" href="#">All time</a>
-                        <a class="text-secondary" href="#">&gt;</a>
-                    </div>
-                </div>
+                <%@include file="Presets/DatePicker.jsp" %>
 
                 <!-- SUMMARY -->
                 <div class="card summary">
                     <div class="card-body">
                         <div class="row text-center">
-                            <span class="col text-primary">$<c:out value="${balance }" /> Balance</span>
+                            <span class="col text-primary">$<c:out value="${balance}" /> Balance</span>
                             <span class="col text-success">+ $<c:out value="${totalIncome }" /> Income</span>
                             <span class="col text-danger">- $<c:out value="${totalExpenses }" /> Expenses</span>
                             <span class="col text-warning"></span>

@@ -63,12 +63,8 @@
                 </div>
 
                 <!-- DATE PICKER -->
-                <div class="card date-picker text-center">
-                    <div>
-                        <a class="text-secondary" href="#">&lt;</a> <a class="text-secondary" href="#">All time</a>
-                        <a class="text-secondary" href="#">&gt;</a>
-                    </div>
-                </div>
+                
+                <%@include file="Presets/DatePicker.jsp" %>
 
                 <!-- TABLE OF TRANSACTION -->
                 <section>
