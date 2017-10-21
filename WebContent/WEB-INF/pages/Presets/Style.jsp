@@ -64,13 +64,17 @@
         .summary {
             font-size: 1.5em;
         }
+        
+        .alert-danger {
+        	white-space: pre;
+        }
 
-        .add-transaction {
+        .add-transaction, .add-budget {
             margin: 50px auto 0;
             width: 75%;
         }
 
-        .add-transaction .btn {
+        .add-transaction .btn, .add-budget .btn {
             font-size: 16pt;
         }
 
@@ -101,7 +105,7 @@
             margin-top: 15px;
         }
         
-        #EditTransaction .modal-header {
+        #EditTransaction .modal-header, #AddBudget .modal-header {
             margin-bottom: 15px;
         }
 
@@ -112,7 +116,10 @@
         #transaction-datepicker tfoot,
         #transaction-date,
         #edit-transaction-datepicker tfoot,
-        #edit-transaction-date {
+        #edit-transaction-date,
+        #budget-datepicker tfoot,
+        #budget-date
+         {
             display: none;
         }
 
@@ -170,6 +177,12 @@
         .datepicker table tr td span.active:hover:active:hover {
             background-color: #4ea3ff;
             border-color: #4ea3ff;
+        }
+        
+        .input-daterange .input-group-addon {
+        	padding: .5rem .75rem;
+        	margin-left: 0;
+        	margin-right: 0;
         }
 
         .more-options {

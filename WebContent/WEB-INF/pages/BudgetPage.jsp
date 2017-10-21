@@ -41,16 +41,78 @@
                     </li>
                 </ul>
 
-                <!-- TRIGGERS ADD TRANSACTION MODAL -->
-                <ul class="nav nav-pills flex-column add-transaction">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTransaction" id="add-transaction">
-	                    Add transaction
+                <!-- TRIGGERS ADD BUDGET MODAL -->
+                <ul class="nav nav-pills flex-column add-budget">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addBudget" id="add-budget">
+	                    Add budget
 	                </button>
                 </ul>
             </nav>
 
-            <!-- ADD TRANSACTION MODAL -->
-            <%@include file="Presets/AddTransaction.jsp" %>
+            <!-- ADD BUDGET MODAL -->
+			<div class="modal fade" id="addBudget" tabindex="-1" role="dialog" aria-labelledby="addBudgetLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <form id="AddBudget" action="AddBudget" method="post">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="AddBudgetLabel">Add budget</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="alert alert-danger" id="add-budget-error" role="alert">
+                            </div>
+                            <div class="container">
+                                <div class="form-group row">
+                                    <label for="Description" class="col-sm-3 col-form-label">Description</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="description" class="form-control" id="Description" placeholder="Description of your budget" maxlength="255">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="form-group row">
+                                    <label for="Amount" class="col-sm-3 col-form-label">Amount</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">$</span>
+                                            <input type="number" name="amount" min="0.00" step="0.01" class="form-control" id="Amount" placeholder="0.00">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="form-group row">
+                                    <label for="Categories" class="col-sm-3 col-form-label">Select categories</label>
+                                    <div class="col-sm-9">
+                                        <select multiple class="form-control" name="categories" id="Categories">
+                                            <c:forEach items="${categories}" var="category">
+                                            	<option value="<c:out value="${category}"/>"><c:out value="${category}"/></option>
+											</c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="form-group row">
+                                    <label for="Dates" class="col-sm-3 col-form-label">Date range</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-daterange input-group" id="budget-datepicker">
+									        <input type="text" class="input-sm form-control" name="start" id="budget-start" />
+									        <span class="input-group-addon">to</span>
+									        <input type="text" class="input-sm form-control" name="end" />
+									    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary" value="Add budget">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <!-- MAIN -->
             <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
@@ -92,7 +154,29 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
-    <%@include file="Presets/TransactionFunctions.jsp" %>
+    	<script>
+        $('#budget-datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            weekStart: 1,
+            maxViewMode: 2,
+            todayBtn: "linked"
+        });
+
+        $('#add-budget-error').hide();
+        $('#AddBudget').submit(function (e) {
+            // form validation
+            var error = "";
+            $('#add-budget-error').hide();
+            if (!$('#Amount').val()) error += "Please enter an amount.\n";
+            if (!$('#category').val()) error += "Please select at least one category.\n";
+            if (!$('#budget-start').val()) error += "Please select a date range.\n";
+            if (error.length > 0) {
+                $('#add-budget-error').text(error);
+                $('#add-budget-error').show();
+                return false;
+            }
+        });
+    </script>
     <script>    
     	function hideExplanation() {
     		localStorage.setItem('<c:out value="${userName}" /> budget', true);
