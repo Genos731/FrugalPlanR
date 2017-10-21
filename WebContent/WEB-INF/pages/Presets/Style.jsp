@@ -221,4 +221,11 @@
                 font-size: 1em;
             }
         }
+        
+        .card-date-picker {
+		    width: auto;
+		    height: auto;
+		    display:inline-block;
+        }
+        
     </style>
