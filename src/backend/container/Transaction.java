@@ -36,6 +36,19 @@ public class Transaction {
 		this.category = category;
 		this.accountID = accountID;
 	}
+	
+	public Transaction(Transaction e, Calendar calendar){
+		this.id = e.id;
+		this.isIncome = e.isIncome;
+		this.value = e.value;
+		this.calendar = calendar;
+		this.description = e.description;
+		this.location = e.location;
+		this.repeating = null;
+		this.category = e.category;
+		this.accountID = e.accountID;
+	}
+
 
 	public static int getDescLength() {
 		return DESC_LENGTH;
