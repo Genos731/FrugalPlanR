@@ -44,7 +44,7 @@ public class AddBudgetServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect(request.getContextPath() + "/");
+		response.sendRedirect(request.getContextPath() + "/Budget");
 	}
 
 	/**
@@ -55,10 +55,12 @@ public class AddBudgetServlet extends HttpServlet {
 		Double amount = new Double(request.getParameter("amount"));
 		String[] categoryArray = request.getParameterValues("categories");
 		List<String> categories = Arrays.asList(categoryArray);
-		Calendar dateStart = new GregorianCalendar();
-		dateStart.setTimeInMillis(Long.parseLong(request.getParameter("start")));
-		Calendar dateEnd = new GregorianCalendar();
-		dateStart.setTimeInMillis(Long.parseLong(request.getParameter("end")));
+		String[] start = new String[3];
+		start = request.getParameter("start").split("/");
+		Calendar dateStart = new GregorianCalendar(Integer.valueOf(start[0]), Integer.valueOf(start[1]), Integer.valueOf(start[2]));
+		String[] end = new String[3];
+		end = request.getParameter("end").split("/");
+		Calendar dateEnd = new GregorianCalendar(Integer.valueOf(end[0]), Integer.valueOf(end[1]), Integer.valueOf(end[2]));
 		
 		// Get an account
 		AccountAccessor accountAccessor = new AccountAccessorImpl();

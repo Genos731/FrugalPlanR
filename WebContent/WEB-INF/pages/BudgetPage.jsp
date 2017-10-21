@@ -158,7 +158,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
     	<script>
         $('#budget-datepicker').datepicker({
-            format: "dd/mm/yyyy",
+            format: "yyyy/mm/dd",
             weekStart: 1,
             maxViewMode: 2,
             todayBtn: "linked"
@@ -170,7 +170,7 @@
             var error = "";
             $('#add-budget-error').hide();
             if (!$('#Amount').val()) error += "Please enter an amount.\n";
-            if (!$('#category').val()) error += "Please select at least one category.\n";
+            if (!$('#Categories').val()) error += "Please select at least one category.\n";
             if (!$('#budget-start').val()) error += "Please select a date range.\n";
             if (error.length > 0) {
                 $('#add-budget-error').text(error);
