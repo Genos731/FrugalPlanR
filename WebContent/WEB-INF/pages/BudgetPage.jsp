@@ -125,14 +125,6 @@
                     This is the Budget page where you can organise your budgets.
                 </div>
 
-                <!-- DATE PICKER -->
-                <div class="card date-picker text-center">
-                    <div>
-                        <a class="text-secondary" href="#">&lt;</a> <a class="text-secondary" href="#">All time</a>
-                        <a class="text-secondary" href="#">&gt;</a>
-                    </div>
-                </div>
-
                 <!-- SUMMARY -->
                 <div class="card summary">
                     <div class="card-body">
@@ -163,9 +155,11 @@
 	                            		<td> <c:out value="${budget.getEndDateForPrint()}" /> </td>
 		                            	<td> $<c:out value="${budget.getGoalValue()}" /> </td>
 		                            	<td> <c:out value="${budget.description}" /> </td>
-		                            	<c:forEach var="category" items="${budget.getCategoryList()}">
-		                            	<td> <c:out value="${category}" /> </td>
-		                            	</c:forEach>
+		                            	<td> 
+				                            <c:forEach var="category" items="${budget.getCategoryList()}">
+				                            <c:out value="${category}" />
+				                            </c:forEach>
+		                            	</td>
 	                            	</tr>
 							 	</c:forEach>
 						 	</tbody>
