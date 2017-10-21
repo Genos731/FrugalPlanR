@@ -89,7 +89,8 @@ public class ExpensesServlet extends HttpServlet {
 				
 				Calendar currentDate = new GregorianCalendar();
 				Calendar stringDate = (Calendar) request.getSession().getAttribute("date");
-				if (stringDate == null){
+				String todayButton = (String) request.getParameter("today");
+				if (stringDate == null || todayButton != null){
 					currentDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
 					TimeZone timeZone = TimeZone.getTimeZone("Australia/Sydney");
 					currentDate.setTimeZone(timeZone);

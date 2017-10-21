@@ -8,6 +8,9 @@
     			<c:out value="${year}" />/
 	        	<c:out value="${month}"/>/
 	        	<c:out value="${day}"/>
+	        	
+	        	<input class="nav-link" type="submit" name="today" value="today">
+	        	
         		<li class="nav-item">
 	        		<input class="arrow right" type="submit" name="timeDirection" value="&gt">
 	    		</li>
@@ -31,6 +34,7 @@
 	                </li>
 	                <li class="nav-item">
 	                    <input class="nav-link" type="submit" name="frequency" value="monthly">
+	                    
 	                </li>
 	        	</c:if>
 	        	<c:if test = "${frequency == 'daily'}">
