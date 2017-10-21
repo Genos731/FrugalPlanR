@@ -1,14 +1,20 @@
 <div class="card-date-picker text-center">
     <div>
     	<form method="POST">
-    		<c:out value="${year}" />/
-	        	<c:out value="${month}"/>/
-	        	<c:out value="${day}"/>
-        
-	        <ul class="nav nav-pills flex-row">
-		        <li class="nav-item">
+    		<ul class="nav nav-pills flex-row">
+    			<li class="nav-item">
 	        		<input class="arrow left" type="submit" name="timeDirection" value="&lt">
 	    		</li>
+    			<c:out value="${year}" />/
+	        	<c:out value="${month}"/>/
+	        	<c:out value="${day}"/>
+        		<li class="nav-item">
+	        		<input class="arrow right" type="submit" name="timeDirection" value="&gt">
+	    		</li>
+        	</ul>
+        
+	        <ul class="nav nav-pills flex-row">
+		        
     		
 	        	<c:set var = "frequency" scope ="session" value = "${frequency }"></c:set>
 	        	
@@ -69,9 +75,7 @@
 	                    <input class="nav-link active" type="submit" name="frequency" value="monthly">
 	                </li>
 	        	</c:if>
-	        	<li class="nav-item">
-	        		<input class="arrow right" type="submit" name="timeDirection" value="&gt">
-	    		</li>
+	        	
             </ul>
    		
    		
