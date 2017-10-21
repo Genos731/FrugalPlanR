@@ -50,6 +50,18 @@ public class Budget {
 		return startDate;
 	}
 	
+	public String getStartDateForPrint() {
+		Calendar cal = this.startDate;
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		return format1.format(cal.getTime());
+ 	}
+	
+	public String getEndDateForPrint() {
+		Calendar cal = this.endDate;
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		return format1.format(cal.getTime());
+ 	}
+	
 	public void setStartDate(Calendar startDate) {
 		this.startDate = startDate;
 	}
