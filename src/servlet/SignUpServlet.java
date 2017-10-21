@@ -55,19 +55,20 @@ public class SignUpServlet extends HttpServlet {
 		try {
 			curr = accessor.getAccount(user);
 		} catch (SQLException e) {
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 		
-        if (accessor.isValidAccount(curr)) {	
-        	System.out.println("Username already exists");
+        if (accessor.isValidAccount(curr)) {
         	request.setAttribute("message", "Username already exists");
-        	request.getRequestDispatcher("WEB-INF/pages/SignUpPage.jsp").forward(request, response);
         } else {
         	try {
 				accessor.create(user, pwd, email);
-				response.sendRedirect(request.getContextPath() + "/Login");
+	        	request.setAttribute("success", "Account successfully created!");
+				request.getRequestDispatcher("WEB-INF/pages/LoginPage.jsp").forward(request, response);
 			} catch (IllegalArgumentException | InvalidEmailException | DuplicateUsernameException
 					| DuplicateEmailException | SQLException e) {
+	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			}       
         }	
@@ -77,6 +78,8 @@ public class SignUpServlet extends HttpServlet {
     		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
+        
+        if (request.getAttribute("message") != null) doGet(request, response);
 	}
 
 }

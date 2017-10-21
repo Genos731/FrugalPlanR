@@ -55,15 +55,12 @@ public class LoginServlet extends HttpServlet {
         if (accessor.isValidAccount(curr)) {	
         	//validate if user exists
         	if (curr.getPassword().equals(pwd)) {
-        		response.sendRedirect(request.getContextPath() + "/Overview");
         		request.getSession().setAttribute("userName", user);
         	} else {
         		request.setAttribute("message", "Invalid Password");
-        		request.getRequestDispatcher("WEB-INF/pages/LoginPage.jsp").forward(request, response);
         	}
         } else {
         	request.setAttribute("message","Account does not exist");
-        	request.getRequestDispatcher("WEB-INF/pages/LoginPage.jsp").forward(request, response);
         }
         	
         try {

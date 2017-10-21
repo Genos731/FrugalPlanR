@@ -61,7 +61,7 @@
             top: -1rem;
         }
         
-        #errorMessage .close {
+        #errorMessage .close, #successMessage .close {
         	margin-right: 8px;
         }
 
