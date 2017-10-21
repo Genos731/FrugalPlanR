@@ -123,6 +123,12 @@
                 <div class="alert alert-info alert-dismissible fade show" role="alert" id="explanation" style="display: none">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="hideExplanation()"><span aria-hidden="true">&times;</span></button>
                     This is the Budget page where you can organise your budgets.
+                    <ul>
+                    	<li>Budgets allow you to set an amount that you want to allocate to spending in a set of categories.</li>
+                    	<li>You can click on a budget row to see a list of transactions that count towards that budget.</li>
+                    	<li>To add a budget, click the <em>Add budget</em> button in the sidebar.</li>
+                    	<li>Budgets can contain one or more categories. To select multiple categories, hold Ctrl while selecting a category.</li>
+                   	</ul>
                 </div>
 
                 <!-- SUMMARY -->
