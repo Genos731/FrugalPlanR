@@ -28,16 +28,26 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 	}
 
 	@Override
-	public void create(Account a, double goalValue, Calendar startDate, Calendar endDate, List<String> categoryList) throws SQLException, IllegalArgumentException, InvalidAccountException {
+	public void create(Account a, String description, double goalValue,
+			Calendar startDate, Calendar endDate, List<String> categoryList)
+			throws SQLException, IllegalArgumentException,
+			InvalidAccountException {
+		if (!isValidLength(description)) {
+			throw new IllegalArgumentException("Strings must be less than "
+					+ MAX_STRING + " characters");
+		}
+
 		// If startDate > endDate, throw error
 		if (startDate.after(endDate)) {
-			throw new IllegalArgumentException("Start date should be less than end date");
+			throw new IllegalArgumentException(
+					"Start date should be less than end date");
 		}
 
 		// Check categoryList is validLength
-		for (String s: categoryList)
+		for (String s : categoryList)
 			if (!isValidLength(s))
-				throw new IllegalArgumentException("Strings must less than " + MAX_STRING + "characters");
+				throw new IllegalArgumentException("Strings must be less than "
+						+ MAX_STRING + " characters");
 
 		// Check that account is valid
 		AccountAccessorImpl accountImpl = new AccountAccessorImpl();
@@ -53,13 +63,15 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 
 		// Prepare sql statement for budget insert
 		String sqlQuery = "INSERT INTO budget "
-				+ "(goalValue, startDate, endDate, account_id) "
-				+ "VALUES (?, ?, ?, ?)";
-		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);
-		statement.setDouble(1, goalValue);
-		statement.setDate(2, sqlStartDate);
-		statement.setDate(3, sqlEndDate);
-		statement.setInt(4, a.getId());
+				+ "(description, goalValue, startDate, endDate, account_id) "
+				+ "VALUES (?, ?, ?, ?, ?)";
+		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery,
+				Statement.RETURN_GENERATED_KEYS);
+		statement.setString(1, description);
+		statement.setDouble(2, goalValue);
+		statement.setDate(3, sqlStartDate);
+		statement.setDate(4, sqlEndDate);
+		statement.setInt(5, a.getId());
 
 		// Execute, throws error if failed
 		statement.executeUpdate();
@@ -68,18 +80,17 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 		ResultSet generatedKeys = statement.getGeneratedKeys();
 		int budgetId = 0;
 		if (generatedKeys.next())
-			budgetId = generatedKeys.getInt(1);	
+			budgetId = generatedKeys.getInt(1);
 		statement.close();
 
 		// Insert categoryList into db
-		for (String category: categoryList) {
+		for (String category : categoryList) {
 			int categoryId = getCategoryID(category, a.getId());
 			if (categoryId == 0)
 				categoryId = createCategory(category, a.getId());
 
 			sqlQuery = "INSERT INTO category_list "
-					+ "(budget_id, category_id) "
-					+ "VALUES (?, ?)";
+					+ "(budget_id, category_id) " + "VALUES (?, ?)";
 			statement = dbConnection.prepareStatement(sqlQuery);
 			statement.setInt(1, budgetId);
 			statement.setInt(2, categoryId);
@@ -97,37 +108,33 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 			throw new InvalidBudgetException("Invalid Budget");
 
 		// Prepare SQL
-		String sqlQuery = "DELETE FROM budget " 
-				+ "WHERE id = ?";
+		String sqlQuery = "DELETE FROM budget " + "WHERE id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setInt(1, b.getID());
 		statement.executeUpdate();
 		statement.close();
 
 		// Check if category_list references this categoryId anymore
-		sqlQuery = "SELECT * "
-				+ "FROM category_list "
+		sqlQuery = "SELECT * " + "FROM category_list "
 				+ "WHERE category_id = ?";
 		statement = dbConnection.prepareStatement(sqlQuery);
 		int categoryId = getCategoryID(b.getID());
 		statement.setInt(1, categoryId);
 
-
 		ResultSet result = statement.executeQuery();
 		// If no row in cateogry_list references this categoryId
 		if (!result.next()) {
-			String sqlQuery2 = "SELECT * "
-					+ "FROM transaction "
+			String sqlQuery2 = "SELECT * " + "FROM transaction "
 					+ "WHERE category_id = ?";
-			PreparedStatement statement2 = dbConnection.prepareStatement(sqlQuery2);
+			PreparedStatement statement2 = dbConnection
+					.prepareStatement(sqlQuery2);
 			statement2.setInt(1, categoryId);
 
 			ResultSet result2 = statement2.executeQuery();
 			// If no row in transaction references this categoryid
 			// delete the category
 			if (!result2.next()) {
-				sqlQuery2 = "DELETE FROM category "
-						+ "WHERE id = ?";
+				sqlQuery2 = "DELETE FROM category " + "WHERE id = ?";
 				statement2 = dbConnection.prepareStatement(sqlQuery2);
 				statement2.setInt(1, categoryId);
 				statement2.executeUpdate();
@@ -138,13 +145,13 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 	}
 
 	@Override
-	public void updateGoalValue(Budget b, double goalValue) throws SQLException,InvalidBudgetException {
+	public void updateGoalValue(Budget b, double goalValue)
+			throws SQLException, InvalidBudgetException {
 		// If budget does not exist throw error
 		if (!isValidBudget(b))
 			throw new InvalidBudgetException("Invalid Budget");
 
-		String sqlQuery = "UPDATE budget "
-				+ "SET goalValue = ? "
+		String sqlQuery = "UPDATE budget " + "SET goalValue = ? "
 				+ "WHERE id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setDouble(1, goalValue);
@@ -154,17 +161,19 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 	}
 
 	@Override
-	public void updateStartDate(Budget b, Calendar startDate) throws SQLException, IllegalArgumentException, InvalidBudgetException {
+	public void updateStartDate(Budget b, Calendar startDate)
+			throws SQLException, IllegalArgumentException,
+			InvalidBudgetException {
 		// If budget does not exist throw error
 		if (!isValidBudget(b))
 			throw new InvalidBudgetException("Invalid Budget");
 
 		// do some checking here
 		if (startDate.after(b.getEndDate()))
-			throw new IllegalArgumentException("Start date should be less than end date");
+			throw new IllegalArgumentException(
+					"Start date should be less than end date");
 
-		String sqlQuery = "UPDATE budget "
-				+ "SET startDate = ? "
+		String sqlQuery = "UPDATE budget " + "SET startDate = ? "
 				+ "WHERE id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 
@@ -175,16 +184,17 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 	}
 
 	@Override
-	public void updateEndDate(Budget b, Calendar endDate) throws SQLException, IllegalArgumentException, InvalidBudgetException {
+	public void updateEndDate(Budget b, Calendar endDate) throws SQLException,
+			IllegalArgumentException, InvalidBudgetException {
 		// If budget does not exist throw error
 		if (!isValidBudget(b))
 			throw new InvalidBudgetException("Invalid Budget");
 
 		if (endDate.before(b.getStartDate()))
-			throw new IllegalArgumentException("Start date should be less than end date");
+			throw new IllegalArgumentException(
+					"Start date should be less than end date");
 
-		String sqlQuery = "UPDATE budget "
-				+ "SET endDate = ? "
+		String sqlQuery = "UPDATE budget " + "SET endDate = ? "
 				+ "WHERE id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setDate(1, new Date(endDate.getTimeInMillis()));
@@ -197,15 +207,14 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 	public List<Budget> getBudgets(Account a) throws SQLException {
 		List<Budget> budgetList = new ArrayList<Budget>();
 
-		String sqlQuery = "SELECT * "
-				+ "FROM budget " 
-				+ "WHERE account_id = ?";
+		String sqlQuery = "SELECT * " + "FROM budget " + "WHERE account_id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setInt(1, a.getId());
 		ResultSet result = statement.executeQuery();
 
 		while (result.next()) {
 			int id = result.getInt("id");
+			String description = result.getString("description");
 			double goalValue = result.getDouble("goalValue");
 
 			Calendar startDate = new GregorianCalendar();
@@ -214,12 +223,12 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 			endDate.setTimeInMillis(result.getDate("endDate").getTime());
 
 			// Get assocaited categoryList
-			String sqlQuery2 = "SELECT category.name "
-					+ "FROM category "
+			String sqlQuery2 = "SELECT category.name " + "FROM category "
 					+ "INNER JOIN category_list "
 					+ "ON category_list.category_id = category.id "
 					+ "WHERE category_list.budget_id = ?";
-			PreparedStatement statement2 = dbConnection.prepareStatement(sqlQuery2);
+			PreparedStatement statement2 = dbConnection
+					.prepareStatement(sqlQuery2);
 			statement2.setInt(1, id);
 			ResultSet result2 = statement2.executeQuery();
 
@@ -230,7 +239,8 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 			statement2.close();
 			result2.close();
 
-			Budget b = new Budget(id, goalValue, startDate, endDate, a.getId(), categoryList);
+			Budget b = new Budget(id, description, goalValue, startDate,
+					endDate, a.getId(), categoryList);
 			budgetList.add(b);
 		}
 
@@ -248,8 +258,7 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 	private boolean isValidBudget(Budget b) throws SQLException {
 		String sqlQuery = "SELECT * FROM budget "
 				+ "WHERE id = ? AND goalValue = ? AND "
-				+ "startDate like ? AND endDate like ? AND "
-				+ "account_id = ?";
+				+ "startDate like ? AND endDate like ? AND " + "account_id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setInt(1, b.getID());
 		statement.setDouble(2, b.getGoalValue());
@@ -268,10 +277,11 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 		return false;
 	}
 
-
 	/**
 	 * Return true if s is smaller than MAX_STRING
-	 * @param s String to check
+	 * 
+	 * @param s
+	 *            String to check
 	 * @return true if s is smaller than MAX_STRING
 	 */
 	private boolean isValidLength(String s) {
@@ -281,8 +291,7 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 	}
 
 	private int getCategoryID(int budgetId) throws SQLException {
-		String sqlQuery = "SELECT * "
-				+ "FROM category_list "
+		String sqlQuery = "SELECT * " + "FROM category_list "
 				+ "WHERE budget_id = ?";
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setInt(1, budgetId);
@@ -297,10 +306,8 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 	private int getCategoryID(String category, int accountID)
 			throws SQLException {
 		// Prepare sql query
-		String sqlQuery = "SELECT id " 
-				+ "FROM category "
-				+ "WHERE name LIKE ? " 
-				+ "AND account_id = ?";
+		String sqlQuery = "SELECT id " + "FROM category "
+				+ "WHERE name LIKE ? " + "AND account_id = ?";
 
 		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery);
 		statement.setString(1, category);
@@ -329,7 +336,8 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 		// Prepare sql query
 		String sqlQuery = "INSERT INTO category (name, account_id) "
 				+ "VALUES (?, ?)";
-		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement statement = dbConnection.prepareStatement(sqlQuery,
+				Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, category);
 		statement.setInt(2, accountID);
 
@@ -340,7 +348,7 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 		ResultSet generatedKeys = statement.getGeneratedKeys();
 		int rowId = 0;
 		if (generatedKeys.next())
-			rowId = generatedKeys.getInt(1);	
+			rowId = generatedKeys.getInt(1);
 		statement.close();
 
 		if (rowId == 0)
