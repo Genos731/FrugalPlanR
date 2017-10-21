@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet {
         	if (curr.getPassword().equals(pwd)) {
         		request.getSession().setAttribute("userName", user);
         	} else {
-        		request.setAttribute("message", "Invalid Password");
+        		request.setAttribute("message", "Invalid password");
         	}
         } else {
         	request.setAttribute("message","Account does not exist");

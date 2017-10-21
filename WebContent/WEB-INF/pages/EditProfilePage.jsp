@@ -22,6 +22,18 @@
     <!-- NAVBAR/HEADER -->
     <%@include file="Presets/Header.jsp" %>
     <%@include file="Presets/Error.jsp" %>
+	<div class="modal fade" id="successMessage" tabindex="-1" role="dialog" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+             <div class="alert-header">
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+                 <div class="alert alert-success" role="alert">
+                 	${success}
+                 </div>
+             </div>
+         </div>
+     </div>
 
     <div class="container-fluid">
         <div class="row">
@@ -88,5 +100,12 @@
         </div>
     </div>
     <%@include file="Presets/Scripts.jsp" %>
+	<script>
+		if (${success != null} && ${message == null}) {
+		    $(window).on('load',function(){
+		        $('#successMessage').modal('show');
+		    });
+		}
+	</script>
 </body>
 </html>

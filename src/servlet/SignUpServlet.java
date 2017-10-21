@@ -61,7 +61,9 @@ public class SignUpServlet extends HttpServlet {
 		
         if (accessor.isValidAccount(curr)) {
         	request.setAttribute("message", "Username already exists");
-        } else {
+        } else if (request.getParameter("pwd").length() == 0) {
+        	request.setAttribute("message", "Password is too short");
+		} else {
         	try {
 				accessor.create(user, pwd, email);
 	        	request.setAttribute("success", "Account successfully created!");

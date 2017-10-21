@@ -34,7 +34,6 @@ public class EditProfileServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		if (request.getSession().getAttribute("userName") == null) {
 			response.sendRedirect(request.getContextPath() + "/Login");
 		} else {
@@ -46,8 +45,6 @@ public class EditProfileServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
         String currpwd = String.valueOf(request.getParameter("currpwd").hashCode());
@@ -64,38 +61,38 @@ public class EditProfileServlet extends HttpServlet {
     		} catch (SQLException e) {
     			e.printStackTrace();
     		}
-        	//validate current password
+        	// validate current password
         	if (curr.getPassword().equals(currpwd)) {
-        		System.out.println("Correct Password Entered");
         		try {
-					accessor.updatePassword(curr, newpwd);
+        			if (request.getParameter("newpwd").length() == 0) {
+        	        	request.setAttribute("message", "Password is too short");
+        			} else {
+        				accessor.updatePassword(curr, newpwd);
+        			}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+		    		request.setAttribute("message", e.getMessage());
 					e.printStackTrace();
 				}
         		try {
 					accessor.updateEmail(curr, email);
 				} catch (InvalidEmailException | SQLException e) {
-					// TODO Auto-generated catch block
+		    		request.setAttribute("message", e.getMessage());
 					e.printStackTrace();
 				}
-        		response.sendRedirect(request.getContextPath() + "/Overview");
-        	//wrong current password entered
+	    		request.setAttribute("success", "Profile details successfully changed!");
+    		// wrong password
         	} else {
-        		System.out.println("Incorrect Password Entered");
-        		request.setAttribute("message", "Incorrect Password Entered");
-        		request.getRequestDispatcher("WEB-INF/pages/EditProfilePage.jsp").forward(request, response);
-        		//response.sendRedirect(request.getContextPath() + "/");
+        		request.setAttribute("message", "Incorrect password entered");
         	}
         }         	
         try {
 			accessor.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
         
-        //doGet(request, response);
+		request.getRequestDispatcher("WEB-INF/pages/EditProfilePage.jsp").forward(request, response);
 	}
 
 }
