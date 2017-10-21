@@ -134,16 +134,6 @@
                 </div>
 
                 <!-- SUMMARY -->
-                <div class="card summary">
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <span class="col text-primary">start Date <c:out value="${startDate }" /></span>
-                            <span class="col text-success">Goal $<c:out value="${budgetGoal }" /> current <c:out value="${currentTotal }" /></span>
-                            <span class="col text-danger">Days Remaining <c:out value="${days }" /></span>
-                            <span class="col text-warning"></span>
-                        </div>
-                    </div>
-                </div>
                 <div class="table-responsive">
                    		<script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
                         <table class="table table-striped sortable">
@@ -153,7 +143,7 @@
 									<th style="cursor:pointer">End Date</th>
                                     <th style="cursor:pointer">Value</th>
                                     <th style="cursor:pointer">Description</th>
-                                    <th></th>
+                                    <th style="cursor:pointer">Categories</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -165,7 +155,7 @@
 		                            	<td> <c:out value="${budget.description}" /> </td>
 		                            	<td> 
 				                            <c:forEach var="category" items="${budget.getCategoryList()}">
-				                            <c:out value="${category}" />
+				                            	<c:out value="${category}" />
 				                            </c:forEach>
 		                            	</td>
 	                            	</tr>

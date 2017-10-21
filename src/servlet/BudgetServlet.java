@@ -52,7 +52,6 @@ public class BudgetServlet extends HttpServlet {
 				Account userAccount = accessor.getAccount(username);	
 				
 				List<Budget> budgets = budgetAccessor.getBudgets(userAccount);
-				//List<String> categories = accountAccessor.getCategories(userAccount);
 				
 				List<Transaction> transactions = accountAccessor.getTransaction(userAccount);	
 				HashMap<String, Integer> expenses = getTotals(false, transactions);

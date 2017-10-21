@@ -152,9 +152,9 @@ public class OverviewServlet extends HttpServlet {
 				double totalIncome = totalIncome(transactions);
 				double balance = totalIncome - totalExpenses;
 				request.setAttribute("transactions", transactions);
-				request.setAttribute("totalExpenses", totalExpenses);
-				request.setAttribute("totalIncome", totalIncome);
-				request.setAttribute("balance", balance);
+				request.setAttribute("totalExpenses", String.format("%.2f", totalExpenses));
+				request.setAttribute("totalIncome", String.format("%.2f", totalIncome));
+				request.setAttribute("balance", String.format("%.2f", balance));
 
 				List<String> categories = accountAccessor.getCategories(userAccount);
 				request.setAttribute("categories", categories);
@@ -212,13 +212,13 @@ public class OverviewServlet extends HttpServlet {
 	}
 	
 	private double totalIncome(List<Transaction> transactions){
-		double expenses = 0;
+		double income = 0;
 		for (int x = 0; x < transactions.size(); x++){
 			if (transactions.get(x).isIncome()){
-				expenses += transactions.get(x).getValue();
+				income += transactions.get(x).getValue();
 			}
 		}
-		return expenses;
+		return income;
 	}
 	
 	private double totalExpenses(List<Transaction> transactions){
