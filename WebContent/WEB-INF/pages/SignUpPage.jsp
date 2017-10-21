@@ -22,6 +22,7 @@
             </form>
         </span>
     </nav>
+    <%@include file="Presets/Error.jsp" %>
     
     <div class="container-fluid">
         <div class="row">
@@ -56,11 +57,6 @@
 				</form>			
 			</main>
 		</div>
-		
-	<script>
-		if (${message != null}) {
-			alert("${message}");
-		}
-	</script>	
+    <%@include file="Presets/Scripts.jsp" %>
 </body>
 </html>

@@ -21,39 +21,7 @@
 <body>
     <!-- NAVBAR/HEADER -->
     <%@include file="Presets/Header.jsp" %>
-
-	 <div class="container-fluid">
-        <div class="row">
-		    <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
-			<!-- EDIT PROFILE -->
-		    	<form class="form-horizontal" method="post" action ="EditProfile">
-		    		<div class="form-group">
-						<label class="control-label col-sm-2" for="username">Current Password</label>
-						<div class="col-sm-10">
-			 				<input type="password" class="form-control" name="currpwd" placeholder="Enter current password">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-2" for="pwd">New Password:</label>
-						<div class="col-sm-10"> 
-			  				<input type="password" class="form-control" name="newpwd" placeholder="Enter new password">
-						</div>
-					</div>
-					<div id = "email" class="form-group" >
-						<label class="control-label col-sm-2" for="email">New Email:</label>
-						<div class="col-sm-10">
-			 				<input type="text" class="form-control" name="email" placeholder="Enter new email">
-						</div>
-					</div>
-					<div class="form-group"> 
-						<div class="col-sm-offset-2 col-sm-10">
-		  					 <button type="submit" class="btn btn-default" value="submit">Submit</button>
-						</div>
-					</div>
-				</form>
-			</main>
-		</div>
-	</div>
+    <%@include file="Presets/Error.jsp" %>
 
     <div class="container-fluid">
         <div class="row">
@@ -86,13 +54,39 @@
             <%@include file="Presets/AddTransaction.jsp" %>
         </div>
     </div>
-    
-    <script>
-		if (${message != null}) {
- 			alert("${message}");
-		}
-	</script>
-    
-</body>
 
+    <div class="container-fluid">
+        <div class="row">
+            <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+            <!-- EDIT PROFILE -->
+                <form class="form-horizontal" method="post" action ="EditProfile">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="username">Current Password</label>
+                        <div class="col-sm-10">
+                                <input type="password" class="form-control" name="currpwd" placeholder="Enter current password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">New Password:</label>
+                        <div class="col-sm-10"> 
+                                <input type="password" class="form-control" name="newpwd" placeholder="Enter new password">
+                        </div>
+                    </div>
+                    <div id = "email" class="form-group" >
+                        <label class="control-label col-sm-2" for="email">New Email:</label>
+                        <div class="col-sm-10">
+                                <input type="text" class="form-control" name="email" placeholder="Enter new email">
+                        </div>
+                    </div>
+                    <div class="form-group"> 
+                        <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default" value="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+    <%@include file="Presets/Scripts.jsp" %>
+</body>
 </html>

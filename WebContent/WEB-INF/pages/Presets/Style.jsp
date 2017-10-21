@@ -60,6 +60,10 @@
         .alert-dismissible .close {
             top: -1rem;
         }
+        
+        #errorMessage .close {
+        	margin-right: 8px;
+        }
 
         .summary {
             font-size: 1.5em;
