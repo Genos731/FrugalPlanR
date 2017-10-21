@@ -52,6 +52,7 @@ public class AddBudgetServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Get parameters
+		String description = request.getParameter("description");
 		Double amount = new Double(request.getParameter("amount"));
 		String[] categoryArray = request.getParameterValues("categories");
 		List<String> categories = Arrays.asList(categoryArray);
@@ -84,7 +85,7 @@ public class AddBudgetServlet extends HttpServlet {
 
 		// Create transaction
 		try {
-			accessor.create(account, amount, dateStart, dateEnd, categories);
+			accessor.create(account, description, amount, dateStart, dateEnd, categories);
 		} catch (InvalidAccountException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
