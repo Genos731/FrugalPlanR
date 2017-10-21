@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		if (request.getSession().getAttribute("userName") == null) {
 			request.getRequestDispatcher("WEB-INF/pages/LoginPage.jsp").forward(request, response);
-			//response.sendRedirect(request.getContextPath() + "/");
+			//response.sendRedirect(request.getContextPath() + "/");		
 		} else {
 			//request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
 			response.sendRedirect(request.getContextPath() + "/Overview");
@@ -71,11 +71,13 @@ public class LoginServlet extends HttpServlet {
         		request.getSession().setAttribute("userName", user);
         	} else {
         		System.out.println("Invalid Password");
+        		request.setAttribute("message", "Invalid Password");
         		request.getRequestDispatcher("WEB-INF/pages/LoginPage.jsp").forward(request, response);
         		//response.sendRedirect(request.getContextPath() + "/");
         	}
         } else {
         	System.out.println("Account does not exist");
+        	request.setAttribute("message","Account does not exist");
         	request.getRequestDispatcher("WEB-INF/pages/LoginPage.jsp").forward(request, response);
         	//response.sendRedirect(request.getContextPath() + "/");
         }

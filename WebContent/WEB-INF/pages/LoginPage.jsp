@@ -56,5 +56,13 @@
 			</main>
 		</div>
 	</div>
+	<script>
+		//function errorMsg() {
+		//	alert("${message}");
+		//}
+		if (${message != null}) {
+ 			alert("${message}");
+		}
+	</script>
 </body>
 </html>

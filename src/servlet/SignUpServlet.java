@@ -65,7 +65,8 @@ public class SignUpServlet extends HttpServlet {
 		
         if (accessor.isValidAccount(curr)) {	
         	System.out.println("Username already exists");
-			response.sendRedirect(request.getContextPath() + "/SignUp");
+        	request.setAttribute("message", "Username already exists");
+        	request.getRequestDispatcher("WEB-INF/pages/SignUpPage.jsp").forward(request, response);
         } else {
         	try {
 				accessor.create(user, pwd, email);

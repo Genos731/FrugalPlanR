@@ -56,5 +56,11 @@
 				</form>			
 			</main>
 		</div>
+		
+	<script>
+		if (${message != null}) {
+			alert("${message}");
+		}
+	</script>	
 </body>
 </html>

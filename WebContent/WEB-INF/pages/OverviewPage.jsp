@@ -187,5 +187,7 @@
     	
     	if (!localStorage.getItem('<c:out value="${userName}" /> overview')) $('#explanation').show();
     </script>
+    
+    
 </body>
 </html>
