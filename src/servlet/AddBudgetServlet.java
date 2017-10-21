@@ -51,8 +51,8 @@ public class AddBudgetServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get parameters
-		String description = request.getParameter("description");
+        // Get parameters
+        String description = request.getParameter("description");
 		Double amount = new Double(request.getParameter("amount"));
 		String[] categoryArray = request.getParameterValues("categories");
 		List<String> categories = Arrays.asList(categoryArray);
@@ -70,13 +70,14 @@ public class AddBudgetServlet extends HttpServlet {
 		try {
 			account = accountAccessor.getAccount(username);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
+
 		try {
 			accountAccessor.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -87,10 +88,10 @@ public class AddBudgetServlet extends HttpServlet {
 		try {
 			accessor.create(account, description, amount, dateStart, dateEnd, categories);
 		} catch (InvalidAccountException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -98,11 +99,12 @@ public class AddBudgetServlet extends HttpServlet {
 		try {
 			accessor.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 		
-		doGet(request, response);
+		if (request.getAttribute("message") != null) request.getRequestDispatcher("WEB-INF/pages/BudgetPage.jsp").forward(request, response);
+		else doGet(request, response);
 	}
 
 }

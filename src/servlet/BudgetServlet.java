@@ -66,20 +66,18 @@ public class BudgetServlet extends HttpServlet {
 				
 				request.setAttribute("budgets", budgets);
 				request.setAttribute("categories", expensesCategories);
-				//request.setAttribute("categories", categories);
 
 				accountAccessor.close();		
 				budgetAccessor.close();
 				accessor.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			}
 		}
-		
 		if (request.getSession().getAttribute("userName") == null) {
 			response.sendRedirect(request.getContextPath() + "/Login");
 		} else {
@@ -91,7 +89,6 @@ public class BudgetServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	
@@ -110,6 +107,4 @@ public class BudgetServlet extends HttpServlet {
 		}
 		return totals;
 	}
-
-
 }

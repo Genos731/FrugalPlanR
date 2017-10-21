@@ -40,7 +40,6 @@ public class IncomeServlet extends HttpServlet {
 		if (username != null){
 			try {
 				TransactionAccessorImpl accountAccessor = new TransactionAccessorImpl();
-				//Once Log in is working that'll replace this for who the account is.
 				AccountAccessor accessor = new AccountAccessorImpl();
 				Account userAccount = accessor.getAccount(username);
 				
@@ -60,10 +59,10 @@ public class IncomeServlet extends HttpServlet {
 				accountAccessor.close();
 				accessor.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			}
 		}

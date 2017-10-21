@@ -36,8 +36,6 @@ public class SignUpServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.getRequestDispatcher("WEB-INF/pages/SignUpPage.jsp").forward(request, response);
 	}
 
@@ -45,15 +43,12 @@ public class SignUpServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
 		response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
         String user = request.getParameter("user");
         String pwd = String.valueOf(request.getParameter("pwd").hashCode());
         String email = request.getParameter("email");
-        //System.out.println(user + "and" + pwd);
         
         AccountAccessor accessor = new AccountAccessorImpl();
         Account curr = null;
@@ -70,18 +65,16 @@ public class SignUpServlet extends HttpServlet {
         } else {
         	try {
 				accessor.create(user, pwd, email);
-				System.out.println("Account created successfully");
 				response.sendRedirect(request.getContextPath() + "/Login");
 			} catch (IllegalArgumentException | InvalidEmailException | DuplicateUsernameException
 					| DuplicateEmailException | SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}       
         }	
         try {
 			accessor.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 	}

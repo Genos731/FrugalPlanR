@@ -46,7 +46,6 @@ public class AddTransactionServlet extends HttpServlet {
 		String parts[] = redirect.split("/");
 		String lastPart = parts[parts.length - 1];
 		response.sendRedirect(request.getContextPath() + "/" + lastPart);
-		
 	}
 
 	/**
@@ -71,13 +70,13 @@ public class AddTransactionServlet extends HttpServlet {
 		try {
 			account = accountAccessor.getAccount(username);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 		try {
 			accountAccessor.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -88,13 +87,13 @@ public class AddTransactionServlet extends HttpServlet {
 		try {
 			accessor.create(account, type, amount, date, description, location, repeating, category);
 		} catch (InvalidAccountException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -102,11 +101,12 @@ public class AddTransactionServlet extends HttpServlet {
 		try {
 			accessor.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 		
-		doGet(request, response);
+		if (request.getAttribute("message") != null) request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
+		else doGet(request, response);
 	}
 
 }
