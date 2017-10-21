@@ -52,10 +52,21 @@ public class BudgetServlet extends HttpServlet {
 				Account userAccount = accessor.getAccount(username);	
 				
 				List<Budget> budgets = budgetAccessor.getBudgets(userAccount);
-				List<String> categories = accountAccessor.getCategories(userAccount);
+				//List<String> categories = accountAccessor.getCategories(userAccount);
+				
+				List<Transaction> transactions = accountAccessor.getTransaction(userAccount);	
+				HashMap<String, Integer> expenses = getTotals(false, transactions);
+				List<String> expensesCategories = new ArrayList<String>(expenses.size());
+				Set set = expenses.entrySet();
+				Iterator iterator = set.iterator();
+				while(iterator.hasNext()) {
+					Map.Entry a = (Map.Entry) iterator.next();
+					expensesCategories.add((String) a.getKey());
+				}				
 				
 				request.setAttribute("budgets", budgets);
-				request.setAttribute("categories", categories);
+				request.setAttribute("categories", expensesCategories);
+				//request.setAttribute("categories", categories);
 
 				accountAccessor.close();		
 				budgetAccessor.close();
@@ -83,5 +94,22 @@ public class BudgetServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
+	private HashMap<String, Integer> getTotals(boolean isIncome, List<Transaction> transactions) {
+		HashMap<String, Integer> totals = new HashMap<String, Integer>();
+		for (Transaction transaction : transactions) {
+			if (transaction.isIncome() == isIncome) {
+				String category = transaction.getCategory();
+				int value = Double.valueOf(transaction.getValue()).intValue();
+				if (totals.containsKey(category)) {
+					totals.put(category, totals.get(category) + value);
+				} else {
+					totals.put(category, value);
+				}
+			}
+		}
+		return totals;
+	}
+
 
 }
