@@ -144,6 +144,33 @@
                         </div>
                     </div>
                 </div>
+                <div class="table-responsive">
+                   		<script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+                        <table class="table table-striped sortable">
+                           <thead>
+                                <tr>
+									<th style="cursor:pointer">Start Date</th>
+									<th style="cursor:pointer">End Date</th>
+                                    <th style="cursor:pointer">Value</th>
+                                    <th style="cursor:pointer">Description</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+	                            <c:forEach var= "budget" items="${budgets}" >
+	                            	<tr>
+	                            		<td> <c:out value="${budget.getStartDateForPrint()}" /> </td>
+	                            		<td> <c:out value="${budget.getEndDateForPrint()}" /> </td>
+		                            	<td> $<c:out value="${budget.getGoalValue()}" /> </td>
+		                            	<td> <c:out value="${budget.description}" /> </td>
+		                            	<c:forEach var="category" items="${budget.getCategoryList()}">
+		                            	<td> <c:out value="${category}" /> </td>
+		                            	</c:forEach>
+	                            	</tr>
+							 	</c:forEach>
+						 	</tbody>
+                        </table>
+                    </div>
             </main>
         </div>
     </div>
