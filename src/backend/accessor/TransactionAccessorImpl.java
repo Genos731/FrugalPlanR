@@ -275,14 +275,72 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 					transactionList.remove(counter);
 					counter--;
 				}
-				/*
-				if (current < dateInMillis || current > secondDateInMillis){
-					transactionList.remove(counter);
-					counter--;
-				}*/
 			}
 		}
 		
+				
+		for (int counter = 0; counter < transactionList.size(); counter++){		
+			Calendar thirdDate = new GregorianCalendar();
+			thirdDate.setTimeZone(timeZone);
+			long maxTime = date.getTimeInMillis();
+			if (transactionList.get(counter).getRepeating() != null){
+				Repeating repeating = null;
+				thirdDate.setTimeInMillis(transactionList.get(counter).getCalendar().getTimeInMillis());
+				long initialTime = thirdDate.getTimeInMillis();
+				if (transactionList.get(counter).getRepeating() == repeating.DAILY){
+					while (initialTime < maxTime){
+						thirdDate.add(Calendar.DATE, 1);
+						Calendar forthDate = new GregorianCalendar();
+						forthDate.setTimeZone(timeZone);
+						initialTime = thirdDate.getTimeInMillis();
+						forthDate.setTimeInMillis(initialTime);
+						Transaction tempTransaction = new Transaction(transactionList.get(counter), forthDate);
+						transactionList.add(tempTransaction);
+						
+					}
+				}
+				else if (transactionList.get(counter).getRepeating() == repeating.WEEKLY){
+					while (initialTime < maxTime){
+						thirdDate.add(Calendar.DATE, 7);
+						Calendar forthDate = new GregorianCalendar();
+						forthDate.setTimeZone(timeZone);
+						initialTime = thirdDate.getTimeInMillis();
+						forthDate.setTimeInMillis(initialTime);
+						Transaction tempTransaction = new Transaction(transactionList.get(counter), forthDate);
+						transactionList.add(tempTransaction);
+					}
+				}
+				else if (transactionList.get(counter).getRepeating() == repeating.MONTHLY){
+					while (initialTime < maxTime){
+						thirdDate.add(Calendar.MONTH, 1);
+						Calendar forthDate = new GregorianCalendar();
+						forthDate.setTimeZone(timeZone);
+						initialTime = thirdDate.getTimeInMillis();
+						forthDate.setTimeInMillis(initialTime);
+						Transaction tempTransaction = new Transaction(transactionList.get(counter), forthDate);
+						transactionList.add(tempTransaction);
+					}
+				}
+				else if (transactionList.get(counter).getRepeating() == repeating.FORTNIGHTLY){
+					while (initialTime < maxTime){
+						thirdDate.add(Calendar.DATE, 14);
+						Calendar forthDate = new GregorianCalendar();
+						forthDate.setTimeZone(timeZone);
+						initialTime = thirdDate.getTimeInMillis();
+						forthDate.setTimeInMillis(initialTime);
+						Transaction tempTransaction = new Transaction(transactionList.get(counter), forthDate);
+						transactionList.add(tempTransaction);
+					}
+				}
+				
+			}
+		}
+		
+		
+		// If list is empty, return null
+		// Otherwise return the list
+		if (transactionList.size() == 0)
+			return null;
 		return transactionList;
 	}
 
