@@ -50,7 +50,7 @@
                                     <label for="Date" class="col-sm-3 col-form-label">Date</label>
                                     <div class="col-sm-9">
                                         <div id="transaction-datepicker"></div>
-                                        <input id="transaction-date" type="number" name="date">
+                                        <input id="transaction-date" type="hidden" name="date">
                                     </div>
                                 </div>
                             </div>

@@ -101,10 +101,12 @@
                                     <label for="Dates" class="col-sm-3 col-form-label">Date range</label>
                                     <div class="col-sm-9">
                                         <div class="input-daterange input-group" id="budget-datepicker">
-									        <input type="text" class="input-sm form-control" name="start" id="budget-start" />
+									        <input type="text" class="input-sm form-control" name="start" id="budget-start" onchange="setDates()"/>
 									        <span class="input-group-addon">to</span>
-									        <input type="text" class="input-sm form-control" name="end" />
+									        <input type="text" class="input-sm form-control" name="end" id="budget-end" onchange="setDates()"/>
 									    </div>
+                                        <input id="start-date" type="hidden" name="start-date">
+                                        <input id="end-date" type="hidden" name="end-date">
                                     </div>
                                 </div>
                             </div>
@@ -182,6 +184,15 @@
             maxViewMode: 2,
             todayBtn: "linked"
         });
+        
+        function setDates() {
+            // set dates
+            var start = $(".range-start").data("date");
+            $('#start-date').val(start);
+            
+            var end = $(".range-end").data("date");
+            $('#end-date').val(end);
+        }
 
         $('#add-budget-error').hide();
         $('#AddBudget').submit(function (e) {

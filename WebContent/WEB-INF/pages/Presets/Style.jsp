@@ -118,11 +118,8 @@
         }
 
         #transaction-datepicker tfoot,
-        #transaction-date,
         #edit-transaction-datepicker tfoot,
-        #edit-transaction-date,
-        #budget-datepicker tfoot,
-        #budget-date
+        #budget-datepicker tfoot
          {
             display: none;
         }

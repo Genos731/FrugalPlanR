@@ -41,7 +41,7 @@
 		                                    <label for="Date" class="col-sm-3 col-form-label">Date</label>
 		                                    <div class="col-sm-9">
 		                                        <div id="edit-transaction-datepicker"></div>
-		                                        <input id="edit-transaction-date" type="number" name="edit-date">
+		                                        <input id="edit-transaction-date" type="hidden" name="edit-date">
 		                                    </div>
 		                                </div>
 		                            </div>
