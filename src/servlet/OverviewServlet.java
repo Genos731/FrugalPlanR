@@ -119,10 +119,10 @@ public class OverviewServlet extends HttpServlet {
 				accountAccessor.close();
 				accessor.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -138,7 +138,6 @@ public class OverviewServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	

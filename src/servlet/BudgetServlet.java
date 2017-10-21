@@ -3,7 +3,11 @@ package servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,23 +45,36 @@ public class BudgetServlet extends HttpServlet {
 		String username = (String) request.getSession().getAttribute("userName");
 		if (username != null){
 			try {
+				TransactionAccessorImpl accountAccessor = new TransactionAccessorImpl();
 				BudgetAccessorImpl budgetAccessor = new BudgetAccessorImpl();
-				//Once Log in is working that'll replace this for who the account is.
 				AccountAccessor accessor = new AccountAccessorImpl();
-				Account userAccount = accessor.getAccount(username);
+				
+				Account userAccount = accessor.getAccount(username);	
 				
 				List<Budget> budgets = budgetAccessor.getBudgets(userAccount);
+				//List<String> categories = accountAccessor.getCategories(userAccount);
 				
+				List<Transaction> transactions = accountAccessor.getTransaction(userAccount);	
+				HashMap<String, Integer> expenses = getTotals(false, transactions);
+				List<String> expensesCategories = new ArrayList<String>(expenses.size());
+				Set set = expenses.entrySet();
+				Iterator iterator = set.iterator();
+				while(iterator.hasNext()) {
+					Map.Entry a = (Map.Entry) iterator.next();
+					expensesCategories.add((String) a.getKey());
+				}				
 				
 				request.setAttribute("budgets", budgets);
-						
+				request.setAttribute("categories", expensesCategories);
+
+				accountAccessor.close();		
 				budgetAccessor.close();
 				accessor.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -72,8 +89,22 @@ public class BudgetServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
+	
+	private HashMap<String, Integer> getTotals(boolean isIncome, List<Transaction> transactions) {
+		HashMap<String, Integer> totals = new HashMap<String, Integer>();
+		for (Transaction transaction : transactions) {
+			if (transaction.isIncome() == isIncome) {
+				String category = transaction.getCategory();
+				int value = Double.valueOf(transaction.getValue()).intValue();
+				if (totals.containsKey(category)) {
+					totals.put(category, totals.get(category) + value);
+				} else {
+					totals.put(category, value);
+				}
+			}
+		}
+		return totals;
+	}
 }

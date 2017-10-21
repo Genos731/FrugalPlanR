@@ -1,9 +1,13 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import backend.accessor.AccountAccessor;
 import backend.accessor.AccountAccessorImpl;
+import backend.accessor.BudgetAccessor;
+import backend.accessor.BudgetAccessorImpl;
 import backend.accessor.TransactionAccessor;
 import backend.accessor.TransactionAccessorImpl;
 import backend.container.Account;
@@ -20,16 +26,16 @@ import backend.container.Repeating;
 import backend.exception.InvalidAccountException;
 
 /**
- * Servlet implementation class AddTransactionServlet
+ * Servlet implementation class AddBudgetServlet
  */
-@WebServlet("/AddTransaction")
-public class AddTransactionServlet extends HttpServlet {
+@WebServlet("/AddBudget")
+public class AddBudgetServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddTransactionServlet() {
+    public AddBudgetServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,31 +43,25 @@ public class AddTransactionServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
-		String redirect = request.getHeader("referer");
-		if (redirect == null){
-			response.sendRedirect(request.getContextPath() + "/");
-		}
-		
-		String parts[] = redirect.split("/");
-		String lastPart = parts[parts.length - 1];
-		response.sendRedirect(request.getContextPath() + "/" + lastPart);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect(request.getContextPath() + "/Budget");
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		// Get parameters
-		boolean type = Boolean.valueOf(request.getParameter("type"));
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get parameters
+        String description = request.getParameter("description");
 		Double amount = new Double(request.getParameter("amount"));
-		String category = request.getParameter("category");
-		if (category.equals("new")) category = request.getParameter("new");
-		Calendar date = new GregorianCalendar();
-		date.setTimeInMillis(Long.parseLong(request.getParameter("date")));
-		String description = request.getParameter("description");
-		String location = request.getParameter("location");
-		Repeating repeating = Repeating.toRepeating(request.getParameter("repeating"));
+		String[] categoryArray = request.getParameterValues("categories");
+		List<String> categories = Arrays.asList(categoryArray);
+		String[] start = new String[3];
+		start = request.getParameter("start").split("/");
+		Calendar dateStart = new GregorianCalendar(Integer.valueOf(start[0]), Integer.valueOf(start[1]), Integer.valueOf(start[2]));
+		String[] end = new String[3];
+		end = request.getParameter("end").split("/");
+		Calendar dateEnd = new GregorianCalendar(Integer.valueOf(end[0]), Integer.valueOf(end[1]), Integer.valueOf(end[2]));
 		
 		// Get an account
 		AccountAccessor accountAccessor = new AccountAccessorImpl();
@@ -73,6 +73,7 @@ public class AddTransactionServlet extends HttpServlet {
     		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
+
 		try {
 			accountAccessor.close();
 		} catch (Exception e) {
@@ -80,19 +81,16 @@ public class AddTransactionServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		// Create transaction accessor
-		TransactionAccessor accessor = new TransactionAccessorImpl();
+		// Create budget accessor
+		BudgetAccessor accessor = new BudgetAccessorImpl();
 
 		// Create transaction
 		try {
-			accessor.create(account, type, amount, date, description, location, repeating, category);
+			accessor.create(account, description, amount, dateStart, dateEnd, categories);
 		} catch (InvalidAccountException e) {
     		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		} catch (SQLException e) {
-    		request.setAttribute("message", e.getMessage());
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
     		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
@@ -105,7 +103,7 @@ public class AddTransactionServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		if (request.getAttribute("message") != null) request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
+		if (request.getAttribute("message") != null) request.getRequestDispatcher("WEB-INF/pages/BudgetPage.jsp").forward(request, response);
 		else doGet(request, response);
 	}
 

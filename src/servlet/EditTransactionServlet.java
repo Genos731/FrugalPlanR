@@ -39,8 +39,15 @@ public class EditTransactionServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect(request.getContextPath() + "/");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+		String redirect = request.getHeader("referer");
+		if (redirect == null){
+			response.sendRedirect(request.getContextPath() + "/");
+		}
+		
+		String parts[] = redirect.split("/");
+		String lastPart = parts[parts.length - 1];
+		response.sendRedirect(request.getContextPath() + "/" + lastPart);
 	}
 
 	/**
@@ -54,13 +61,13 @@ public class EditTransactionServlet extends HttpServlet {
 		try {
 			account = accountAccessor.getAccount(username);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 		try {
 			accountAccessor.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -77,7 +84,7 @@ public class EditTransactionServlet extends HttpServlet {
 				return;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -93,7 +100,7 @@ public class EditTransactionServlet extends HttpServlet {
 			try {
 				accessor.delete(t);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -112,10 +119,10 @@ public class EditTransactionServlet extends HttpServlet {
 		try {
 			accessor.updateTransaction(t, amount, date, description, location, category);
 		} catch (InvalidAccountException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -123,11 +130,12 @@ public class EditTransactionServlet extends HttpServlet {
 		try {
 			accessor.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+    		request.setAttribute("message", e.getMessage());
 			e.printStackTrace();
 		}
 		
-		doGet(request, response);
+		if (request.getAttribute("message") != null) request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
+		else doGet(request, response);
 	}
 
 }

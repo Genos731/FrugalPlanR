@@ -22,6 +22,16 @@ public class Account {
 		if (email.length() > MAX_STRING)
 			throw new IllegalArgumentException("Email length too long. Must be less than " + MAX_STRING + " characters");
 		
+		if (username.length() == 0) {
+			throw new IllegalArgumentException("Username can't be empty.");
+		}
+		if (password.length() == 0) {
+			throw new IllegalArgumentException("Password can't be empty.");
+		}
+		if (email.length() == 0) {
+			throw new IllegalArgumentException("Email can't be empty.");
+		}
+		
 		if (!isValidEmail(email))
 			throw new InvalidEmailException(email + " is syntactically invalid");
 		

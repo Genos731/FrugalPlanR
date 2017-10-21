@@ -53,8 +53,8 @@
             // form validation
             var error = "";
             $('#add-transaction-error').hide();
-            if (!$('#Amount').val()) error += "Please enter an amount.";
-            if ($('#category') === "new" && !$('#new-category').val()) error += "Please enter a new category.";
+            if (!$('#Amount').val()) error += "Please enter an amount.\n";
+            if ($('#category') === "new" && !$('#new-category').val()) error += "Please enter a new category.\n";
             if (error.length > 0) {
                 $('#add-transaction-error').text(error);
                 $('#add-transaction-error').show();
@@ -92,8 +92,8 @@
             // form validation
             var error = "";
             $('#edit-transaction-error').hide();
-            if (!$('#edit-amount').val()) error += "Please enter an amount.";
-            if ($('#category') === "new" && !$('#edit-new-category').val()) error += "Please enter a new category.";
+            if (!$('#edit-amount').val()) error += "Please enter an amount.\n";
+            if ($('#category') === "new" && !$('#edit-new-category').val()) error += "Please enter a new category.\n";
             if (error.length > 0) {
                 $('#edit-transaction-error').text(error);
                 $('#edit-transaction-error').show();

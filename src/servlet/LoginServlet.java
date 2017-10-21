@@ -30,12 +30,9 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		if (request.getSession().getAttribute("userName") == null) {
 			request.getRequestDispatcher("WEB-INF/pages/LoginPage.jsp").forward(request, response);
-			//response.sendRedirect(request.getContextPath() + "/");
 		} else {
-			//request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
 			response.sendRedirect(request.getContextPath() + "/Overview");
 		}
 	}
@@ -44,15 +41,8 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);		
-		
-		response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        
         String user = request.getParameter("user");
         String pwd = String.valueOf(request.getParameter("pwd").hashCode());
-        //System.out.println(user + "and" + pwd);
         
         AccountAccessor accessor = new AccountAccessorImpl();
         Account curr = null;
@@ -65,28 +55,23 @@ public class LoginServlet extends HttpServlet {
         if (accessor.isValidAccount(curr)) {	
         	//validate if user exists
         	if (curr.getPassword().equals(pwd)) {
-        		System.out.println("Login Successful");
-        		//request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
-        		response.sendRedirect(request.getContextPath() + "/Overview");
         		request.getSession().setAttribute("userName", user);
         	} else {
-        		System.out.println("Invalid Password");
-        		request.getRequestDispatcher("WEB-INF/pages/LoginPage.jsp").forward(request, response);
-        		//response.sendRedirect(request.getContextPath() + "/");
+        		request.setAttribute("message", "Invalid Password");
         	}
         } else {
-        	System.out.println("Account does not exist");
-        	request.getRequestDispatcher("WEB-INF/pages/LoginPage.jsp").forward(request, response);
-        	//response.sendRedirect(request.getContextPath() + "/");
+        	request.setAttribute("message","Account does not exist");
         }
         	
         try {
 			accessor.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+    		request.setAttribute("message", e.getMessage());
 		}
-
+		
+		if (request.getAttribute("message") != null) request.getRequestDispatcher("WEB-INF/pages/LoginPage.jsp").forward(request, response);
+		else doGet(request, response);
 	}
 
 }
