@@ -150,11 +150,17 @@ public class OverviewServlet extends HttpServlet {
 				
 				double totalExpenses = totalExpenses(transactions);
 				double totalIncome = totalIncome(transactions);
-				double balance = totalIncome - totalExpenses;
+				double balanced = totalIncome - totalExpenses;
+				String balance = "";
+				if (balanced < 0 ) { 
+					balance = "- ";
+					balanced = balanced * -1;
+				}
+				balance += "$" + String.format("%.2f", balanced);
 				request.setAttribute("transactions", transactions);
 				request.setAttribute("totalExpenses", String.format("%.2f", totalExpenses));
 				request.setAttribute("totalIncome", String.format("%.2f", totalIncome));
-				request.setAttribute("balance", String.format("%.2f", balance));
+				request.setAttribute("balance", balance);
 
 				List<String> categories = accountAccessor.getCategories(userAccount);
 				request.setAttribute("categories", categories);
