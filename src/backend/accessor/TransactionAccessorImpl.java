@@ -98,7 +98,7 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 	InvalidTransactionException {
 		// Do nothing if transaction does not exists.
 		if (!isValidTransaction(t))
-			throw new InvalidTransactionException("Invalid Transaction");
+			throw new InvalidTransactionException("Invalid transaction");
 
 		// Prepare SQL
 		String sqlQuery = "DELETE FROM transaction "

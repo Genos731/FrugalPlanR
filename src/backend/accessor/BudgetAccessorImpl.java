@@ -105,7 +105,7 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 	public void delete(Budget b) throws SQLException, InvalidBudgetException {
 		// If budget does not exist throw error
 		if (!isValidBudget(b))
-			throw new InvalidBudgetException("Invalid Budget");
+			throw new InvalidBudgetException("Invalid budget");
 
 		// Prepare SQL
 		String sqlQuery = "DELETE FROM budget " + "WHERE id = ?";
@@ -149,7 +149,7 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 			throws SQLException, InvalidBudgetException {
 		// If budget does not exist throw error
 		if (!isValidBudget(b))
-			throw new InvalidBudgetException("Invalid Budget");
+			throw new InvalidBudgetException("Invalid budget");
 
 		String sqlQuery = "UPDATE budget " + "SET goalValue = ? "
 				+ "WHERE id = ?";
@@ -166,7 +166,7 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 			InvalidBudgetException {
 		// If budget does not exist throw error
 		if (!isValidBudget(b))
-			throw new InvalidBudgetException("Invalid Budget");
+			throw new InvalidBudgetException("Invalid budget");
 
 		// do some checking here
 		if (startDate.after(b.getEndDate()))
@@ -188,7 +188,7 @@ public class BudgetAccessorImpl implements BudgetAccessor {
 			IllegalArgumentException, InvalidBudgetException {
 		// If budget does not exist throw error
 		if (!isValidBudget(b))
-			throw new InvalidBudgetException("Invalid Budget");
+			throw new InvalidBudgetException("Invalid budget");
 
 		if (endDate.before(b.getStartDate()))
 			throw new IllegalArgumentException(

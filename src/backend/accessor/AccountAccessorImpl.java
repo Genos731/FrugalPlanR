@@ -41,12 +41,12 @@ public class AccountAccessorImpl implements AccountAccessor {
 
 			if (resultUsername.toLowerCase().equals(username.toLowerCase())) {
 				result.close();
-				throw new DuplicateUsernameException(username + " already exists");
+				throw new DuplicateUsernameException("The username " + username + " already exists");
 			}
 			else {
 				statement.close();
 				result.close();
-				throw new DuplicateEmailException(email + " already exists");
+				throw new DuplicateEmailException("The email " + email + " already exists");
 			}
 		}
 		statement.close();
@@ -135,7 +135,7 @@ public class AccountAccessorImpl implements AccountAccessor {
 		
 		// If password is too long, throw error
 		if (newPassword.length() > Account.getMaxString())
-			throw new IllegalArgumentException(newPassword + " length is too long (" + newPassword.length() + "), should be less than " + Account.getMaxString());
+			throw new IllegalArgumentException("The password " + newPassword + " is too long (" + newPassword.length() + " characters), should be less than " + Account.getMaxString() + " characters");
 
 		// Prepare SQL line
 		String sqlQuery = "UPDATE account "
@@ -158,7 +158,7 @@ public class AccountAccessorImpl implements AccountAccessor {
 		
 		// Throw if email is syntactically invalid
 		if (!Account.isValidEmail(newEmail))
-			throw new InvalidEmailException(newEmail + " is invalid");
+			throw new InvalidEmailException("The email " + newEmail + " is invalid");
 
 		// Prepare SQL line
 		String sqlQuery = "UPDATE account "
