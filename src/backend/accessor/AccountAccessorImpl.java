@@ -133,6 +133,10 @@ public class AccountAccessorImpl implements AccountAccessor {
 		if (!isValidAccount(a))
 			return;
 		
+		// Create account, to test it follows proper syntax
+		@SuppressWarnings("unused")
+		Account tempAccount = new Account(a.getId(), a.getUsername(), newPassword, a.getEmail());
+		
 		// If password is too long, throw error
 		if (newPassword.length() > Account.getMaxString())
 			throw new IllegalArgumentException("The password " + newPassword + " is too long (" + newPassword.length() + " characters), should be less than " + Account.getMaxString() + " characters");
@@ -160,6 +164,10 @@ public class AccountAccessorImpl implements AccountAccessor {
 		if (!Account.isValidEmail(newEmail))
 			throw new InvalidEmailException("The email " + newEmail + " is invalid");
 
+		// Create account, to test it follows proper syntax
+		@SuppressWarnings("unused")
+		Account tempAccount = new Account(a.getId(), a.getUsername(), a.getPassword(), newEmail);
+		
 		// Prepare SQL line
 		String sqlQuery = "UPDATE account "
 				+ "SET email = ? "

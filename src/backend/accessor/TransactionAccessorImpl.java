@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.transaction.InvalidTransactionException;
 
@@ -229,6 +230,8 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 			}
 		}
 		Calendar secondDate = new GregorianCalendar();
+		TimeZone timeZone = TimeZone.getTimeZone("Australia/Sydney");
+		secondDate.setTimeZone(timeZone);
 		secondDate.setTimeInMillis(date.getTimeInMillis());
 		if (option == 1){
 			secondDate.add(Calendar.DATE, 1);
@@ -244,10 +247,42 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 			long secondDateInMillis = secondDate.getTimeInMillis();
 			for (int counter = 0; counter < transactionList.size(); counter++){	
 				long current = transactionList.get(counter).getCalendar().getTimeInMillis();
-				if (current < dateInMillis || current > secondDateInMillis){
+				Calendar cal = transactionList.get(counter).getCalendar();
+				boolean getRid = true;
+				if (date.get(Calendar.YEAR) == cal.get(Calendar.YEAR) || secondDate.get(Calendar.YEAR) == cal.get(Calendar.YEAR)){
+					int calendarMonth = cal.get(Calendar.MONTH);
+					int calendarDay = cal.get(Calendar.DATE);
+					int firstDay = date.get(Calendar.DATE);
+					int firstMonth = date.get(Calendar.MONTH);
+					int secondDay = secondDate.get(Calendar.DATE);
+					int secondMonth = secondDate.get(Calendar.MONTH);
+					
+					if (firstMonth == calendarMonth && secondMonth == calendarMonth){
+						if (firstDay <= calendarDay && secondDay > calendarDay){
+							getRid = false;
+						}
+					}
+					else if (firstMonth == calendarMonth && secondMonth > calendarMonth){
+						if (firstDay <= calendarDay){
+							getRid = false;
+						}
+					}
+					else if (secondMonth == calendarMonth && firstMonth < calendarMonth){
+						if (secondDay > calendarDay){
+							getRid = false;
+						}
+					}
+					
+				}
+				if (getRid){
 					transactionList.remove(counter);
 					counter--;
 				}
+				/*
+				if (current < dateInMillis || current > secondDateInMillis){
+					transactionList.remove(counter);
+					counter--;
+				}*/
 			}
 		}
 		
