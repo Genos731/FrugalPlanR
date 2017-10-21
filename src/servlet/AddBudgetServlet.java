@@ -53,9 +53,8 @@ public class AddBudgetServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Get parameters
 		Double amount = new Double(request.getParameter("amount"));
-		List<String> categories = new ArrayList<String>();
-		categories.add(request.getParameter("categories"));
-		//String category = request.getParameter("categories");
+		String[] categoryArray = request.getParameterValues("categories");
+		List<String> categories = Arrays.asList(categoryArray);
 		Calendar dateStart = new GregorianCalendar();
 		dateStart.setTimeInMillis(Long.parseLong(request.getParameter("start")));
 		Calendar dateEnd = new GregorianCalendar();

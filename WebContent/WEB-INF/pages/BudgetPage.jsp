@@ -89,8 +89,6 @@
                                             <c:forEach items="${categories}" var="category">
                                             	<option value="<c:out value="${category}"/>"><c:out value="${category}"/></option>
 											</c:forEach>
-											<option value="overall">Overall Budget</option>
-											<option value="new">Create new category...</option>
                                         </select>
                                     </div>
                                 </div>

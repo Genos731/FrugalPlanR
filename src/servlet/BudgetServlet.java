@@ -3,7 +3,11 @@ package servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,16 +45,19 @@ public class BudgetServlet extends HttpServlet {
 		String username = (String) request.getSession().getAttribute("userName");
 		if (username != null){
 			try {
+				TransactionAccessorImpl accountAccessor = new TransactionAccessorImpl();
 				BudgetAccessorImpl budgetAccessor = new BudgetAccessorImpl();
-				//Once Log in is working that'll replace this for who the account is.
 				AccountAccessor accessor = new AccountAccessorImpl();
-				Account userAccount = accessor.getAccount(username);
+				
+				Account userAccount = accessor.getAccount(username);	
 				
 				List<Budget> budgets = budgetAccessor.getBudgets(userAccount);
-				
+				List<String> categories = accountAccessor.getCategories(userAccount);
 				
 				request.setAttribute("budgets", budgets);
-						
+				request.setAttribute("categories", categories);
+
+				accountAccessor.close();		
 				budgetAccessor.close();
 				accessor.close();
 			} catch (SQLException e) {
@@ -61,6 +68,7 @@ public class BudgetServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+		
 		if (request.getSession().getAttribute("userName") == null) {
 			response.sendRedirect(request.getContextPath() + "/Login");
 		} else {
