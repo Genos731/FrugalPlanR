@@ -52,10 +52,39 @@ public class OverviewServlet extends HttpServlet {
 				AccountAccessor accessor = new AccountAccessorImpl();
 				Account userAccount = accessor.getAccount(username);
 				
+				
+				Calendar currentDate = new GregorianCalendar();
+				Calendar stringDate = (Calendar) request.getSession().getAttribute("date");
+				
+				
+				
+				
+				String todayButton = (String) request.getParameter("today");
+				if (stringDate == null || todayButton != null){
+					currentDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
+					
+					TimeZone timeZone = TimeZone.getTimeZone("Australia/Sydney");
+					currentDate.setTimeZone(timeZone);
+					
+					currentDate.set(Calendar.HOUR, 0);
+					currentDate.set(Calendar.MINUTE, 1);
+					currentDate.set(Calendar.SECOND, 0);
+					currentDate.set(Calendar.MILLISECOND, 0); 
+					
+					
+					
+					request.getSession().setAttribute("date", currentDate);
+				}else{
+					currentDate = stringDate;
+				}
+				Calendar nextDate = new GregorianCalendar();
+				nextDate.setTimeInMillis(currentDate.getTimeInMillis());
+				
 				int frequencyNum = 0;
 				String frequency = (String) request.getParameter("frequency");
 				String frequency2 = (String) request.getSession().getAttribute("frequency");
 				
+				//checks frequency to give correct set of transactions
 				if (frequency != null){
 					if (frequency.equals("all time")){
 						request.setAttribute("frequency", "all time");
@@ -63,14 +92,18 @@ public class OverviewServlet extends HttpServlet {
 					else if (frequency.equals("daily")){
 						frequencyNum = 1;
 						request.setAttribute("frequency", "daily");
+						nextDate.add(Calendar.DATE, 1);
+						
 					}
 					else if (frequency.equals("weekly")){
 						frequencyNum = 2;
 						request.setAttribute("frequency", "weekly");
+						nextDate.add(Calendar.DATE, 7);
 					}
 					else if (frequency.equals("monthly")){
 						frequencyNum = 3;
 						request.setAttribute("frequency", "monthly");
+						nextDate.add(Calendar.MONTH, 1);
 					}	
 				}
 				else{
@@ -81,37 +114,19 @@ public class OverviewServlet extends HttpServlet {
 						if (frequency2.equals("daily")){
 							frequencyNum = 1;
 							request.setAttribute("frequency", "daily");
+							nextDate.add(Calendar.DATE, 1);
 						}
 						else if (frequency2.equals("weekly")){
 							frequencyNum = 2;
 							request.setAttribute("frequency", "weekly");
+							nextDate.add(Calendar.DATE, 7);
 						}
 						else if (frequency2.equals("monthly")){
 							frequencyNum = 3;
 							request.setAttribute("frequency", "monthly");
+							nextDate.add(Calendar.MONTH, 1);
 						}	
 					}
-				}
-				
-				Calendar currentDate = new GregorianCalendar();
-				Calendar stringDate = (Calendar) request.getSession().getAttribute("date");
-				String todayButton = (String) request.getParameter("today");
-				if (stringDate == null || todayButton != null){
-					currentDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
-					TimeZone timeZone = TimeZone.getTimeZone("Australia/Sydney");
-					currentDate.setTimeZone(timeZone);
-					
-					currentDate.set(Calendar.HOUR, 0);
-					currentDate.set(Calendar.MINUTE, 1);
-					currentDate.set(Calendar.SECOND, 0);
-					currentDate.set(Calendar.MILLISECOND, 0); 
-					
-					
-					System.out.println(currentDate.get(Calendar.HOUR));
-					
-					request.getSession().setAttribute("date", currentDate);
-				}else{
-					currentDate = stringDate;
 				}
 				
 				String changeTime = (String) request.getParameter("timeDirection");
@@ -119,47 +134,53 @@ public class OverviewServlet extends HttpServlet {
 					if (changeTime.equals("<")){
 						if (frequencyNum == 1){
 							currentDate.add(Calendar.DATE, -1);
+							nextDate.add(Calendar.DATE, -1);
 						}
 						else if (frequencyNum == 2){
 							currentDate.add(Calendar.DATE, -7);
+							nextDate.add(Calendar.DATE, -7);
 						}
 						else if (frequencyNum == 3){
 							currentDate.add(Calendar.MONTH, -1);
+							nextDate.add(Calendar.MONTH, -1);
 						}
 					}
 					else{
 						if (frequencyNum == 1){
 							currentDate.add(Calendar.DATE, 1);
+							nextDate.add(Calendar.DATE, 1);
 						}
 						else if (frequencyNum == 2){
 							currentDate.add(Calendar.DATE, 7);
+							nextDate.add(Calendar.DATE, 7);
 						}
 						else if (frequencyNum == 3){
 							currentDate.add(Calendar.MONTH, 1);
+							nextDate.add(Calendar.MONTH, 1);
 						}
 					}
 					request.getSession().setAttribute("date", currentDate);
 					
 				}
+				
+				
 				request.setAttribute("day", currentDate.get(Calendar.DATE));
 				request.setAttribute("month", currentDate.get(Calendar.MONTH));
 				request.setAttribute("year", currentDate.get(Calendar.YEAR));
+				
+				request.setAttribute("day2", nextDate.get(Calendar.DATE));
+				request.setAttribute("month2", nextDate.get(Calendar.MONTH));
+				request.setAttribute("year2", nextDate.get(Calendar.YEAR));
 				
 				
 				List<Transaction> transactions = accountAccessor.getTransactionWithOptions(userAccount, currentDate, frequencyNum, 0);	
 				
 				double totalExpenses = totalExpenses(transactions);
 				double totalIncome = totalIncome(transactions);
-				double balanced = totalIncome - totalExpenses;
-				String balance = "";
-				if (balanced < 0 ) { 
-					balance = "- ";
-					balanced = balanced * -1;
-				}
-				balance += "$" + String.format("%.2f", balanced);
+				double balance = totalIncome - totalExpenses;
 				request.setAttribute("transactions", transactions);
-				request.setAttribute("totalExpenses", String.format("%.2f", totalExpenses));
-				request.setAttribute("totalIncome", String.format("%.2f", totalIncome));
+				request.setAttribute("totalExpenses", totalExpenses);
+				request.setAttribute("totalIncome", totalIncome);
 				request.setAttribute("balance", balance);
 
 				List<String> categories = accountAccessor.getCategories(userAccount);
@@ -218,13 +239,13 @@ public class OverviewServlet extends HttpServlet {
 	}
 	
 	private double totalIncome(List<Transaction> transactions){
-		double income = 0;
+		double expenses = 0;
 		for (int x = 0; x < transactions.size(); x++){
 			if (transactions.get(x).isIncome()){
-				income += transactions.get(x).getValue();
+				expenses += transactions.get(x).getValue();
 			}
 		}
-		return income;
+		return expenses;
 	}
 	
 	private double totalExpenses(List<Transaction> transactions){

@@ -1,6 +1,10 @@
 <div class="card-date-picker text-center">
     <div>
     	<form method="POST">
+    	<c:set var = "frequency" scope ="session" value = "${frequency }"></c:set>
+    	
+    	
+    	<c:if test = "${frequency != 'all time'}">
     		<ul class="nav nav-pills flex-row">
     			<li class="nav-item">
 	        		<input class="arrow left" type="submit" name="timeDirection" value="&lt">
@@ -11,15 +15,19 @@
 	        	
 	        	<input class="nav-link" type="submit" name="today" value="today">
 	        	
+	        	<c:out value="${year2}" />/
+	        	<c:out value="${month2}"/>/
+	        	<c:out value="${day2}"/>
+	        	
         		<li class="nav-item">
 	        		<input class="arrow right" type="submit" name="timeDirection" value="&gt">
 	    		</li>
         	</ul>
-        
+        </c:if>
 	        <ul class="nav nav-pills flex-row">
 		        
     		
-	        	<c:set var = "frequency" scope ="session" value = "${frequency }"></c:set>
+	        	
 	        	
 
 	        	<c:if test = "${frequency == 'all time'}">
