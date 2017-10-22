@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -53,7 +54,8 @@ public class BudgetServlet extends HttpServlet {
 				
 				List<Budget> budgets = budgetAccessor.getBudgets(userAccount);
 				
-				List<Transaction> transactions = accountAccessor.getTransaction(userAccount);	
+				List<Transaction> transactions = accountAccessor.getTransactionWithOptions(userAccount, Calendar.getInstance(), 0, 2);	
+				System.out.println(transactions.size());
 				HashMap<String, Integer> expenses = getTotals(false, transactions);
 				List<String> expensesCategories = new ArrayList<String>(expenses.size());
 				Set set = expenses.entrySet();
@@ -63,6 +65,7 @@ public class BudgetServlet extends HttpServlet {
 					expensesCategories.add((String) a.getKey());
 				}				
 				
+				request.setAttribute("transactions", transactions);
 				request.setAttribute("budgets", budgets);
 				request.setAttribute("categories", expensesCategories);
 
@@ -106,4 +109,5 @@ public class BudgetServlet extends HttpServlet {
 		}
 		return totals;
 	}
+	
 }

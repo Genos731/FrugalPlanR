@@ -139,9 +139,11 @@
                     <table class="table table-striped sortable">
                        <thead>
                             <tr>
-					<th style="cursor:pointer">Start Date</th>
-					<th style="cursor:pointer">End Date</th>
+								<th style="cursor:pointer">Start Date</th>
+								<th style="cursor:pointer">End Date</th>
                                 <th style="cursor:pointer">Value</th>
+                                <th style="cursor:pointer">Total Expenses</th>
+                                <th style="cursor:pointer">Budget Leftover</th>
                                 <th style="cursor:pointer">Description</th>
                                 <th style="cursor:pointer">Categories</th>
                                 <th></th>
@@ -153,6 +155,8 @@
                        		<td> <c:out value="${budget.getStartDateForPrint()}" /> </td>
                        		<td> <c:out value="${budget.getEndDateForPrint()}" /> </td>
                           	<td> $<c:out value="${budget.getGoalValue()}" /> </td>
+                          	<td> -$<c:out value="${budget.getBudgetExpensesTotal(transactions)}" /> </td>
+                       		<td> $<c:out value="${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions)}" /> </td>
                           	<td> <c:out value="${budget.description}" /> </td>
                           	<td> 
 	                            <c:forEach var="category" items="${budget.getCategoryList()}">

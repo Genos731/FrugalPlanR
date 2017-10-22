@@ -90,4 +90,22 @@ public class Budget {
 	public void setCategoryList(List<String> categoryList) {
 		this.categoryList = categoryList;
 	}
+	
+	//NOTE ASSUMES LIST OF EXPENSES NOT ALL TRANSACTIONS
+	public int getBudgetExpensesTotal(List<Transaction> transactions){
+		int totalExpenses = 0;
+		if (transactions == null){
+			System.out.println("que pasa");
+			return 0;
+			
+		}
+		for (int counter = 0; counter < transactions.size(); counter++){
+			for (int categoryCounter = 0; categoryCounter < categoryList.size(); categoryCounter++){
+				if (transactions.get(counter).getCategory().equals(categoryList.get(categoryCounter))){
+					totalExpenses += transactions.get(counter).getValue();
+				}
+			}
+		}
+		return totalExpenses;
+	}
 }
