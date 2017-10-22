@@ -80,6 +80,7 @@
 		                            </div>
 		                            <div class="modal-footer">
 		                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		                                <input type="submit" value="submit" style="visibility: hidden;">
 		                                <input type="submit" class="btn btn-danger" onclick="deleteTransaction()" value="Delete transaction">
 		                                <input type="submit" class="btn btn-primary" value="Edit transaction">
 		                            </div>
