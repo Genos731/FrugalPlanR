@@ -18,7 +18,7 @@
                             <tbody>
                             	<c:if test="${transactions.size() == 0}">
                             	<tr>
-                            		<td>
+                            		<td colspan="5">
                             		No Transactions
                             		</td>
                             	</tr>

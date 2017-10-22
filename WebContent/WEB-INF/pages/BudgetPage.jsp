@@ -77,7 +77,7 @@
                                     <div class="col-sm-9">
                                         <div class="input-group">
                                             <span class="input-group-addon">$</span>
-                                            <input type="number" name="amount" min="0.00" step="0.01" class="form-control" id="Amount" placeholder="0.00">
+                                            <input type="number" name="amount" min="0.00" step="0.01" class="form-control" id="Amount" placeholder="0.00" required>
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +86,7 @@
                                 <div class="form-group row">
                                     <label for="Categories" class="col-sm-3 col-form-label">Select categories</label>
                                     <div class="col-sm-9">
-                                        <select multiple class="form-control" name="categories" id="Categories">
+                                        <select multiple class="form-control" name="categories" id="Categories" required>
                                             <c:forEach items="${categories}" var="category">
                                             	<option value="<c:out value="${category}"/>"><c:out value="${category}"/></option>
 											</c:forEach>
@@ -142,7 +142,7 @@
 								<th>End Date</th>
                                 <th>Value</th>
                                 <th>Total Expenses</th>
-                                <th >Budget Leftover</th>
+                                <th>Budget Leftover</th>
                                 <th>Description</th>
                                 <th>Categories</th>
                                 <th></th>
@@ -151,7 +151,7 @@
                         <tbody>
 							<c:if test="${budgets.size() == 0}">
                             	<tr>
-                            		<td>
+                            		<td colspan="8">
                             		No Budgets
                             		</td>
                             	</tr>

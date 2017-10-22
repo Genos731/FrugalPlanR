@@ -96,11 +96,7 @@ public class EditBudgetServlet extends HttpServlet {
 		Double amount = new Double(request.getParameter("edit-amount"));
 		String[] categoryArray = request.getParameterValues("edit-categories");
 		List<String> categories = null;
-		try {
-			categories = Arrays.asList(categoryArray);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		if (categoryArray.length > 0) categories = Arrays.asList(categoryArray);
 		Calendar dateStart = new GregorianCalendar();
 		dateStart.setTimeInMillis(Long.parseLong(request.getParameter("edit-start-date")));
 		Calendar dateEnd = new GregorianCalendar();
@@ -121,7 +117,7 @@ public class EditBudgetServlet extends HttpServlet {
 		if (!request.getParameter("is-delete").equals("true")) {
 			try {
 				accessor.create(account, description, amount, dateStart, dateEnd, categories);
-			} catch (IllegalArgumentException | InvalidAccountException | SQLException e) {
+			} catch (IllegalArgumentException | InvalidAccountException | SQLException | NullPointerException e) {
 	    		request.setAttribute("message", e.getMessage());
 				e.printStackTrace();
 			}
