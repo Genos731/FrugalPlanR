@@ -155,8 +155,15 @@
                        		<td> <c:out value="${budget.getStartDateForPrint()}" /> </td>
                        		<td> <c:out value="${budget.getEndDateForPrint()}" /> </td>
                           	<td> $<c:out value="${budget.getGoalValue()}" /> </td>
-                          	<td> -$<c:out value="${budget.getBudgetExpensesTotal(transactions)}" /> </td>
-                       		<td> $<c:out value="${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions)}" /> </td>
+                          	<td> $<c:out value="${budget.getBudgetExpensesTotal(transactions)}" /> </td>
+                       		<td>
+                       			<c:if test = "${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions) < 0}"> 
+                       				-$<c:out value="${budget.getGoalValue()*-1 - budget.getBudgetExpensesTotal(transactions)*-1}" />
+                       			</c:if>
+                       			<c:if test = "${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions) >= 0}"> 
+                       			 	$<c:out value="${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions)}" />
+                       			</c:if>
+                       		</td>
                           	<td> <c:out value="${budget.description}" /> </td>
                           	<td> 
 	                            <c:forEach var="category" items="${budget.getCategoryList()}">
@@ -261,10 +268,10 @@
         
         function setDates() {
             // set dates
-            var start = $('#budget-datepicker').datepicker().data('datepicker').pickers[0].viewDate.getTime();
+            var start = $(".range-start").data("date");
             $('#start-date').val(start);
             
-            var end = $('#budget-datepicker').datepicker().data('datepicker').pickers[1].viewDate.getTime();
+            var end = $(".range-end").data("date");
             $('#end-date').val(end);
         }
 
