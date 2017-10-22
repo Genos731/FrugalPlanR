@@ -19,7 +19,14 @@
 	                            <c:forEach var= "transaction" items="${transactions}" >
 	                            	<tr>
 	                            		<td> <c:out value="${transaction.getDate()}" /> </td>
-		                            	<td> $<c:out value="${transaction.getActualValue()}" /> </td>
+		                            	<td> 
+		                            		<c:if test = "${transaction.getActualValue() >= 0 }">
+		                            		$<c:out value="${transaction.getActualValue()}" /> 
+		                            		</c:if>
+		                            		<c:if test ="${transaction.getActualValue() < 0 }">
+		                            		-$<c:out value="${transaction.getActualValue()*-1}" /> 
+		                            		</c:if>	
+		                            	</td>
 		                            	<td> <c:out value="${transaction.category}" /> </td>
 		                            	<td> <c:out value="${transaction.description}" /> </td>
 		                            	<td class="text-right">
