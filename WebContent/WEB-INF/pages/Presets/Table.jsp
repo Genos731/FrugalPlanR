@@ -3,15 +3,15 @@
                         <table class="table table-striped sortable">
                            <thead>
                                 <tr>
-                                   <th style="cursor:pointer" data-autoclick="true">Date 
-                                   <script>
+                                    <th style="cursor:pointer" data-autoclick="true">Date 
+                                    <script>
 									    window.onload = function() {
 									        $('[data-autoclick="true"]').click();
 									    };
 									</script></th>
-                                   <th style="cursor:pointer">Value</th>
-                                   <th style="cursor:pointer">Category</th>
-                                   <th style="cursor:pointer">Description</th>
+                                    <th style="cursor:pointer">Value</th>
+                                    <th style="cursor:pointer">Category</th>
+                                    <th style="cursor:pointer">Description</th>
                                     <th></th>
                                 </tr>
                             </thead>

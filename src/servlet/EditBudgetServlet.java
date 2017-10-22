@@ -44,17 +44,13 @@ public class EditBudgetServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.sendRedirect(request.getContextPath() + "/Budget");
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
-		
 		AccountAccessor accountAccessor = new AccountAccessorImpl();
 		String username = (String) request.getSession().getAttribute("userName");
 		Account account = null;
@@ -95,29 +91,17 @@ public class EditBudgetServlet extends HttpServlet {
 			if (budget.getID() == id) b = budget;
 		}
 
-		// Delete transaction
-		if (request.getParameter("is-delete").equals("true")) {
-			try {
-				accessor.delete(b);
-			} catch (SQLException e) {
-	    		request.setAttribute("message", e.getMessage());
-				e.printStackTrace();
-			}
-		}
-
 		// Get parameters
 		String description = request.getParameter("edit-description");
 		Double amount = new Double(request.getParameter("edit-amount"));
 		String[] categoryArray = request.getParameterValues("edit-categories");
 		List<String> categories = Arrays.asList(categoryArray);
-		String[] start = new String[3];
-		start = request.getParameter("edit-start").split("/");
-		Calendar dateStart = new GregorianCalendar(Integer.valueOf(start[0]), Integer.valueOf(start[1]), Integer.valueOf(start[2]));
-		String[] end = new String[3];
-		end = request.getParameter("edit-end").split("/");
-		Calendar dateEnd = new GregorianCalendar(Integer.valueOf(end[0]), Integer.valueOf(end[1]), Integer.valueOf(end[2]));
+		Calendar dateStart = new GregorianCalendar();
+		dateStart.setTimeInMillis(Long.parseLong(request.getParameter("edit-start-date")));
+		Calendar dateEnd = new GregorianCalendar();
+		dateEnd.setTimeInMillis(Long.parseLong(request.getParameter("edit-end-date")));
 		
-		// Edit transaction				
+		// Delete transaction				
 		try {
 			accessor.delete(b);
 		} catch (InvalidAccountException e) {
@@ -128,11 +112,14 @@ public class EditBudgetServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		try {
-			accessor.create(account, description, amount, dateStart, dateEnd, categories);
-		} catch (IllegalArgumentException | InvalidAccountException | SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		// Edit
+		if (!request.getParameter("is-delete").equals("true")) {
+			try {
+				accessor.create(account, description, amount, dateStart, dateEnd, categories);
+			} catch (IllegalArgumentException | InvalidAccountException | SQLException e) {
+	    		request.setAttribute("message", e.getMessage());
+				e.printStackTrace();
+			}
 		}
 		
 		// Close transaction accessor
@@ -143,7 +130,7 @@ public class EditBudgetServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		if (request.getAttribute("message") != null) request.getRequestDispatcher("WEB-INF/pages/OverviewPage.jsp").forward(request, response);
+		if (request.getAttribute("message") != null) request.getRequestDispatcher("WEB-INF/pages/BudgetPage.jsp").forward(request, response);
 		else doGet(request, response);
 	}
 		

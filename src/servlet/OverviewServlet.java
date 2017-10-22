@@ -56,9 +56,6 @@ public class OverviewServlet extends HttpServlet {
 				Calendar currentDate = new GregorianCalendar();
 				Calendar stringDate = (Calendar) request.getSession().getAttribute("date");
 				
-				
-				
-				
 				String todayButton = (String) request.getParameter("today");
 				if (stringDate == null || todayButton != null){
 					currentDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
@@ -69,9 +66,7 @@ public class OverviewServlet extends HttpServlet {
 					currentDate.set(Calendar.HOUR, 0);
 					currentDate.set(Calendar.MINUTE, 1);
 					currentDate.set(Calendar.SECOND, 0);
-					currentDate.set(Calendar.MILLISECOND, 0); 
-					
-					
+					currentDate.set(Calendar.MILLISECOND, 0);
 					
 					request.getSession().setAttribute("date", currentDate);
 				}else{

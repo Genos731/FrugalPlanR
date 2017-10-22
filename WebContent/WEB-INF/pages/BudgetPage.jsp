@@ -38,7 +38,7 @@
                         <a class="nav-link" href="Income">Income</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link active" href="Budget active">Budget</a>
+                        <a class="nav-link active" href="Budget">Budget</a>
                     </li>
                 </ul>
 
@@ -135,40 +135,120 @@
 
                 <!-- SUMMARY -->
                 <div class="table-responsive">
-                   		<script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
-                        <table class="table table-striped sortable">
-                           <thead>
-                                <tr>
-									<th style="cursor:pointer">Start Date</th>
-									<th style="cursor:pointer">End Date</th>
-                                    <th style="cursor:pointer">Value</th>
-                                    <th style="cursor:pointer">Description</th>
-                                    <th style="cursor:pointer">Categories</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-	                            <c:forEach var= "budget" items="${budgets}" >
-	                            	<tr>
-	                            		<td> <c:out value="${budget.getStartDateForPrint()}" /> </td>
-	                            		<td> <c:out value="${budget.getEndDateForPrint()}" /> </td>
-		                            	<td> $<c:out value="${budget.getGoalValue()}" /> </td>
-		                            	<td> <c:out value="${budget.description}" /> </td>
-		                            	<td> 
-				                            <c:forEach var="category" items="${budget.getCategoryList()}">
-				                            	<c:out value="${category}" />
-				                            </c:forEach>
-		                            	</td>
-	                            	</tr>
-							 	</c:forEach>
-						 	</tbody>
-                        </table>
-                    </div>
+               		<script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+                    <table class="table table-striped sortable">
+                       <thead>
+                            <tr>
+					<th style="cursor:pointer">Start Date</th>
+					<th style="cursor:pointer">End Date</th>
+                                <th style="cursor:pointer">Value</th>
+                                <th style="cursor:pointer">Description</th>
+                                <th style="cursor:pointer">Categories</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         <c:forEach var="budget" items="${budgets}" >
+                         	<tr>
+                       		<td> <c:out value="${budget.getStartDateForPrint()}" /> </td>
+                       		<td> <c:out value="${budget.getEndDateForPrint()}" /> </td>
+                          	<td> $<c:out value="${budget.getGoalValue()}" /> </td>
+                          	<td> <c:out value="${budget.description}" /> </td>
+                          	<td> 
+	                            <c:forEach var="category" items="${budget.getCategoryList()}">
+	                            	<c:out value="${category}" />
+	                            </c:forEach>
+                          	</td>
+                          	<td class="text-right" id="button-${budget.getID()}"></td>
+                         	</tr>
+					 	</c:forEach>
+					 	</tbody>
+                    </table>
+                </div>
+            <!-- EDIT BUDGET MODAL -->
+			<div class="modal fade" id="editBudget" tabindex="-1" role="dialog" aria-labelledby="editBudgetLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <form id="editBudget" action="EditBudget" method="post">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editBudgetLabel">Edit budget</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="alert alert-danger" id="edit-budget-error" role="alert">
+                            <input type="hidden" name="edit-id" id="edit-id">
+                            <input type="hidden" name="is-delete" id="is-delete" value=false>
+                            </div>
+                            <div class="container">
+                                <div class="form-group row">
+                                    <label for="Description" class="col-sm-3 col-form-label">Description</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="edit-description" class="form-control" id="EditDescription" placeholder="Description of your budget" maxlength="255">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="form-group row">
+                                    <label for="Amount" class="col-sm-3 col-form-label">Amount</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">$</span>
+                                            <input type="number" name="edit-amount" min="0.00" step="0.01" class="form-control" id="EditAmount" placeholder="0.00">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="form-group row">
+                                    <label for="Categories" class="col-sm-3 col-form-label">Select categories</label>
+                                    <div class="col-sm-9">
+                                        <select multiple class="form-control" name="edit-categories" id="EditCategories">
+                                            <c:forEach items="${categories}" var="category">
+                                            	<option value="<c:out value="${category}"/>"><c:out value="${category}"/></option>
+											</c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="container">
+                                <div class="form-group row">
+                                    <label for="Dates" class="col-sm-3 col-form-label">Date range</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-daterange input-group" id="edit-budget-datepicker">
+									        <input type="text" class="input-sm form-control" name="edit-start" id="edit-budget-start" onchange="setEditDates()"/>
+									        <span class="input-group-addon">to</span>
+									        <input type="text" class="input-sm form-control" name="edit-end" id="edit-budget-end" onchange="setEditDates()"/>
+									    </div>
+                                        <input id="edit-start-date" type="hidden" name="edit-start-date">
+                                        <input id="edit-end-date" type="hidden" name="edit-end-date">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-danger" onclick="deleteBudget()" value="Delete budget">
+                                <input type="submit" class="btn btn-primary" value="Edit budget">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             </main>
         </div>
     </div>
     <%@include file="Presets/Scripts.jsp" %>
    	<script>
         $('#budget-datepicker').datepicker({
+            format: "yyyy/mm/dd",
+            weekStart: 1,
+            maxViewMode: 2,
+            todayBtn: "linked"
+        });
+        
+        $('#edit-budget-datepicker').datepicker({
             format: "yyyy/mm/dd",
             weekStart: 1,
             maxViewMode: 2,
@@ -198,6 +278,66 @@
                 return false;
             }
         });
+                
+        function editBudget(id, description, amount, categories, start, end) {
+        	// set id
+        	$('#edit-id').val(id);
+        	// set description
+        	$('#EditDescription').val(description);
+        	// set amount
+        	$('#EditAmount').val(amount);
+        	// set categories
+        	$('#EditCategories').val(categories);
+        	// set date
+        	$('#edit-budget-datepicker').datepicker().data('datepicker').pickers[0].setDate(start);
+        	$('#edit-budget-datepicker').datepicker().data('datepicker').pickers[1].setDate(end);
+        	setEditDates();
+        }        
+        
+        function setEditDates() {
+            // set dates
+            var start = $('#edit-budget-datepicker').datepicker().data('datepicker').pickers[0].viewDate.getTime();
+            $('#edit-start-date').val(start);
+            
+            var end = $('#edit-budget-datepicker').datepicker().data('datepicker').pickers[1].viewDate.getTime();
+            $('#edit-end-date').val(end);
+        }
+
+        $('#edit-budget-error').hide();
+        $('#EditBudget').submit(function (e) {
+            // form validation
+            var error = "";
+            $('#edit-budget-error').hide();
+            if (!$('#EditAmount').val()) error += "Please enter an amount.\n";
+            if (!$('#EditCategories').val()) error += "Please select at least one category.\n";
+            if (!$('#edit-budget-start').val()) error += "Please select a date range.\n";
+            if (error.length > 0) {
+                $('#add-budget-error').text(error);
+                $('#add-budget-error').show();
+                return false;
+            }
+        });
+        
+        function deleteBudget() {
+        	$('#is-delete').val(true);
+        }
+        
+		// add Edit buttons to each budget
+		
+		var categories = new Array();
+        <c:forEach var="budget" items="${budgets}" >
+			categories[${budget.getID()}] = new Array();
+			<c:forEach items="${budget.getCategoryList()}" var="category">
+				categories[${budget.getID()}].push("${category}");
+			</c:forEach>
+			var button = document.createElement("button");
+			button.className = "btn btn-secondary edit";
+			button.textContent = "Edit";
+			button.setAttribute("data-toggle", "modal");
+			button.setAttribute("data-target", "#editBudget");
+			button.onclick = function() {editBudget(<c:out value="${budget.getID()}" />, "<c:out value="${budget.getDescription()}" />", <c:out value="${budget.getGoalValue()}" />, categories[${budget.getID()}], "<c:out value="${budget.getStartDateForPrint()}" />", "<c:out value="${budget.getEndDateForPrint()}" />")};
+			document.getElementById("button-${budget.getID()}").appendChild(button);
+		</c:forEach>
     </script>
     <script>    
     	function hideExplanation() {
