@@ -337,10 +337,7 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 		}
 		
 		
-		// If list is empty, return null
-		// Otherwise return the list
-		if (transactionList.size() == 0)
-			return null;
+		// Return the list
 		return transactionList;
 	}
 

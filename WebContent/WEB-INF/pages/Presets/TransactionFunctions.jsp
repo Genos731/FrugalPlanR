@@ -54,7 +54,7 @@
             var error = "";
             $('#add-transaction-error').hide();
             if (!$('#Amount').val()) error += "Please enter an amount.\n";
-            if ($('#category') === "new" && !$('#new-category').val()) error += "Please enter a new category.\n";
+            if ($('#Category').val() === "new" && !$('#new-category').val()) error += "Please enter a new category.\n";
             if (error.length > 0) {
                 $('#add-transaction-error').text(error);
                 $('#add-transaction-error').show();
@@ -93,7 +93,7 @@
             var error = "";
             $('#edit-transaction-error').hide();
             if (!$('#edit-amount').val()) error += "Please enter an amount.\n";
-            if ($('#category') === "new" && !$('#edit-new-category').val()) error += "Please enter a new category.\n";
+            if ($('#edit-category').val() === "new" && !$('#edit-new-category').val()) error += "Please enter a new category.\n";
             if (error.length > 0) {
                 $('#edit-transaction-error').text(error);
                 $('#edit-transaction-error').show();
