@@ -268,10 +268,10 @@
         
         function setDates() {
             // set dates
-            var start = $(".range-start").data("date");
+            var start = $('#budget-datepicker').datepicker().data('datepicker').pickers[0].viewDate.getTime();
             $('#start-date').val(start);
             
-            var end = $(".range-end").data("date");
+            var end = $('#budget-datepicker').datepicker().data('datepicker').pickers[1].viewDate.getTime();
             $('#end-date').val(end);
         }
 
