@@ -1,7 +1,8 @@
+
 <c:forEach var= "transaction" items="${transactions}" >
 	<c:forEach var="category" items="${budget.getCategoryList()}">
 		<c:if test = "${transaction.getCategory().equals(category)}">
-			<c:if test = "${budget.checkTransactionInDate(transaction)}">
+			<c:if test = "${budget.checkTransactionInDate2(transaction)}">
 				<tr>
 					<td> <c:out value="${transaction.getDate()}" /> </td>
 					<td> $<c:out value="${transaction.getValue()}" /> </td>
