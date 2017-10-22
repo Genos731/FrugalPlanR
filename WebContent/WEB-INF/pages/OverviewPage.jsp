@@ -69,6 +69,7 @@
 	                    <li>The pie charts show the proportion of your spending in each category.</li>
 	                    <li>To add a transaction, click the <em>Add transaction</em> button in the sidebar.</li>
 	                    <li>To edit or delete a transaction, hover over the relevant row in the table and click the <em>Edit</em> button.</li>
+	                    <li>Repeating transactions repeat regularly beginning on the date entered and continuing until one repetition in the future.</li>
                     </ul>
                 </div>
 
