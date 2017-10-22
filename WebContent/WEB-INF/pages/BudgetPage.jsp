@@ -152,11 +152,11 @@
 
 	                       	<c:forEach var="budget" items="${budgets}" >
 	                         	<tr>
-		                       		<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"><c:out value="${budget.getStartDateForPrint()}" /> </td>
-		                       		<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> <c:out value="${budget.getEndDateForPrint()}" /> </td>
-		                          	<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> $<c:out value="${budget.getGoalValue()}" /> </td>
-		                          	<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> $<c:out value="${budget.getBudgetExpensesTotal(transactions)}" /> </td>
-		                       		<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer">
+		                       		<td onClick="toggle_it(${budget.getID()})" style="cursor:pointer"><c:out value="${budget.getStartDateForPrint()}" /> </td>
+		                       		<td onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> <c:out value="${budget.getEndDateForPrint()}" /> </td>
+		                          	<td onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> $<c:out value="${budget.getGoalValue()}" /> </td>
+		                          	<td onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> $<c:out value="${budget.getBudgetExpensesTotal(transactions)}" /> </td>
+		                       		<td onClick="toggle_it(${budget.getID()})" style="cursor:pointer">
 		                       			<c:if test = "${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions) < 0}"> 
 		                       				-$<c:out value="${budget.getGoalValue()*-1 - budget.getBudgetExpensesTotal(transactions)*-1}" />
 		                       			</c:if>
@@ -164,18 +164,35 @@
 		                       			 	$<c:out value="${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions)}" />
 		                       			</c:if>
 	                       			</td>
-		                          	<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> <c:out value="${budget.description}" /> </td>
-		                          	<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> 
+		                          	<td onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> <c:out value="${budget.description}" /> </td>
+		                          	<td onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> 
 			                            <c:forEach var="category" items="${budget.getCategoryList()}">
 			                            	<c:out value="${category}" />
 			                            </c:forEach>
 		                          	</td>
 		                          	<td class="text-right" id="button-${budget.getID()}"></td>
-		                          	
 	                         	</tr>
-	                         	<tbody id="${budget.getID()}" style="display:none">	
-									<%@include file="Presets/MiniTable.jsp" %>
-								</tbody>
+								<tr>
+									<td></td>
+									<td colspan="6" id="${budget.getID()}" style="display: none">
+										<table class="table table-sm">
+										    <thead>
+										        <tr>
+										            <th colspan="3">List of transactions</th>
+										        </tr>
+										        <tr>
+													<th>Date</th>
+													<th>Amount</th>
+													<th>Categories</th>
+										        </tr>
+										    </thead>
+										    <tbody>
+												<%@include file="Presets/MiniTable.jsp" %>
+										    </tbody>
+										</table>
+									</td>
+									<td></td>
+								</tr>
 							</c:forEach>
 					 	</tbody>
                     </table>
@@ -256,16 +273,9 @@
     </div>
     <%@include file="Presets/Scripts.jsp" %>
    	<script>
-   	
 	   	function toggle_it(itemID){ 
-	        // Toggle visibility between none and '' 
-	        if ((document.getElementById(itemID).style.display == 'none')) { 
-	              document.getElementById(itemID).style.display = '' 
-	              event.preventDefault()
-	        } else { 
-	              document.getElementById(itemID).style.display = 'none'; 
-	              event.preventDefault()
-	        }    
+	        // Toggle visibility between none and ''
+	        $('#' + itemID).toggle();
 	    } 
    	
         $('#budget-datepicker').datepicker({
@@ -284,10 +294,10 @@
         
         function setDates() {
             // set dates
-            var start = $(".range-start").data("date");
+            var start = $('#budget-datepicker').datepicker().data('datepicker').pickers[0].viewDate.getTime();
             $('#start-date').val(start);
             
-            var end = $(".range-end").data("date");
+            var end = $('#budget-datepicker').datepicker().data('datepicker').pickers[1].viewDate.getTime();
             $('#end-date').val(end);
         }
 
@@ -365,8 +375,7 @@
 			button.onclick = function() {editBudget(<c:out value="${budget.getID()}" />, "<c:out value="${budget.getDescription()}" />", <c:out value="${budget.getGoalValue()}" />, categories[${budget.getID()}], "<c:out value="${budget.getStartDateForPrint()}" />", "<c:out value="${budget.getEndDateForPrint()}" />")};
 			document.getElementById("button-${budget.getID()}").appendChild(button);
 		</c:forEach>
-    </script>
-    <script>    
+
     	function hideExplanation() {
     		localStorage.setItem('<c:out value="${userName}" /> budget', true);
     	}

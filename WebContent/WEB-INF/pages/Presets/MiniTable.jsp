@@ -1,9 +1,3 @@
-
-<tr>
-<th>
-List of Transactions
-</th>
-</tr>
 <c:forEach var= "transaction" items="${transactions}" >
 	<c:forEach var="category" items="${budget.getCategoryList()}">
 		<c:if test = "${transaction.getCategory().equals(category)}">
@@ -15,9 +9,5 @@ List of Transactions
 				</tr>
 			</c:if>
 		</c:if>
-		
 	</c:forEach>
-	
-</c:forEach>	
-
-
+</c:forEach>
