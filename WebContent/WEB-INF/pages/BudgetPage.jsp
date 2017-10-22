@@ -149,7 +149,13 @@
                             </tr>
                         </thead>
                         <tbody>
-
+							<c:if test="${budgets.size() == 0}">
+                            	<tr>
+                            		<td>
+                            		No Budgets
+                            		</td>
+                            	</tr>
+                            	</c:if>
 	                       	<c:forEach var="budget" items="${budgets}" >
 	                         	<tr>
 		                       		<td onClick="toggle_it(${budget.getID()})" style="cursor:pointer"><c:out value="${budget.getStartDateForPrint()}" /> </td>

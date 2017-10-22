@@ -16,6 +16,13 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            	<c:if test="${transactions.size() == 0}">
+                            	<tr>
+                            		<td>
+                            		No Transactions
+                            		</td>
+                            	</tr>
+                            	</c:if>
 	                            <c:forEach var= "transaction" items="${transactions}" >
 	                            	<tr>
 	                            		<td> <c:out value="${transaction.getDate()}" /> </td>
