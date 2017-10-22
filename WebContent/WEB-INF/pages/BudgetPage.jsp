@@ -135,44 +135,48 @@
 
                 <!-- SUMMARY -->
                 <div class="table-responsive">
-               		<script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
-                    <table class="table table-striped sortable">
+                    <table class="table table-striped">
                        <thead>
                             <tr>
-								<th style="cursor:pointer">Start Date</th>
-								<th style="cursor:pointer">End Date</th>
-                                <th style="cursor:pointer">Value</th>
-                                <th style="cursor:pointer">Total Expenses</th>
-                                <th style="cursor:pointer">Budget Leftover</th>
-                                <th style="cursor:pointer">Description</th>
-                                <th style="cursor:pointer">Categories</th>
+								<th>Start Date</th>
+								<th>End Date</th>
+                                <th>Value</th>
+                                <th>Total Expenses</th>
+                                <th >Budget Leftover</th>
+                                <th>Description</th>
+                                <th>Categories</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                         <c:forEach var="budget" items="${budgets}" >
-                         	<tr>
-                       		<td> <c:out value="${budget.getStartDateForPrint()}" /> </td>
-                       		<td> <c:out value="${budget.getEndDateForPrint()}" /> </td>
-                          	<td> $<c:out value="${budget.getGoalValue()}" /> </td>
-                          	<td> $<c:out value="${budget.getBudgetExpensesTotal(transactions)}" /> </td>
-                       		<td>
-                       			<c:if test = "${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions) < 0}"> 
-                       				-$<c:out value="${budget.getGoalValue()*-1 - budget.getBudgetExpensesTotal(transactions)*-1}" />
-                       			</c:if>
-                       			<c:if test = "${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions) >= 0}"> 
-                       			 	$<c:out value="${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions)}" />
-                       			</c:if>
-                       		</td>
-                          	<td> <c:out value="${budget.description}" /> </td>
-                          	<td> 
-	                            <c:forEach var="category" items="${budget.getCategoryList()}">
-	                            	<c:out value="${category}" />
-	                            </c:forEach>
-                          	</td>
-                          	<td class="text-right" id="button-${budget.getID()}"></td>
-                         	</tr>
-					 	</c:forEach>
+
+	                       	<c:forEach var="budget" items="${budgets}" >
+	                         	<tr>
+		                       		<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"><c:out value="${budget.getStartDateForPrint()}" /> </td>
+		                       		<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> <c:out value="${budget.getEndDateForPrint()}" /> </td>
+		                          	<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> $<c:out value="${budget.getGoalValue()}" /> </td>
+		                          	<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> $<c:out value="${budget.getBudgetExpensesTotal(transactions)}" /> </td>
+		                       		<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer">
+		                       			<c:if test = "${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions) < 0}"> 
+		                       				-$<c:out value="${budget.getGoalValue()*-1 - budget.getBudgetExpensesTotal(transactions)*-1}" />
+		                       			</c:if>
+		                       			<c:if test = "${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions) >= 0}"> 
+		                       			 	$<c:out value="${budget.getGoalValue() - budget.getBudgetExpensesTotal(transactions)}" />
+		                       			</c:if>
+	                       			</td>
+		                          	<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> <c:out value="${budget.description}" /> </td>
+		                          	<td href="#" id="toggle" onClick="toggle_it(${budget.getID()})" style="cursor:pointer"> 
+			                            <c:forEach var="category" items="${budget.getCategoryList()}">
+			                            	<c:out value="${category}" />
+			                            </c:forEach>
+		                          	</td>
+		                          	<td class="text-right" id="button-${budget.getID()}"></td>
+		                          	
+	                         	</tr>
+	                         	<tbody id="${budget.getID()}" style="display:none">	
+									<%@include file="Presets/MiniTable.jsp" %>
+								</tbody>
+							</c:forEach>
 					 	</tbody>
                     </table>
                 </div>
@@ -252,6 +256,18 @@
     </div>
     <%@include file="Presets/Scripts.jsp" %>
    	<script>
+   	
+	   	function toggle_it(itemID){ 
+	        // Toggle visibility between none and '' 
+	        if ((document.getElementById(itemID).style.display == 'none')) { 
+	              document.getElementById(itemID).style.display = '' 
+	              event.preventDefault()
+	        } else { 
+	              document.getElementById(itemID).style.display = 'none'; 
+	              event.preventDefault()
+	        }    
+	    } 
+   	
         $('#budget-datepicker').datepicker({
             format: "yyyy/mm/dd",
             weekStart: 1,
@@ -268,10 +284,10 @@
         
         function setDates() {
             // set dates
-            var start = $('#budget-datepicker').datepicker().data('datepicker').pickers[0].viewDate.getTime();
+            var start = $(".range-start").data("date");
             $('#start-date').val(start);
             
-            var end = $('#budget-datepicker').datepicker().data('datepicker').pickers[1].viewDate.getTime();
+            var end = $(".range-end").data("date");
             $('#end-date').val(end);
         }
 
