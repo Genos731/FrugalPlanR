@@ -103,7 +103,7 @@ public class Budget {
 			int secondMonth = this.endDate.get(Calendar.MONTH);
 			
 			if (firstMonth == calendarMonth && secondMonth == calendarMonth){
-				if (firstDay <= calendarDay && secondDay > calendarDay){
+				if (firstDay <= calendarDay && secondDay >= calendarDay){
 					itDoes = true;
 				}
 			}
