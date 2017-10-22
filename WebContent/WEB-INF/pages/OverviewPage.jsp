@@ -119,7 +119,19 @@
 	    var graphExpenses = document.getElementById('graph-expenses').getContext('2d');
 
     	var incomeDataSet = <c:out value="${incomeTotals}" />;
+    	var incomeCategorySet = [<c:forEach var= "category" items="${incomeCategories}" >"<c:out value='${category}' />",</c:forEach>];
        	var expensesDataSet = <c:out value="${expensesTotals}" />;
+       	var expensesCategorySet = [<c:forEach var= "category" items="${expensesCategories}" >"<c:out value='${category}' />",</c:forEach>];
+       	
+       	if (incomeDataSet.length === 0) {
+       		incomeDataSet = [1];
+       		incomeCategorySet = ["No income entered"]
+       	}
+       	
+       	if (expensesDataSet.length === 0) {
+       		expensesDataSet = [1];
+       		expensesCategorySet = ["No expenses entered"]
+       	}
        	
     	var incomeData = {
     	    datasets: [{
@@ -128,8 +140,7 @@
     	            return '#' + hex;
     	          })
     	    }],
-
-    	    labels: [<c:forEach var= "category" items="${incomeCategories}" >"<c:out value='${category}' />",</c:forEach>]
+    	    labels: incomeCategorySet
     	};
     	
     	var expensesData = {
@@ -139,8 +150,7 @@
        	            return '#' + hex;
        	          })
        	    }],
-
-       	    labels: [<c:forEach var= "category" items="${expensesCategories}" >"<c:out value='${category}' />",</c:forEach>]
+       	    labels: expensesCategorySet
        	};
 
     	Chart.defaults.global.responsive = false;
