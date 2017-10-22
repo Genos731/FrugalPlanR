@@ -108,7 +108,7 @@ public class OverviewServlet extends HttpServlet {
 						if (frequency2.equals("daily")){
 							frequencyNum = 1;
 							request.setAttribute("frequency", "daily");
-							nextDate.add(Calendar.DATE, 0);
+							nextDate.add(Calendar.DATE, 1);
 						}
 						else if (frequency2.equals("weekly")){
 							frequencyNum = 2;
