@@ -91,6 +91,37 @@ public class Budget {
 		this.categoryList = categoryList;
 	}
 	
+	public boolean checkTransactionInDate(Transaction transaction){
+		Calendar cal = transaction.getCalendar();
+		boolean itDoes = false;
+		if (this.startDate.get(Calendar.YEAR) == cal.get(Calendar.YEAR) || this.endDate.get(Calendar.YEAR) == cal.get(Calendar.YEAR)){
+			int calendarMonth = cal.get(Calendar.MONTH);
+			int calendarDay = cal.get(Calendar.DATE);
+			int firstDay = this.startDate.get(Calendar.DATE);
+			int firstMonth = this.startDate.get(Calendar.MONTH);
+			int secondDay = this.endDate.get(Calendar.DATE);
+			int secondMonth = this.endDate.get(Calendar.MONTH);
+			
+			if (firstMonth == calendarMonth && secondMonth == calendarMonth){
+				if (firstDay <= calendarDay && secondDay > calendarDay){
+					itDoes = true;
+				}
+			}
+			else if (firstMonth == calendarMonth && secondMonth > calendarMonth){
+				if (firstDay <= calendarDay){
+					itDoes = true;
+				}
+			}
+			else if (secondMonth == calendarMonth && firstMonth < calendarMonth){
+				if (secondDay > calendarDay){
+					itDoes = true;
+				}
+			}
+			
+		}
+		return itDoes;
+	}
+	
 	//NOTE ASSUMES LIST OF EXPENSES NOT ALL TRANSACTIONS
 	public int getBudgetExpensesTotal(List<Transaction> transactions){
 		int totalExpenses = 0;
@@ -101,7 +132,7 @@ public class Budget {
 		}
 		for (int counter = 0; counter < transactions.size(); counter++){
 			for (int categoryCounter = 0; categoryCounter < categoryList.size(); categoryCounter++){
-				if (transactions.get(counter).getCategory().equals(categoryList.get(categoryCounter))){
+				if (transactions.get(counter).getCategory().equals(categoryList.get(categoryCounter)) && checkTransactionInDate(transactions.get(counter))){
 					totalExpenses += transactions.get(counter).getValue();
 				}
 			}
