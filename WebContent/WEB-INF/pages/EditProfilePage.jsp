@@ -71,23 +71,24 @@
         <div class="row">
             <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
             <!-- EDIT PROFILE -->
-                <form class="form-horizontal" method="post" action ="EditProfile">
+                <div class="alert alert-danger" id="edit-profile-error" role="alert"></div>
+                <form class="form-horizontal" method="post" action="EditProfile" id="EditProfile">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="username">Current Password</label>
                         <div class="col-sm-10">
-                                <input type="password" class="form-control" name="currpwd" placeholder="Enter current password">
+                                <input type="password" class="form-control" name="currpwd" placeholder="Enter current password" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="pwd">New Password:</label>
                         <div class="col-sm-10"> 
-                                <input type="password" class="form-control" name="newpwd" placeholder="Enter new password">
+                            <input type="password" class="form-control" name="newpwd" placeholder="Enter new password" id="newpwd" required>
                         </div>
                     </div>
                     <div id = "email" class="form-group" >
                         <label class="control-label col-sm-2" for="email">New Email:</label>
                         <div class="col-sm-10">
-                                <input type="text" class="form-control" name="email" placeholder="Enter new email">
+                            <input type="email" class="form-control" name="email" placeholder="Enter new email" id="email" required>
                         </div>
                     </div>
                     <div class="form-group"> 
@@ -106,6 +107,19 @@
 		        $('#successMessage').modal('show');
 		    });
 		}
+
+        $('#edit-profile-error').hide();
+        $('#EditProfile').submit(function (e) {
+        	// form validation
+            var error = "";
+            $('#edit-profile-error').hide();
+            if ($('#newpwd').val().length === 0) error += "Your password is too short.\n";
+            if (error.length > 0) {
+                $('#edit-profile-error').text(error);
+                $('#edit-profile-error').show();
+                return false;
+            }
+        });
 	</script>
 </body>
 </html>

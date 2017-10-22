@@ -54,8 +54,7 @@ public class BudgetServlet extends HttpServlet {
 				
 				List<Budget> budgets = budgetAccessor.getBudgets(userAccount);
 				
-				List<Transaction> transactions = accountAccessor.getTransactionWithOptions(userAccount, Calendar.getInstance(), 0, 2);	
-				System.out.println(transactions.size());
+				List<Transaction> transactions = accountAccessor.getTransactionWithOptions(userAccount, Calendar.getInstance(), 0, 2);
 				HashMap<String, Integer> expenses = getTotals(false, transactions);
 				List<String> expensesCategories = new ArrayList<String>(expenses.size());
 				Set set = expenses.entrySet();

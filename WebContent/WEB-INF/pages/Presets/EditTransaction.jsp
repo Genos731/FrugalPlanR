@@ -17,7 +17,7 @@
 		                                    <div class="col-sm-9">
 		                                        <div class="input-group">
 		                                            <span class="input-group-addon">$</span>
-		                                            <input type="number" name="edit-amount" min="0.00" step="0.01" class="form-control" id="edit-amount" placeholder="0.00">
+		                                            <input type="number" name="edit-amount" min="0.00" step="0.01" class="form-control" id="edit-amount" placeholder="0.00" required>
 		                                        </div>
 		                                    </div>
 		                                </div>
@@ -41,7 +41,7 @@
 		                                    <label for="Date" class="col-sm-3 col-form-label">Date</label>
 		                                    <div class="col-sm-9">
 		                                        <div id="edit-transaction-datepicker"></div>
-		                                        <input id="edit-transaction-date" type="hidden" name="edit-date">
+		                                        <input id="edit-transaction-date" type="hidden" name="edit-date" required>
 		                                    </div>
 		                                </div>
 		                            </div>

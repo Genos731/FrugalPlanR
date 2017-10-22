@@ -95,7 +95,12 @@ public class EditBudgetServlet extends HttpServlet {
 		String description = request.getParameter("edit-description");
 		Double amount = new Double(request.getParameter("edit-amount"));
 		String[] categoryArray = request.getParameterValues("edit-categories");
-		List<String> categories = Arrays.asList(categoryArray);
+		List<String> categories = null;
+		try {
+			categories = Arrays.asList(categoryArray);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Calendar dateStart = new GregorianCalendar();
 		dateStart.setTimeInMillis(Long.parseLong(request.getParameter("edit-start-date")));
 		Calendar dateEnd = new GregorianCalendar();

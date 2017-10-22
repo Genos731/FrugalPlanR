@@ -34,19 +34,19 @@
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="username">Username:</label>
 						<div class="col-sm-10">
-			 				<input type="text" class="form-control" name="user" placeholder="Enter username">
+			 				<input type="text" class="form-control" name="user" placeholder="Enter username" required>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="pwd">Password:</label>
 						<div class="col-sm-10"> 
-			  				<input type="password" class="form-control" name="pwd" placeholder="Enter password">
+			  				<input type="password" class="form-control" name="pwd" placeholder="Enter password" required>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="email">Email:</label>
 						<div class="col-sm-10">
-			 				<input type="email" class="form-control" name="email" placeholder="Enter email">
+			 				<input type="email" class="form-control" name="email" placeholder="Enter email" required>
 						</div>
 					</div>
 					<div class="form-group"> 
