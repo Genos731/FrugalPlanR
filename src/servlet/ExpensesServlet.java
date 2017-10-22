@@ -159,11 +159,11 @@ public class ExpensesServlet extends HttpServlet {
 				
 				
 				request.setAttribute("day", currentDate.get(Calendar.DATE));
-				request.setAttribute("month", currentDate.get(Calendar.MONTH));
+				request.setAttribute("month", currentDate.get(Calendar.MONTH) + 1);
 				request.setAttribute("year", currentDate.get(Calendar.YEAR));
 				
 				request.setAttribute("day2", nextDate.get(Calendar.DATE));
-				request.setAttribute("month2", nextDate.get(Calendar.MONTH));
+				request.setAttribute("month2", nextDate.get(Calendar.MONTH) + 1);
 				request.setAttribute("year2", nextDate.get(Calendar.YEAR));
 				
 				
