@@ -7,29 +7,29 @@
     	<c:if test = "${frequency != 'all time'}">
     		<ul class="nav nav-pills flex-row">
     			<li class="nav-item">
-	        		<input class="arrow left" type="submit" name="timeDirection" value="&lt">
+	        		<input class="arrow nav-link btn-light" type="submit" name="timeDirection" value="&lt">
 	    		</li>
-    			<c:out value="${year}" />/
+	    		
+	    		<span class="date">
+    			<c:out value="${year}"/>/
 	        	<c:out value="${month}"/>/
 	        	<c:out value="${day}"/>
+	        	</span>
 	        	
-	        	<input class="nav-link" type="submit" name="today" value="today">
+	        	<input class="nav-link nav-today" type="submit" name="today" value="today">
 	        	
-	        	<c:out value="${year2}" />/
+	        	<span class="date">
+	        	<c:out value="${year2}"/>/
 	        	<c:out value="${month2}"/>/
 	        	<c:out value="${day2}"/>
+	        	</span>
 	        	
         		<li class="nav-item">
-	        		<input class="arrow right" type="submit" name="timeDirection" value="&gt">
+	        		<input class="arrow nav-link btn-light" type="submit" name="timeDirection" value="&gt">
 	    		</li>
         	</ul>
         </c:if>
 	        <ul class="nav nav-pills flex-row">
-		        
-    		
-	        	
-	        	
-
 	        	<c:if test = "${frequency == 'all time'}">
 		        	<li class="nav-item">
 	                    <input class="nav-link active" type="submit" name="frequency" value="all time">
@@ -87,12 +87,7 @@
 	                    <input class="nav-link active" type="submit" name="frequency" value="monthly">
 	                </li>
 	        	</c:if>
-	        	
             </ul>
-   		
-   		
-        	
-        	
         </form>
     </div>
 </div>

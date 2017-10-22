@@ -222,7 +222,29 @@
         .card-date-picker {
 		    width: auto;
 		    height: auto;
-		    display:inline-block;
+		    display: inline;
+        }
+        
+        .card-date-picker .nav-pills {
+			justify-content: center;
+			margin-bottom: 10px;
+        }
+        
+        .nav-pills .nav-item {
+        	margin: 3px;
+        }
+        
+        .nav-pills .nav-link, .nav-item .arrow {
+        	border: 0;
+        }
+        
+        .nav-item .arrow {
+        	font-size: 15pt ;
+        }
+        
+        .nav-pills .date {
+        	margin: 12px 10px 0;
+        	font-size: 15pt;
         }
         
     </style>
