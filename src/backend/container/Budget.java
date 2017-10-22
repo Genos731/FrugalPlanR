@@ -122,6 +122,15 @@ public class Budget {
 		return itDoes;
 	}
 	
+	public boolean checkTransactionInDate2(Transaction transaction){
+		Calendar cal = transaction.getCalendar();
+		boolean itDoes = false;
+		if (this.startDate.getTimeInMillis() <= cal.getTimeInMillis() && this.endDate.getTimeInMillis() >= cal.getTimeInMillis()){
+			itDoes = true;
+		}
+		return itDoes;
+	}
+	
 	//NOTE ASSUMES LIST OF EXPENSES NOT ALL TRANSACTIONS
 	public int getBudgetExpensesTotal(List<Transaction> transactions){
 		int totalExpenses = 0;

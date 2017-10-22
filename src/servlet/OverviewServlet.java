@@ -68,7 +68,6 @@ public class OverviewServlet extends HttpServlet {
 					currentDate.set(Calendar.SECOND, 0);
 					currentDate.set(Calendar.MILLISECOND, 0);
 					
-					request.getSession().setAttribute("date", currentDate);
 				}else{
 					currentDate = stringDate;
 				}
@@ -83,10 +82,18 @@ public class OverviewServlet extends HttpServlet {
 				if (frequency != null){
 					if (frequency.equals("all time")){
 						request.setAttribute("frequency", "all time");
+						currentDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
+						TimeZone timeZone = TimeZone.getTimeZone("Australia/Sydney");
+						currentDate.setTimeZone(timeZone);
+						currentDate.set(Calendar.HOUR, 0);
+						currentDate.set(Calendar.MINUTE, 1);
+						currentDate.set(Calendar.SECOND, 0);
+						currentDate.set(Calendar.MILLISECOND, 0);
 					}
 					else if (frequency.equals("daily")){
 						frequencyNum = 1;
 						request.setAttribute("frequency", "daily");
+						nextDate.add(Calendar.DATE, 0);
 					}
 					else if (frequency.equals("weekly")){
 						frequencyNum = 2;
@@ -165,21 +172,14 @@ public class OverviewServlet extends HttpServlet {
 				request.setAttribute("month2", nextDate.get(Calendar.MONTH) + 1);
 				request.setAttribute("year2", nextDate.get(Calendar.YEAR));
 				
-				
 				List<Transaction> transactions = accountAccessor.getTransactionWithOptions(userAccount, currentDate, frequencyNum, 0);	
-
+				
 				double totalExpenses = totalExpenses(transactions);
 				double totalIncome = totalIncome(transactions);
-				double balanced = totalIncome - totalExpenses;
-				String balance = "";
-				if (balanced < 0 ) { 
-					balance = "- ";
-					balanced = balanced * -1;
-				}
-				balance += "$" + String.format("%.2f", balanced);
+				double balance = totalIncome - totalExpenses;
 				request.setAttribute("transactions", transactions);
-				request.setAttribute("totalExpenses", String.format("%.2f", totalExpenses));
-				request.setAttribute("totalIncome", String.format("%.2f", totalIncome));
+				request.setAttribute("totalExpenses", totalExpenses);
+				request.setAttribute("totalIncome", totalIncome);
 				request.setAttribute("balance", balance);
 
 				List<String> categories = accountAccessor.getCategories(userAccount);
@@ -238,13 +238,13 @@ public class OverviewServlet extends HttpServlet {
 	}
 	
 	private double totalIncome(List<Transaction> transactions){
-		double income = 0;
+		double expenses = 0;
 		for (int x = 0; x < transactions.size(); x++){
 			if (transactions.get(x).isIncome()){
-				income += transactions.get(x).getValue();
+				expenses += transactions.get(x).getValue();
 			}
 		}
-		return income;
+		return expenses;
 	}
 	
 	private double totalExpenses(List<Transaction> transactions){

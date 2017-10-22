@@ -226,6 +226,7 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 				}
 			}
 		}
+		
 		Calendar secondDate = new GregorianCalendar();
 		TimeZone timeZone = TimeZone.getTimeZone("Australia/Sydney");
 		secondDate.setTimeZone(timeZone);
@@ -244,7 +245,10 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 		for (int counter = 0; counter < transactionList.size(); counter++){		
 			Calendar thirdDate = new GregorianCalendar();
 			thirdDate.setTimeZone(timeZone);
-			long maxTime = date.getTimeInMillis();
+			long maxTime = secondDate.getTimeInMillis();
+			if (maxTime > Calendar.getInstance().getTimeInMillis()){
+				maxTime = Calendar.getInstance().getTimeInMillis();
+			}
 			if (transactionList.get(counter).getRepeating() != null){
 				Repeating repeating = null;
 				thirdDate.setTimeInMillis(transactionList.get(counter).getCalendar().getTimeInMillis());
@@ -330,6 +334,9 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 						}
 					}
 					
+				}
+				else if (date.get(Calendar.YEAR) < cal.get(Calendar.YEAR) && secondDate.get(Calendar.YEAR) > cal.get(Calendar.YEAR) ) {
+					getRid = false;
 				}
 				if (getRid){
 					transactionList.remove(counter);

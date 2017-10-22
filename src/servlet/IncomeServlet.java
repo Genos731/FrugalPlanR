@@ -78,13 +78,22 @@ public class IncomeServlet extends HttpServlet {
 				String frequency = (String) request.getParameter("frequency");
 				String frequency2 = (String) request.getSession().getAttribute("frequency");
 				
+				//checks frequency to give correct set of transactions
 				if (frequency != null){
 					if (frequency.equals("all time")){
 						request.setAttribute("frequency", "all time");
+						currentDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
+						TimeZone timeZone = TimeZone.getTimeZone("Australia/Sydney");
+						currentDate.setTimeZone(timeZone);
+						currentDate.set(Calendar.HOUR, 0);
+						currentDate.set(Calendar.MINUTE, 1);
+						currentDate.set(Calendar.SECOND, 0);
+						currentDate.set(Calendar.MILLISECOND, 0);
 					}
 					else if (frequency.equals("daily")){
 						frequencyNum = 1;
 						request.setAttribute("frequency", "daily");
+						nextDate.add(Calendar.DATE, 0);
 					}
 					else if (frequency.equals("weekly")){
 						frequencyNum = 2;
@@ -162,9 +171,9 @@ public class IncomeServlet extends HttpServlet {
 				request.setAttribute("day2", nextDate.get(Calendar.DATE));
 				request.setAttribute("month2", nextDate.get(Calendar.MONTH) + 1);
 				request.setAttribute("year2", nextDate.get(Calendar.YEAR));
+							
+				List<Transaction> transactions = accountAccessor.getTransactionWithOptions(userAccount, currentDate, frequencyNum, 1);	
 				
-				
-				List<Transaction> transactions = accountAccessor.getTransactionWithOptions(userAccount, currentDate, frequencyNum, 1);
 				request.setAttribute("transactions", transactions);
 				
 				List<String> categories = accountAccessor.getCategories(userAccount);
