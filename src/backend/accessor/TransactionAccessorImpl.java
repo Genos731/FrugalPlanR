@@ -239,46 +239,7 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 		else if (option == 3){
 			secondDate.add(Calendar.MONTH, 1);
 		}
-		if (option != 0){
-			long dateInMillis = date.getTimeInMillis();
-			long secondDateInMillis = secondDate.getTimeInMillis();
-			for (int counter = 0; counter < transactionList.size(); counter++){	
-				long current = transactionList.get(counter).getCalendar().getTimeInMillis();
-				Calendar cal = transactionList.get(counter).getCalendar();
-				boolean getRid = true;
-				if (date.get(Calendar.YEAR) == cal.get(Calendar.YEAR) || secondDate.get(Calendar.YEAR) == cal.get(Calendar.YEAR)){
-					int calendarMonth = cal.get(Calendar.MONTH);
-					int calendarDay = cal.get(Calendar.DATE);
-					int firstDay = date.get(Calendar.DATE);
-					int firstMonth = date.get(Calendar.MONTH);
-					int secondDay = secondDate.get(Calendar.DATE);
-					int secondMonth = secondDate.get(Calendar.MONTH);
-					
-					if (firstMonth == calendarMonth && secondMonth == calendarMonth){
-						if (firstDay <= calendarDay && secondDay > calendarDay){
-							getRid = false;
-						}
-					}
-					else if (firstMonth == calendarMonth && secondMonth > calendarMonth){
-						if (firstDay <= calendarDay){
-							getRid = false;
-						}
-					}
-					else if (secondMonth == calendarMonth && firstMonth < calendarMonth){
-						if (secondDay > calendarDay){
-							getRid = false;
-						}
-					}
-					
-				}
-				if (getRid){
-					transactionList.remove(counter);
-					counter--;
-				}
-			}
-		}
 		
-				
 		for (int counter = 0; counter < transactionList.size(); counter++){		
 			Calendar thirdDate = new GregorianCalendar();
 			thirdDate.setTimeZone(timeZone);
@@ -336,6 +297,45 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 			}
 		}
 		
+		
+		if (option != 0){
+			long dateInMillis = date.getTimeInMillis();
+			long secondDateInMillis = secondDate.getTimeInMillis();
+			for (int counter = 0; counter < transactionList.size(); counter++){	
+				long current = transactionList.get(counter).getCalendar().getTimeInMillis();
+				Calendar cal = transactionList.get(counter).getCalendar();
+				boolean getRid = true;
+				if (date.get(Calendar.YEAR) == cal.get(Calendar.YEAR) || secondDate.get(Calendar.YEAR) == cal.get(Calendar.YEAR)){
+					int calendarMonth = cal.get(Calendar.MONTH);
+					int calendarDay = cal.get(Calendar.DATE);
+					int firstDay = date.get(Calendar.DATE);
+					int firstMonth = date.get(Calendar.MONTH);
+					int secondDay = secondDate.get(Calendar.DATE);
+					int secondMonth = secondDate.get(Calendar.MONTH);
+					
+					if (firstMonth == calendarMonth && secondMonth == calendarMonth){
+						if (firstDay <= calendarDay && secondDay > calendarDay){
+							getRid = false;
+						}
+					}
+					else if (firstMonth == calendarMonth && secondMonth > calendarMonth){
+						if (firstDay <= calendarDay){
+							getRid = false;
+						}
+					}
+					else if (secondMonth == calendarMonth && firstMonth < calendarMonth){
+						if (secondDay > calendarDay){
+							getRid = false;
+						}
+					}
+					
+				}
+				if (getRid){
+					transactionList.remove(counter);
+					counter--;
+				}
+			}
+		}
 		
 		// Return the list
 		return transactionList;
