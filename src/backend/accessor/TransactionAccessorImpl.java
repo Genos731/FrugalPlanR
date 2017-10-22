@@ -238,6 +238,7 @@ public class TransactionAccessorImpl implements TransactionAccessor {
 		}
 		else if (option == 3){
 			secondDate.add(Calendar.MONTH, 1);
+			secondDate.add(Calendar.DATE, 1);
 		}
 		
 		for (int counter = 0; counter < transactionList.size(); counter++){		

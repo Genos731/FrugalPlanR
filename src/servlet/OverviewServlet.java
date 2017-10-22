@@ -87,12 +87,11 @@ public class OverviewServlet extends HttpServlet {
 					else if (frequency.equals("daily")){
 						frequencyNum = 1;
 						request.setAttribute("frequency", "daily");
-						nextDate.add(Calendar.DATE, 1);
 					}
 					else if (frequency.equals("weekly")){
 						frequencyNum = 2;
 						request.setAttribute("frequency", "weekly");
-						nextDate.add(Calendar.DATE, 7);
+						nextDate.add(Calendar.DATE, 6);
 					}
 					else if (frequency.equals("monthly")){
 						frequencyNum = 3;
@@ -108,12 +107,12 @@ public class OverviewServlet extends HttpServlet {
 						if (frequency2.equals("daily")){
 							frequencyNum = 1;
 							request.setAttribute("frequency", "daily");
-							nextDate.add(Calendar.DATE, 1);
+							nextDate.add(Calendar.DATE, 0);
 						}
 						else if (frequency2.equals("weekly")){
 							frequencyNum = 2;
 							request.setAttribute("frequency", "weekly");
-							nextDate.add(Calendar.DATE, 7);
+							nextDate.add(Calendar.DATE, 6);
 						}
 						else if (frequency2.equals("monthly")){
 							frequencyNum = 3;
